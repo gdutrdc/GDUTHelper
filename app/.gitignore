@@ -1,1 +1,8 @@
-/build
+bin/
+gen/
+obj/
+libs/*/*.so
+build
+.gradle
+*.iml
+.idea/
