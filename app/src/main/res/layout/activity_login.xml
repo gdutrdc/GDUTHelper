@@ -30,7 +30,7 @@
             android:inputType="number"
             android:maxLength="10"
             android:singleLine="true"
-            android:text="3113006101"/>
+            android:text="@string/test_username"/>
     </android.support.design.widget.TextInputLayout>
 
     <ImageView
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:singleLine="true"
-            android:text="yuxiran1995"/>
+            android:text="@string/test_password"/>
     </android.support.design.widget.TextInputLayout>
 
     <ImageView

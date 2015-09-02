@@ -6,4 +6,7 @@
     <string name="password">密码</string>
     <string name="check_code">验证码</string>
     <string name="loading">加载中</string>
+
+    <string name="test_username"></string>
+    <string name="test_password"></string>
 </resources>
