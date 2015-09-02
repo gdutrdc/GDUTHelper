@@ -9,6 +9,8 @@ import android.os.Message;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,7 +25,7 @@ import com.seasonyuu.getgrade.net.api.Login;
 
 import java.util.ArrayList;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 	private final String TAG = "ConnectionTest";
 
 	private ArrayList<ImageView> iconList;
@@ -63,7 +65,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 				login();
 				break;
 			case R.id.main_read_check_code:
-				Toast.makeText(this,"然而我还没有开发这个功能 (>...<)",Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "然而我还没有开发这个功能 (>...<)", Toast.LENGTH_SHORT).show();
 				break;
 		}
 	}
@@ -143,4 +145,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 		})).start();
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_main, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.main_settings)
+			startActivity(new Intent(this, SettingsActivity.class));
+		return super.onOptionsItemSelected(item);
+	}
 }

@@ -6,7 +6,22 @@
     <string name="password">密码</string>
     <string name="check_code">验证码</string>
     <string name="loading">加载中</string>
+    <string name="settings">设置</string>
+    <string name="menu">菜单</string>
+    <string name="help">帮助</string>
 
-    <string name="test_username"></string>
-    <string name="test_password"></string>
+    <!-- 设置中相关文本 -->
+    <string name="remember_user_on">开启(下一次启动时记住账号密码)</string>
+    <string name="remember_user_off">关闭(不再记住账号密码)</string>
+    <string name="remember_user">记住账号密码</string>
+    <string name="remember_user_key">remember_user</string>
+    <string name="use_dx">使用外网URL访问教务系统(登录失败时可尝试)</string>
+    <string name="use_dx_key">use_dx</string>
+    <string name="use_dx_on">http://jwgldx.gdut.edu.cn</string>
+    <string name="use_dx_off">http://jwgl.gdut.edu.cn</string>
+    <string name="licenses">开源协议</string>
+    <string name="about">关于</string>
+
+    <string name="test_username">3113006101</string>
+    <string name="test_password">yuxiran1995</string>
 </resources>

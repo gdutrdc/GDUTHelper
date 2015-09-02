@@ -1,4 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:icon="@drawable/ic_more_vert_white_24dp"
+        android:title="@string/menu"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/main_settings"
+                android:icon="@drawable/ic_settings_grey_500_24dp"
+                android:title="@string/settings"/>
+            <item
+                android:id="@+id/main_help"
+                android:icon="@drawable/ic_help_grey_500_24dp"
+                android:title="@string/help"/>
+        </menu>
+    </item>
 </menu>

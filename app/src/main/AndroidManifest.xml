@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.seasonyuu.getgrade"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    package="com.seasonyuu.getgrade"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -22,6 +23,9 @@
         <activity
             android:name=".ui.GetGradeActivity"
             android:label="@string/get_grade"/>
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/settings"/>
     </application>
 
 </manifest>
