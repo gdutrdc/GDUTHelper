@@ -1,6 +1,7 @@
 package com.seasonyuu.getgrade.net.api;
 
 import com.seasonyuu.getgrade.app.GGApplication;
+import com.seasonyuu.getgrade.net.ApiHelper;
 import com.seasonyuu.getgrade.net.BaseRunnable;
 
 import java.io.BufferedInputStream;
@@ -22,7 +23,7 @@ public class GetPage extends BaseRunnable {
 
 	@Override
 	public void run() {
-		String address = "http://jwgl.gdut.edu.cn/";
+		String address = ApiHelper.getURl();
 		String viewState = null;
 		try {
 			URL url = new URL(address);

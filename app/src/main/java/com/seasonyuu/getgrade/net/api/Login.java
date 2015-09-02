@@ -3,6 +3,7 @@ package com.seasonyuu.getgrade.net.api;
 import android.util.Log;
 
 import com.seasonyuu.getgrade.app.GGApplication;
+import com.seasonyuu.getgrade.net.ApiHelper;
 import com.seasonyuu.getgrade.net.BaseRunnable;
 
 import java.io.BufferedReader;
@@ -36,13 +37,13 @@ public class Login extends BaseRunnable {
 	public void run() {
 		try {
 			HttpURLConnection httpURLConnection
-					= (HttpURLConnection) new URL("http://jwgl.gdut.edu.cn/default2.aspx").openConnection();
+					= (HttpURLConnection) new URL(ApiHelper.getURl() + "default2.aspx").openConnection();
 			httpURLConnection.addRequestProperty("Cookie", GGApplication.cookie);
-			httpURLConnection.addRequestProperty("Host", "jwgl.gdut.edu.cn");
+			httpURLConnection.addRequestProperty("Host", ApiHelper.getHost());
 			httpURLConnection.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-			httpURLConnection.addRequestProperty("Referer", "http://jwgl.gdut.edu.cn/default2.aspx");
+			httpURLConnection.addRequestProperty("Referer", ApiHelper.getURl() + "default2.aspx");
 			httpURLConnection.addRequestProperty("Connection", "keep-alive");
-			httpURLConnection.addRequestProperty("Origin", "http://jwgl.gdut.edu.cn");
+			httpURLConnection.addRequestProperty("Origin", ApiHelper.getURl());
 			httpURLConnection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 			httpURLConnection.addRequestProperty("Upgrade-Insecure-Requests", "1");
 			httpURLConnection.setRequestMethod("POST");
@@ -69,7 +70,7 @@ public class Login extends BaseRunnable {
 			out.close();
 
 			int responseCode = httpURLConnection.getResponseCode();// 调用此方法就不必再使用conn.connect()方法
-			if (responseCode == 200 || httpURLConnection.getURL().toString().equals("http://jwgl.gdut.edu.cn/xs_main.aspx?xh=" + userName)) {
+			if (responseCode == 200 || httpURLConnection.getURL().toString().equals(ApiHelper.getURl() + "xs_main.aspx?xh=" + userName)) {
 				Log.d(TAG, "login success");
 
 				InputStreamReader reader = new InputStreamReader(httpURLConnection.getInputStream(), "gbk");
@@ -88,16 +89,11 @@ public class Login extends BaseRunnable {
 				Log.e(TAG, "the url is to \"" + httpURLConnection.getURL().toString() + "\"");
 
 			} else {
-
 				if (responseCode == 302 || callback != null)
 					callback.onCall(null);
 				Log.d(TAG, "访问失败" + responseCode);
 			}
-		} catch (
-				IOException e
-				)
-
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.seasonyuu.getgrade.app.GGApplication;
+import com.seasonyuu.getgrade.net.ApiHelper;
 import com.seasonyuu.getgrade.net.BaseRunnable;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.net.URLConnection;
  * Created by seasonyuu on 15/8/28.
  */
 public class GetCheckCode extends BaseRunnable {
-	final String checkCode = "http://jwgl.gdut.edu.cn/CheckCode.aspx";
+	final String checkCode = ApiHelper.getURl() + "CheckCode.aspx";
 
 	public GetCheckCode(GGCallback callback) {
 		this.callback = callback;
@@ -26,9 +27,9 @@ public class GetCheckCode extends BaseRunnable {
 			URL url = new URL(checkCode);
 			URLConnection urlConnection = url.openConnection();
 			urlConnection.addRequestProperty("Cookie", GGApplication.cookie);
-			urlConnection.addRequestProperty("Referer", "http://jwgl.gdut.edu.cn/default2.aspx");
+			urlConnection.addRequestProperty("Referer", ApiHelper.getURl() + "default2.aspx");
 			urlConnection.addRequestProperty("Connection", "keep-alive");
-			urlConnection.addRequestProperty("Host", "jwgl.gdut.edu.cn");
+			urlConnection.addRequestProperty("Host", ApiHelper.getHost());
 			Bitmap checkCodeBitmap = BitmapFactory.decodeStream(urlConnection.getInputStream());
 			if (callback != null)
 				callback.onCall(checkCodeBitmap);

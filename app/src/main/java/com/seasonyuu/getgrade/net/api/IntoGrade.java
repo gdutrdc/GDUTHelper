@@ -3,6 +3,7 @@ package com.seasonyuu.getgrade.net.api;
 import android.util.Log;
 
 import com.seasonyuu.getgrade.app.GGApplication;
+import com.seasonyuu.getgrade.net.ApiHelper;
 import com.seasonyuu.getgrade.net.BaseRunnable;
 
 import java.io.BufferedInputStream;
@@ -25,15 +26,15 @@ public class IntoGrade extends BaseRunnable {
 
 	@Override
 	public void run() {
-		String address = "http://jwgl.gdut.edu.cn/xscj.aspx?xh=" + userName + "&xm=%D3%E0%CE%FA%C8%BB&gnmkdm=N121605";
+		String address = ApiHelper.getURl() + "xscj.aspx?xh=" + userName + "&xm=%D3%E0%CE%FA%C8%BB&gnmkdm=N121605";
 		try {
 			URL url = new URL(address);
 			URLConnection urlConnection = url.openConnection();
 			urlConnection.addRequestProperty("Cookie", GGApplication.cookie);
-			urlConnection.addRequestProperty("Host", "jwgl.gdut.edu.cn");
-			urlConnection.addRequestProperty("Referer", "http://jwgl.gdut.edu.cn/xscj.aspx?xh=3113006101&xm=%D3%E0%CE%FA%C8%BB&gnmkdm=N121605\n ");
+			urlConnection.addRequestProperty("Host", ApiHelper.getHost());
+			urlConnection.addRequestProperty("Referer", ApiHelper.getURl() + "xscj.aspx?xh=" + GGApplication.userName + "&xm=%D3%E0%CE%FA%C8%BB&gnmkdm=N121605\n ");
 			urlConnection.addRequestProperty("Connection", "keep-alive");
-			urlConnection.addRequestProperty("Origin", "http://jwgl.gdut.edu.cn");
+			urlConnection.addRequestProperty("Origin", ApiHelper.getURl());
 			urlConnection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 			urlConnection.addRequestProperty("Upgrade-Insecure-Requests", "1");
 			urlConnection.setAllowUserInteraction(false);

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.seasonyuu.getgrade.app.GGApplication;
 import com.seasonyuu.getgrade.bean.Grade;
+import com.seasonyuu.getgrade.net.ApiHelper;
 import com.seasonyuu.getgrade.net.BaseRunnable;
 
 import java.io.BufferedReader;
@@ -48,15 +49,15 @@ public class GetGrade extends BaseRunnable {
 	public void run() {
 		try {
 			HttpURLConnection httpURLConnection
-					= (HttpURLConnection) new URL("http://jwgl.gdut.edu.cn/xscj.aspx?xh=" + GGApplication.userName + "&xm=%D3%E0%CE%FA%C8%BB&gnmkdm=N121605").openConnection();
+					= (HttpURLConnection) new URL(ApiHelper.getURl() + "xscj.aspx?xh=" + GGApplication.userName + "&xm=%D3%E0%CE%FA%C8%BB&gnmkdm=N121605").openConnection();
 			httpURLConnection.addRequestProperty("Cookie", GGApplication.cookie);
-			httpURLConnection.addRequestProperty("Host", "jwgl.gdut.edu.cn");
+			httpURLConnection.addRequestProperty("Host", ApiHelper.getHost());
 			httpURLConnection.addRequestProperty("Accept-Encoding", "gzip, deflate");
 			httpURLConnection.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
 			httpURLConnection.addRequestProperty("Cache-Control", "max-age=0");
-			httpURLConnection.addRequestProperty("Referer", "http://jwgl.gdut.edu.cn/xscj.aspx?xh=" + GGApplication.userName + "&xm=%D3%E0%CE%FA%C8%BB&gnmkdm=N121605");
+			httpURLConnection.addRequestProperty("Referer", ApiHelper.getURl() + "xscj.aspx?xh=" + GGApplication.userName + "&xm=%D3%E0%CE%FA%C8%BB&gnmkdm=N121605");
 			httpURLConnection.addRequestProperty("Connection", "keep-alive");
-			httpURLConnection.addRequestProperty("Origin", "http://jwgl.gdut.edu.cn");
+			httpURLConnection.addRequestProperty("Origin", ApiHelper.getURl());
 			httpURLConnection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 			httpURLConnection.addRequestProperty("Upgrade-Insecure-Requests", "1");
 			httpURLConnection.setRequestMethod("POST");
@@ -90,9 +91,9 @@ public class GetGrade extends BaseRunnable {
 
 			int responseCode = httpURLConnection.getResponseCode();// 调用此方法就不必再使用conn.connect()方法
 			if (responseCode == 200) {
-				if (httpURLConnection.getURL().toString().equals("http://jwgl.gdut.edu.cn/xs_main.aspx?xh=3113006101")) {
+				if (httpURLConnection.getURL().toString().equals(ApiHelper.getURl() + "xs_main.aspx?xh=3113006101")) {
 					Log.e(TAG, "getGrade success");
-				} else if (httpURLConnection.getURL().toString().equals("http://jwgl.gdut.edu.cn/zdy.htm?aspxerrorpath=/default2.aspx")) {
+				} else if (httpURLConnection.getURL().toString().equals(ApiHelper.getURl() + "zdy.htm?aspxerrorpath=/default2.aspx")) {
 
 				} else {
 					Log.e(TAG, "the url is to \"" + httpURLConnection.getURL().toString() + "\"");
