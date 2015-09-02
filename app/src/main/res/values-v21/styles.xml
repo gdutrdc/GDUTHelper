@@ -1,0 +1,7 @@
+<resources>
+    <style name="FABStyle">
+        <item name="android:layout_marginBottom">-28dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="borderWidth">0dp</item>
+    </style>
+</resources>

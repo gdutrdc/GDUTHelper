@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GDUT GG助手</string>
+    <string name="get_grade">查询成绩</string>
+
+    <string name="user_name">学号</string>
+    <string name="password">密码</string>
+    <string name="check_code">验证码</string>
+    <string name="loading">加载中</string>
+</resources>
