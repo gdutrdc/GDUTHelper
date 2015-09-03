@@ -32,6 +32,7 @@ public class GetPage extends BaseRunnable {
 			BufferedReader in = new BufferedReader(reader);
 			List<String> cookies = urlConnection.getHeaderFields().get("Set-Cookie");
 			GGApplication.cookie = cookies.get(0).split(";", 2)[0];
+			urlConnection.setConnectTimeout(5 * 1000);
 
 			String s;
 			while ((s = in.readLine()) != null) {
@@ -47,6 +48,8 @@ public class GetPage extends BaseRunnable {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+			if (callback != null)
+				callback.onCall(e);
 		}
 	}
 }

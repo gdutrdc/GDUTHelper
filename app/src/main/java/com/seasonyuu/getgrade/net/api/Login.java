@@ -95,6 +95,8 @@ public class Login extends BaseRunnable {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			if (callback != null)
+				callback.onCall(e);
 		}
 	}
 }

@@ -35,6 +35,8 @@ public class GetCheckCode extends BaseRunnable {
 				callback.onCall(checkCodeBitmap);
 		} catch (IOException e) {
 			e.printStackTrace();
+			if (callback != null)
+				callback.onCall(e);
 		}
 	}
 }

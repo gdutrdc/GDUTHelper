@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 	private final String TAG = "ConnectionTest";
+	private final int GET_PAGE_RESULT = 0;
 
 	private ArrayList<ImageView> iconList;
 	private TextInputLayout mTILUserName;
@@ -39,9 +40,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			if (msg.what == 0)
-				getCheckCode();
-			else if (msg.what == 1)
+			if (msg.obj != null && msg.obj instanceof Exception) {
+				Toast.makeText(LoginActivity.this,
+						((Exception) msg.obj).getMessage(), Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if (msg.what == GET_PAGE_RESULT) {
+				progressDialog.cancel();
+				if (msg.obj instanceof Exception) {
+					Toast.makeText(LoginActivity.this,
+							((Exception) msg.obj).getMessage(), Toast.LENGTH_SHORT).show();
+				} else {
+					GGApplication.viewState = (String) msg.obj;
+					getCheckCode();
+				}
+			} else if (msg.what == 1)
 				if (checkCodeBitmap != null)
 					((ImageView) findViewById(R.id.check_code)).setImageBitmap(checkCodeBitmap);
 				else
@@ -79,6 +92,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 		progressDialog = new ProgressDialog(this);
 //		progressDialog.setCancelable(false);
 		progressDialog.setMessage(getString(R.string.loading));
+		progressDialog.show();
 
 		findViewById(R.id.main_read_check_code).setOnClickListener(this);
 		findViewById(R.id.login).setOnClickListener(this);
@@ -104,24 +118,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 	}
 
 	private void login() {
-		progressDialog.show();
-		new Thread(new Login(
-				mTILUserName.getEditText().getText().toString(),
-				mTILPassword.getEditText().getText().toString(),
-				((EditText) findViewById(R.id.et_check_code)).getText().toString(),
-				GGApplication.viewState, new BaseRunnable.GGCallback() {
-			@Override
-			public void onCall(Object obj) {
-				if (obj == null) {
-					handler.sendEmptyMessage(2);
-					GGApplication.userName =
-							mTILUserName.getEditText().getText().toString();
-				} else {
-					Log.e(TAG, obj.toString());
+		if (GGApplication.cookie != null && GGApplication.viewState != null) {
+			progressDialog.show();
+			new Thread(new Login(
+					mTILUserName.getEditText().getText().toString(),
+					mTILPassword.getEditText().getText().toString(),
+					((EditText) findViewById(R.id.et_check_code)).getText().toString(),
+					GGApplication.viewState, new BaseRunnable.GGCallback() {
+				@Override
+				public void onCall(Object obj) {
+					if (obj == null) {
+						handler.sendEmptyMessage(2);
+						GGApplication.userName =
+								mTILUserName.getEditText().getText().toString();
+					} else {
+						Log.e(TAG, obj.toString());
+					}
 				}
-			}
-		})).start();
-		Log.e(TAG, GGApplication.cookie + " " + GGApplication.viewState);
+			})).start();
+		} else
+			Toast.makeText(this, "连接异常，请刷新页面", Toast.LENGTH_SHORT).show();
 	}
 
 	private void getCheckCode() {
@@ -139,8 +155,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 		new Thread(new GetPage(new BaseRunnable.GGCallback() {
 			@Override
 			public void onCall(Object obj) {
-				GGApplication.viewState = (String) obj;
-				handler.sendEmptyMessage(0);
+				Message msg = Message.obtain();
+				msg.what = GET_PAGE_RESULT;
+				msg.obj = obj;
+				handler.sendMessage(msg);
 			}
 		})).start();
 	}
@@ -155,6 +173,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.main_settings)
 			startActivity(new Intent(this, SettingsActivity.class));
+		else if (item.getItemId() == R.id.main_refresh) {
+			progressDialog.show();
+			initConnection();
+		}
 		return super.onOptionsItemSelected(item);
 	}
 }

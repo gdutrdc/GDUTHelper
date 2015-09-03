@@ -6,6 +6,8 @@
     <string name="password">密码</string>
     <string name="check_code">验证码</string>
     <string name="loading">加载中</string>
+
+    <string name="refresh">刷新</string>
     <string name="settings">设置</string>
     <string name="menu">菜单</string>
     <string name="help">帮助</string>
