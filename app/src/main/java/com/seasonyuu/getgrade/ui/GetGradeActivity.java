@@ -31,6 +31,7 @@ import java.util.Calendar;
  */
 public class GetGradeActivity extends AppCompatActivity {
 	private final String TAG = GetGradeActivity.class.getSimpleName();
+	private boolean firstLoad = true;
 
 	private Handler handler;
 	private GradeListAdapter adapter;
@@ -65,7 +66,7 @@ public class GetGradeActivity extends AppCompatActivity {
 		adapter = new GradeListAdapter(this);
 		lvGrade.setAdapter(adapter);
 
-		((AppCompatRadioButton) findViewById(R.id.grade_get_term)).setChecked(true);
+		((AppCompatRadioButton) findViewById(R.id.grade_get_all)).setChecked(true);
 
 		initHandler();
 
@@ -101,6 +102,20 @@ public class GetGradeActivity extends AppCompatActivity {
 					for (String s : spinnerData[1].split(","))
 						termAdapter.add(s);
 					mTermSpinner.setAdapter(termAdapter);
+
+					if (firstLoad) {
+						firstLoad = false;
+						Runnable runnable = new GetGrade(null, null, new BaseRunnable.GGCallback() {
+							@Override
+							public void onCall(Object obj) {
+								Message msg = Message.obtain();
+								msg.what = 1;
+								msg.obj = obj;
+								handler.sendMessage(msg);
+							}
+						});
+						new Thread(runnable).start();
+					}
 
 				} else if (msg.what == 1) {
 					progressDialog.cancel();
