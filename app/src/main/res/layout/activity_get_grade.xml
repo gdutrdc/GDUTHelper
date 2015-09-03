@@ -85,12 +85,12 @@
         android:layout_above="@id/grade_bottom"
         android:layout_below="@id/grade_point"
         android:layout_marginBottom="32dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:background="?android:attr/windowBackground"
         app:cardBackgroundColor="?android:attr/windowBackground"
         app:cardCornerRadius="8dp"
-        app:cardElevation="6dp">
+        app:cardElevation="8dp">
 
         <ListView
             android:id="@+id/grade_list"
