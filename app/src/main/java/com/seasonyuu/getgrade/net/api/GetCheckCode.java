@@ -8,6 +8,7 @@ import com.seasonyuu.getgrade.net.ApiHelper;
 import com.seasonyuu.getgrade.net.BaseRunnable;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -27,10 +28,14 @@ public class GetCheckCode extends BaseRunnable {
 			URL url = new URL(checkCode);
 			URLConnection urlConnection = url.openConnection();
 			urlConnection.addRequestProperty("Cookie", GGApplication.cookie);
+//			urlConnection.addRequestProperty("Accept", "image/webp,*/*;q=0.8");
+//			urlConnection.addRequestProperty("Accept-Encoding", "gzip, deflate, sdch");
+//			urlConnection.addRequestProperty("Connection", "keep-alive");
+//			urlConnection.addRequestProperty("Upgrade-Insecure-Requests", "1");
 			urlConnection.addRequestProperty("Referer", ApiHelper.getURl() + "default2.aspx");
-			urlConnection.addRequestProperty("Connection", "keep-alive");
-			urlConnection.addRequestProperty("Host", ApiHelper.getHost());
-			Bitmap checkCodeBitmap = BitmapFactory.decodeStream(urlConnection.getInputStream());
+//			urlConnection.addRequestProperty("Host", ApiHelper.getHost());
+			InputStream inputStream = urlConnection.getInputStream();
+			Bitmap checkCodeBitmap = BitmapFactory.decodeStream(inputStream);
 			if (callback != null)
 				callback.onCall(checkCodeBitmap);
 		} catch (IOException e) {

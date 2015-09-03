@@ -42,23 +42,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 		public void handleMessage(Message msg) {
 			if (msg.obj != null && msg.obj instanceof Exception) {
 				Toast.makeText(LoginActivity.this,
-						((Exception) msg.obj).getMessage(), Toast.LENGTH_SHORT).show();
+						((Exception) msg.obj).toString(), Toast.LENGTH_SHORT).show();
+				Log.e(TAG, "get Exception");
 				return;
 			}
 			if (msg.what == GET_PAGE_RESULT) {
 				progressDialog.cancel();
-				if (msg.obj instanceof Exception) {
-					Toast.makeText(LoginActivity.this,
-							((Exception) msg.obj).getMessage(), Toast.LENGTH_SHORT).show();
-				} else {
-					GGApplication.viewState = (String) msg.obj;
-					getCheckCode();
-				}
+				GGApplication.viewState = (String) msg.obj;
+				getCheckCode();//http://jwgl.gdut.edu.cn/CheckCode.aspx
 			} else if (msg.what == 1)
-				if (checkCodeBitmap != null)
+				if (msg.obj != null) {
+					checkCodeBitmap = (Bitmap) msg.obj;
 					((ImageView) findViewById(R.id.check_code)).setImageBitmap(checkCodeBitmap);
-				else
+				} else {
 					Log.e(TAG, "bitmap is null");
+				}
 			else if (msg.what == 2) {
 				progressDialog.cancel();
 				startActivity(new Intent(LoginActivity.this, GetGradeActivity.class));
@@ -145,8 +143,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 		new Thread(new GetCheckCode(new BaseRunnable.GGCallback() {
 			@Override
 			public void onCall(Object obj) {
-				checkCodeBitmap = (Bitmap) obj;
-				handler.sendEmptyMessage(1);
+				Message msg = Message.obtain();
+				msg.obj = obj;
+				msg.what = 1;
+				handler.sendMessage(msg);
 			}
 		})).start();
 	}

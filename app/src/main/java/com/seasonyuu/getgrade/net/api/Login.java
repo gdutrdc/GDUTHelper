@@ -39,18 +39,18 @@ public class Login extends BaseRunnable {
 			HttpURLConnection httpURLConnection
 					= (HttpURLConnection) new URL(ApiHelper.getURl() + "default2.aspx").openConnection();
 			httpURLConnection.addRequestProperty("Cookie", GGApplication.cookie);
-			httpURLConnection.addRequestProperty("Host", ApiHelper.getHost());
-			httpURLConnection.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+//			httpURLConnection.addRequestProperty("Host", ApiHelper.getHost());
+//			httpURLConnection.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
 			httpURLConnection.addRequestProperty("Referer", ApiHelper.getURl() + "default2.aspx");
-			httpURLConnection.addRequestProperty("Connection", "keep-alive");
-			httpURLConnection.addRequestProperty("Origin", ApiHelper.getURl());
-			httpURLConnection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+//			httpURLConnection.addRequestProperty("Connection", "keep-alive");
+//			httpURLConnection.addRequestProperty("Origin", ApiHelper.getURl());
+//			httpURLConnection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 			httpURLConnection.addRequestProperty("Upgrade-Insecure-Requests", "1");
 			httpURLConnection.setRequestMethod("POST");
 			httpURLConnection.setDoOutput(true);
 			httpURLConnection.setDoInput(true);
 			httpURLConnection.setUseCaches(false);
-			httpURLConnection.setInstanceFollowRedirects(false);
+//			httpURLConnection.setInstanceFollowRedirects(false);
 			String data = "__VIEWSTATE="
 					+ URLEncoder.encode(viewState, "iso-8859-1")
 					+ "&txtUserName=" + userName

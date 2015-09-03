@@ -48,18 +48,19 @@ public class GetGrade extends BaseRunnable {
 	@Override
 	public void run() {
 		try {
-			HttpURLConnection httpURLConnection
-					= (HttpURLConnection) new URL(ApiHelper.getURl() + "xscj.aspx?xh=" + GGApplication.userName + "&xm=%D3%E0%CE%FA%C8%BB&gnmkdm=N121605").openConnection();
+			HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(
+					ApiHelper.getURl() + "xscj.aspx?xh=" + GGApplication.userName + "&xm=%D3%E0%CE%FA%C8%BB&gnmkdm=N121605").openConnection();
 			httpURLConnection.addRequestProperty("Cookie", GGApplication.cookie);
-			httpURLConnection.addRequestProperty("Host", ApiHelper.getHost());
-			httpURLConnection.addRequestProperty("Accept-Encoding", "gzip, deflate");
-			httpURLConnection.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-			httpURLConnection.addRequestProperty("Cache-Control", "max-age=0");
-			httpURLConnection.addRequestProperty("Referer", ApiHelper.getURl() + "xscj.aspx?xh=" + GGApplication.userName + "&xm=%D3%E0%CE%FA%C8%BB&gnmkdm=N121605");
-			httpURLConnection.addRequestProperty("Connection", "keep-alive");
-			httpURLConnection.addRequestProperty("Origin", ApiHelper.getURl());
-			httpURLConnection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			httpURLConnection.addRequestProperty("Upgrade-Insecure-Requests", "1");
+//			httpURLConnection.addRequestProperty("Host", ApiHelper.getHost());
+//			httpURLConnection.addRequestProperty("Accept-Encoding", "gzip, deflate");
+//			httpURLConnection.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+//			httpURLConnection.addRequestProperty("Cache-Control", "max-age=0");
+			httpURLConnection.addRequestProperty("Referer", ApiHelper.getURl()
+					+ "xscj.aspx?xh=" + GGApplication.userName + "&xm=%D3%E0%CE%FA%C8%BB&gnmkdm=N121605");
+//			httpURLConnection.addRequestProperty("Connection", "keep-alive");
+//			httpURLConnection.addRequestProperty("Origin", ApiHelper.getURl());
+//			httpURLConnection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+//			httpURLConnection.addRequestProperty("Upgrade-Insecure-Requests", "1");
 			httpURLConnection.setRequestMethod("POST");
 			httpURLConnection.setDoOutput(true);
 			httpURLConnection.setInstanceFollowRedirects(false);
