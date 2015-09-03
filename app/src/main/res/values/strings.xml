@@ -24,6 +24,6 @@
     <string name="licenses">开源协议</string>
     <string name="about">关于</string>
 
-    <string name="test_username">3113006101</string>
-    <string name="test_password">yuxiran1995</string>
+    <string name="test_username"></string>
+    <string name="test_password"></string>
 </resources>

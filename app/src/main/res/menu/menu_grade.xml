@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/grade_menu"
+        android:icon="@drawable/ic_more_vert_white_24dp"
+        android:title="@string/menu"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/grade_default_sort"
+                android:icon="@drawable/ic_done_grey_500_24dp"
+                android:title="默认排序"/>
+            <item
+                android:id="@+id/grade_credit_down_sort"
+                android:title="按学分降序"/>
+            <item
+                android:id="@+id/grade_credit_up_sort"
+                android:title="按学分升序"/>
+            <item
+                android:id="@+id/grade_down_sort"
+                android:title="按成绩降序"/>
+            <item
+                android:id="@+id/grade_up_sort"
+                android:title="按成绩升序"/>
+        </menu>
+    </item>
+</menu>

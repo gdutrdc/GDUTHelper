@@ -3,7 +3,7 @@ package com.seasonyuu.getgrade.bean;
 /**
  * Created by seasonyuu on 15/8/28.
  */
-public class Grade {
+public class Grade implements Cloneable {
 	private String lessonCode;//课程代码
 	private String lessonName;//课程名称
 	private String lessonType;//课程性质
@@ -89,4 +89,5 @@ public class Grade {
 		}
 		return point;
 	}
+
 }

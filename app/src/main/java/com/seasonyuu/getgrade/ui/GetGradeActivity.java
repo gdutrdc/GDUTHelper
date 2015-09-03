@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRadioButton;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -39,6 +40,8 @@ public class GetGradeActivity extends AppCompatActivity {
 
 	private Spinner mYearSpinner;
 	private Spinner mTermSpinner;
+
+	private ArrayList<MenuItem> menuItemList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -161,11 +164,50 @@ public class GetGradeActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
-			startActivity(new Intent(this, LoginActivity.class));
-			finish();
-			return true;
+		switch (item.getItemId()) {
+			case R.id.grade_menu:
+				return super.onOptionsItemSelected(item);
+			case android.R.id.home:
+//				finish();
+				startActivity(new Intent(this, LoginActivity.class));
+				return true;
+			case R.id.grade_default_sort:
+				adapter.setSortType(GradeListAdapter.DEFAULT_SORT);
+				break;
+			case R.id.grade_down_sort:
+				adapter.setSortType(GradeListAdapter.GRADE_DOWN_SORT);
+				break;
+			case R.id.grade_up_sort:
+				adapter.setSortType(GradeListAdapter.GRADE_UP_SORT);
+				break;
+			case R.id.grade_credit_down_sort:
+				adapter.setSortType(GradeListAdapter.GRADE_CREDIT_DOWN_SORT);
+				break;
+			case R.id.grade_credit_up_sort:
+				adapter.setSortType(GradeListAdapter.GRADE_CREDIT_UP_SORT);
+				break;
+
 		}
+		clearMenuIcon();
+		item.setIcon(R.drawable.ic_done_grey_500_24dp);
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_grade, menu);
+		menuItemList = new ArrayList<>();
+		MenuItem mi = menu.findItem(R.id.grade_menu);
+		Menu m = mi.getSubMenu();
+		for (int i = 0; i < m.size(); i++) {
+			menuItemList.add(m.getItem(i));
+		}
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	private void clearMenuIcon() {
+		for (MenuItem item : menuItemList) {
+			item.setIcon(null);
+		}
 	}
 }
