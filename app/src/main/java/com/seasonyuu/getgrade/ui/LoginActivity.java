@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -30,9 +31,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 	private final int GET_PAGE_RESULT = 0;
 
 	private ArrayList<ImageView> iconList;
+
 	private TextInputLayout mTILUserName;
 	private TextInputLayout mTILPassword;
 	private TextInputLayout mTILSecretCode;
+	private CoordinatorLayout mSbContainer;
+
 	private ProgressDialog progressDialog;
 
 	private Bitmap checkCodeBitmap;
@@ -65,7 +69,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 				);
 				startActivity(new Intent(LoginActivity.this, GetGradeActivity.class));
 				finish();
-			} else if (msg.what == 4) {
 			}
 		}
 
@@ -80,12 +83,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 			case R.id.login:
 				login();
 				break;
-			case R.id.main_read_check_code:
-				Toast.makeText(this, "然而我还没有开发这个功能 (>...<)", Toast.LENGTH_SHORT).show();
-				break;
 		}
 	}
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,13 +96,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 		progressDialog.setMessage(getString(R.string.loading));
 		progressDialog.show();
 
-		findViewById(R.id.main_read_check_code).setOnClickListener(this);
 		findViewById(R.id.login).setOnClickListener(this);
 		findViewById(R.id.check_code).setOnClickListener(this);
+
+		initSnackBar();
 
 		initEditText();
 
 		initConnection();
+	}
+
+	private void initSnackBar() {
+		mSbContainer = (CoordinatorLayout) findViewById(R.id.login_sb_container);
+
 	}
 
 	private void initEditText() {
@@ -129,9 +134,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 		}
 	}
 
+	private void showProgressDialog(String message) {
+		progressDialog.setMessage(message);
+		progressDialog.show();
+	}
+
+
 	private void login() {
 		if (GGApplication.cookie != null && GGApplication.viewState != null) {
-			progressDialog.show();
+			showProgressDialog("正在登陆");
 			new Thread(new Login(
 					mTILUserName.getEditText().getText().toString(),
 					mTILPassword.getEditText().getText().toString(),
@@ -188,7 +199,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 		if (item.getItemId() == R.id.main_settings)
 			startActivityForResult(new Intent(this, SettingsActivity.class), 0);
 		else if (item.getItemId() == R.id.main_refresh) {
-			progressDialog.show();
+			showProgressDialog("正在刷新");
 			initConnection();
 		}
 		return super.onOptionsItemSelected(item);
@@ -200,7 +211,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 			case 0:
 				boolean needRefresh = data.getBooleanExtra("need_refresh", false);
 				if (needRefresh) {
-					progressDialog.show();
+					showProgressDialog("正在刷新");
 					initConnection();
 				}
 				if (!GGApplication.getInstance().needRememberUser()) {

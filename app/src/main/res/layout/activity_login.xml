@@ -5,15 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:padding="32dp"
     tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/main_iv_user"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:layout_marginLeft="40dp"
         android:layout_alignBottom="@+id/main_user_name"
-        android:layout_margin="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_account_circle_grey_500_24dp"/>
 
@@ -21,6 +22,7 @@
         android:id="@+id/main_user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="32dp"
         android:layout_marginTop="64dp"
         android:layout_toRightOf="@id/main_iv_user">
 
@@ -38,7 +40,10 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignBottom="@+id/main_password"
-        android:layout_margin="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="40dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_lock_grey_500_24dp"/>
 
@@ -47,6 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/main_user_name"
+        android:layout_marginRight="32dp"
         android:layout_toRightOf="@id/main_iv_password">
 
         <EditText
@@ -62,7 +68,10 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignBottom="@+id/main_check_code"
-        android:layout_margin="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="40dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_verified_user_grey_500_24dp"/>
 
@@ -86,32 +95,27 @@
 
     <ImageView
         android:id="@+id/check_code"
-        android:layout_width="72dp"
-        android:layout_height="27dp"
+        android:layout_width="75dp"
+        android:layout_height="30dp"
         android:layout_alignBottom="@id/main_check_code"
         android:layout_margin="8dp"
         android:layout_toRightOf="@+id/main_check_code"
         android:clickable="true"
         android:scaleType="centerCrop"/>
 
-    <Button
-        android:id="@+id/main_read_check_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/main_check_code"
-        android:layout_toRightOf="@id/check_code"
-        android:text="自动识别验证码(实验性)"
-        android:textSize="10sp"
-        android:theme="@style/AppTheme.Dark"/>
-
-
-    <Button
+   <Button
+        android:layout_marginRight="32dp"
         android:id="@+id/login"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/main_check_code"
+        android:layout_alignBottom="@id/main_check_code"
         android:text="登录"/>
 
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/login_sb_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>
