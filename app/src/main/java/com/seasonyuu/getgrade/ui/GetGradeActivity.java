@@ -1,20 +1,28 @@
 package com.seasonyuu.getgrade.ui;
 
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.seasonyuu.getgrade.R;
 import com.seasonyuu.getgrade.app.GGApplication;
@@ -40,6 +48,8 @@ public class GetGradeActivity extends AppCompatActivity {
 	private ListView lvGrade;
 	private TextView tvGradePoint;
 	private ProgressDialog progressDialog;
+	private AlertDialog zbDialog;
+	private View zbDialogView;
 
 	private Spinner mYearSpinner;
 	private Spinner mTermSpinner;
@@ -66,12 +76,39 @@ public class GetGradeActivity extends AppCompatActivity {
 
 		lvGrade = (ListView) findViewById(R.id.grade_list);
 		View view = new View(this);
-		view.setClickable(true);
-		view.setBackgroundColor(Color.TRANSPARENT);
-		view.setMinimumHeight((int) UIUtils.convertDpToPixel(56, this));
+		view.setMinimumHeight((int) UIUtils.convertDpToPixel(28, this));
 		lvGrade.addFooterView(view);
 		adapter = new GradeListAdapter(this);
 		lvGrade.setAdapter(adapter);
+		lvGrade.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				if (position < adapter.getCount() && position >= 0) {
+					Grade grade = adapter.getItem(position);
+					String message = GGApplication.getInstance().getZBText();
+					StringBuffer sb = new StringBuffer(message);
+					String[] matches = new String[]{"$name", "$grade"};
+					for (String match : matches) {
+						String data = null;
+						if (match.equals("$name"))
+							data = grade.getLessonName();
+						else if (match.equals("$grade"))
+							data = grade.getLessonGrade();
+						while (sb.indexOf(match) != -1) {
+							sb.replace(sb.indexOf(match), sb.indexOf(match) + match.length(), data);
+						}
+					}
+
+					ClipboardManager clipboard = (ClipboardManager)
+							getSystemService(Context.CLIPBOARD_SERVICE);
+					ClipData clip = ClipData.newPlainText("", sb.toString());
+					clipboard.setPrimaryClip(clip);
+					Toast.makeText(GetGradeActivity.this, "\"" + sb.toString() + "\"已复制到剪贴板",
+							Toast.LENGTH_SHORT).show();
+				}
+				return true;
+			}
+		});
 
 		((AppCompatRadioButton) findViewById(R.id.grade_get_all)).setChecked(true);
 
@@ -128,7 +165,7 @@ public class GetGradeActivity extends AppCompatActivity {
 					progressDialog.cancel();
 					if (msg.obj != null) {
 						ArrayList<Grade> list = (ArrayList<Grade>) msg.obj;
-						if(list.size()>0) {
+						if (list.size() > 0) {
 							float points = 0, credits = 0;
 							for (Grade grade : list) {
 								points += grade.calculatePoint() * Float.parseFloat(grade.getLessonCredit());
@@ -192,8 +229,35 @@ public class GetGradeActivity extends AppCompatActivity {
 			case R.id.grade_menu:
 				return super.onOptionsItemSelected(item);
 			case android.R.id.home:
-//				finish();
 				startActivity(new Intent(this, LoginActivity.class));
+				finish();
+				return true;
+			case R.id.grade_zb:
+				if (zbDialog == null) {
+					zbDialogView = View.inflate(this, R.layout.dialog_zb, null);
+					((TextInputLayout) zbDialogView.findViewById(R.id.dialog_zb_til)).setHint("替换文本");
+					zbDialog = new AlertDialog.Builder(this).create();
+					zbDialog.setView(zbDialogView);
+					zbDialog.setTitle("装个逼");
+					final DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which) {
+								case DialogInterface.BUTTON_POSITIVE:
+									GGApplication.getInstance().setZBText(
+											((EditText) zbDialogView.findViewById(R.id.dialog_zb_content)).getText().toString());
+									break;
+								case DialogInterface.BUTTON_NEGATIVE:
+									break;
+							}
+						}
+					};
+					zbDialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定", onClickListener);
+					zbDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", onClickListener);
+				}
+				((EditText) zbDialogView.findViewById(R.id.dialog_zb_content))
+						.setText(GGApplication.getInstance().getZBText());
+				zbDialog.show();
 				return true;
 			case R.id.grade_default_sort:
 				adapter.setSortType(GradeListAdapter.DEFAULT_SORT);

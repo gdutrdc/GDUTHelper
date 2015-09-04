@@ -7,6 +7,8 @@
     <string name="check_code">验证码</string>
     <string name="loading">加载中</string>
 
+    <string name="dialog_zb_tips">请注意，文本中的$name都会被替换成课程名称，$grade会被替换成课程成绩，在成绩界面长按成绩则复制该文本</string>
+
     <string name="refresh">刷新</string>
     <string name="settings">设置</string>
     <string name="menu">菜单</string>
@@ -26,4 +28,6 @@
 
     <string name="test_username"></string>
     <string name="test_password"></string>
+
+    <string name="default_zb_text">我特么这次考试$name才得了$grade！</string>
 </resources>

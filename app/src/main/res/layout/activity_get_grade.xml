@@ -20,17 +20,19 @@
             android:layout_marginRight="56dp"
             android:orientation="horizontal">
 
-            <Spinner
+            <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/grade_year_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.Dark"/>
+                app:popupTheme="@style/AppTheme"
+                app:theme="@style/AppTheme.Dark"/>
 
-            <Spinner
+            <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/grade_term_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.Dark"/>
+                app:popupTheme="@style/AppTheme"
+                app:theme="@style/AppTheme.Dark"/>
 
         </LinearLayout>
 

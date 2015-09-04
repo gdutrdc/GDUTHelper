@@ -3,6 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:title="装个逼"
+        android:id="@+id/grade_zb"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/grade_menu"
         android:icon="@drawable/ic_more_vert_white_24dp"
         android:title="@string/menu"

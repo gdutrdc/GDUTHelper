@@ -23,11 +23,29 @@ public class GGApplication extends Application {
 		sp = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
 	}
 
-	public static GGApplication getInstance(){
+	public static GGApplication getInstance() {
 		return mApplication;
 	}
 
 	public boolean isUseDx() {
 		return sp.getBoolean(getString(R.string.use_dx_key), false);
 	}
+
+	public void setZBText(String text) {
+		SharedPreferences.Editor editor = sp.edit();
+		if (text != null && text.length() > 0)
+			editor.putString("ZBText", text);
+		else
+			editor.putString("ZBText", getString(R.string.default_zb_text));
+		editor.commit();
+	}
+
+	public String getZBText() {
+		String result;
+		result = sp.getString("ZBText", null);
+		if (result != null)
+			return result;
+		return getString(R.string.default_zb_text);
+	}
+
 }
