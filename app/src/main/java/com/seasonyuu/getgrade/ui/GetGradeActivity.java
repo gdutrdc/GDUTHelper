@@ -2,6 +2,7 @@ package com.seasonyuu.getgrade.ui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +23,7 @@ import com.seasonyuu.getgrade.net.BaseRunnable;
 import com.seasonyuu.getgrade.net.api.GetGrade;
 import com.seasonyuu.getgrade.net.api.IntoGrade;
 import com.seasonyuu.getgrade.ui.adapter.GradeListAdapter;
+import com.seasonyuu.getgrade.utils.UIUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,6 +65,11 @@ public class GetGradeActivity extends AppCompatActivity {
 		tvGradePoint = (TextView) findViewById(R.id.grade_point);
 
 		lvGrade = (ListView) findViewById(R.id.grade_list);
+		View view = new View(this);
+		view.setClickable(true);
+		view.setBackgroundColor(Color.TRANSPARENT);
+		view.setMinimumHeight((int) UIUtils.convertDpToPixel(56, this));
+		lvGrade.addFooterView(view);
 		adapter = new GradeListAdapter(this);
 		lvGrade.setAdapter(adapter);
 
@@ -121,12 +128,14 @@ public class GetGradeActivity extends AppCompatActivity {
 					progressDialog.cancel();
 					if (msg.obj != null) {
 						ArrayList<Grade> list = (ArrayList<Grade>) msg.obj;
-						float points = 0, credits = 0;
-						for (Grade grade : list) {
-							points += grade.calculatePoint() * Float.parseFloat(grade.getLessonCredit());
-							credits += Float.parseFloat(grade.getLessonCredit());
+						if(list.size()>0) {
+							float points = 0, credits = 0;
+							for (Grade grade : list) {
+								points += grade.calculatePoint() * Float.parseFloat(grade.getLessonCredit());
+								credits += Float.parseFloat(grade.getLessonCredit());
+							}
+							tvGradePoint.setText("平均绩点:" + String.format("%.2f", points / credits));
 						}
-						tvGradePoint.setText("平均绩点:" + String.format("%.2f", points / credits));
 						adapter.setData(list);
 						adapter.notifyDataSetChanged();
 					}

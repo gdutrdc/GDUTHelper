@@ -12,27 +12,24 @@
         android:layout_alignParentBottom="true"
         android:background="?attr/colorPrimary"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:layout_marginRight="56dp"
             android:orientation="horizontal">
 
             <Spinner
                 android:id="@+id/grade_year_spinner"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:theme="@style/AppTheme.Dark"/>
 
             <Spinner
                 android:id="@+id/grade_term_spinner"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:theme="@style/AppTheme.Dark"/>
 
         </LinearLayout>
@@ -73,31 +70,21 @@
         android:id="@+id/grade_point"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
+        android:padding="8dp"
         android:gravity="center"
         android:text="平均绩点:"
+        android:background="#12121212"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
-    <android.support.v7.widget.CardView
+
+    <ListView
+        android:id="@+id/grade_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/grade_bottom"
         android:layout_below="@id/grade_point"
-        android:layout_marginBottom="32dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:background="?android:attr/windowBackground"
-        app:cardBackgroundColor="?android:attr/windowBackground"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="8dp">
-
-        <ListView
-            android:id="@+id/grade_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?android:attr/windowBackground"/>
-    </android.support.v7.widget.CardView>
+        android:choiceMode="none"/>
 
     <android.support.design.widget.FloatingActionButton
         style="@style/FABStyle"
@@ -106,5 +93,6 @@
         android:layout_above="@id/grade_bottom"
         android:layout_alignParentRight="true"
         android:onClick="onClick"
-        android:src="@drawable/ic_search_white_24dp"/>
+        android:src="@drawable/ic_search_white_24dp"
+        android:id="@+id/grade_fab"/>
 </RelativeLayout>
