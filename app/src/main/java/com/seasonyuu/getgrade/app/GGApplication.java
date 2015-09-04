@@ -48,4 +48,18 @@ public class GGApplication extends Application {
 		return getString(R.string.default_zb_text);
 	}
 
+	public boolean needRememberUser() {
+		return sp.getBoolean("remember_user", true);
+	}
+
+	public void rememberUser(String userName, String password) {
+		SharedPreferences.Editor editor = sp.edit();
+		editor.putString("remember_user_data", userName + ";" + password);
+		editor.commit();
+	}
+
+	public String getRememberUser() {
+		return sp.getString("remember_user_data", null);
+	}
+
 }

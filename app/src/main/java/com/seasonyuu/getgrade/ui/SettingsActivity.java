@@ -1,5 +1,6 @@
 package com.seasonyuu.getgrade.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -36,8 +37,11 @@ public class SettingsActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if(item.getItemId() == android.R.id.home)
+		if (item.getItemId() == android.R.id.home) {
+			Intent intent = new Intent();
+			setResult(0, intent);
 			finish();
+		}
 		return super.onOptionsItemSelected(item);
 	}
 }

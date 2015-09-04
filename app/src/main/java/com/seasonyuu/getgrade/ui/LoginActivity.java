@@ -59,6 +59,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 				}
 			else if (msg.what == 2) {
 				progressDialog.cancel();
+				GGApplication.getInstance().rememberUser(
+						mTILUserName.getEditText().getText().toString(),
+						mTILPassword.getEditText().getText().toString()
+				);
 				startActivity(new Intent(LoginActivity.this, GetGradeActivity.class));
 				finish();
 			} else if (msg.what == 4) {
@@ -70,6 +74,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.check_code:
+				mTILSecretCode.getEditText().setText("");
 				handler.sendEmptyMessage(0);
 				break;
 			case R.id.login:
@@ -113,6 +118,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 		mTILPassword.setHint(getString(R.string.password));
 		mTILSecretCode = (TextInputLayout) findViewById(R.id.main_check_code);
 		mTILSecretCode.setHint(getString(R.string.check_code));
+
+		if (GGApplication.getInstance().needRememberUser()) {
+			String rememberData = GGApplication.getInstance().getRememberUser();
+			if (rememberData != null) {
+				String[] data = rememberData.split(";", 2);
+				mTILUserName.getEditText().setText(data[0]);
+				mTILPassword.getEditText().setText(data[1]);
+			}
+		}
 	}
 
 	private void login() {
@@ -172,11 +186,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.main_settings)
-			startActivity(new Intent(this, SettingsActivity.class));
+			startActivityForResult(new Intent(this, SettingsActivity.class), 0);
 		else if (item.getItemId() == R.id.main_refresh) {
 			progressDialog.show();
 			initConnection();
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (resultCode) {
+			case 0:
+				boolean needRefresh = data.getBooleanExtra("need_refresh", false);
+				if (needRefresh) {
+					progressDialog.show();
+					initConnection();
+				}
+				if (!GGApplication.getInstance().needRememberUser()) {
+					GGApplication.getInstance().rememberUser("", "");
+				}
+				break;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 }
