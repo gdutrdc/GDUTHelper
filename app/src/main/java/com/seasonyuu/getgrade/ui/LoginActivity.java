@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 		switch (view.getId()) {
 			case R.id.check_code:
 				progressDialog.show();
-				handler.sendEmptyMessage(0);
+				handler.sendEmptyMessage(ApiHelper.GET_PAGE_RESULT);
 				break;
 			case R.id.login:
 				if (mTILSecretCode.getEditText().getText().toString().equals("")) {
