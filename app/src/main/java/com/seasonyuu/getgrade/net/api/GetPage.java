@@ -1,5 +1,7 @@
 package com.seasonyuu.getgrade.net.api;
 
+import android.util.Log;
+
 import com.seasonyuu.getgrade.app.GGApplication;
 import com.seasonyuu.getgrade.net.ApiHelper;
 import com.seasonyuu.getgrade.net.BaseRunnable;
@@ -40,6 +42,7 @@ public class GetPage extends BaseRunnable {
 					int begin = s.indexOf("value=\"") + 7;
 					int end = s.indexOf("\" />");
 					viewState = s.substring(begin, end);
+					Log.d(GetPage.class.getSimpleName(), "get VIEW STATE");
 				}
 			}
 			in.close();

@@ -6,6 +6,7 @@ import com.seasonyuu.getgrade.app.GGApplication;
 import com.seasonyuu.getgrade.net.ApiHelper;
 import com.seasonyuu.getgrade.net.BaseRunnable;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -70,28 +71,37 @@ public class Login extends BaseRunnable {
 			out.close();
 
 			int responseCode = httpURLConnection.getResponseCode();// 调用此方法就不必再使用conn.connect()方法
-			if (responseCode == 200 || httpURLConnection.getURL().toString().equals(ApiHelper.getURl() + "xs_main.aspx?xh=" + userName)) {
-				Log.d(TAG, "login success");
+			String responseURL = httpURLConnection.getURL().toString();
+			Log.d(TAG, "The response URL = " + responseURL);
+			if (responseCode == 200) {
+				if (responseURL.equals(ApiHelper.getURl() + "xs_main.aspx?xh=" + userName)) {
+					//登录成功
+					Log.d(TAG, "login success");
 
-				InputStreamReader reader = new InputStreamReader(httpURLConnection.getInputStream(), "gbk");
-				BufferedReader in = new BufferedReader(reader);
-				String s;
-				while ((s = in.readLine()) != null) {
-					if (s.contains("<script language='javascript' defer>alert")) {
-
+					if (callback != null) {
+						callback.onCall(null);
 					}
+
+				} else if (responseURL.equals(ApiHelper.getURl() + "default2.aspx")) {
+					InputStreamReader reader = new InputStreamReader(
+							new BufferedInputStream(httpURLConnection.getInputStream()), "gbk");
+					BufferedReader in = new BufferedReader(reader);
+					String s;
+					StringBuffer sb = new StringBuffer();
+					while ((s = in.readLine()) != null) {
+						sb.append(s);
+						sb.append("\n");
+					}
+					int indexStart = sb.indexOf("<script language='javascript' defer>alert('")
+							+ "<script language='javascript' defer>alert('".length();
+					int indexEnd = sb.indexOf("');document.getElementById(");
+					String failedTips = sb.substring(indexStart, indexEnd);
+					System.out.print(sb.toString());
+					if (callback != null)
+						callback.onCall(failedTips);
 				}
-				in.close();
-
-				if (callback != null)
-					callback.onCall(null);
-
-				Log.e(TAG, "the url is to \"" + httpURLConnection.getURL().toString() + "\"");
-
-			} else {
-				if (responseCode == 302 || callback != null)
-					callback.onCall(null);
-				Log.d(TAG, "访问失败" + responseCode);
+			} else if (callback != null) {
+				callback.onCall(new Exception("Request Failed : code " + responseCode));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

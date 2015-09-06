@@ -50,6 +50,7 @@ public class IntoGrade extends BaseRunnable {
 					int begin = s.indexOf("value=\"") + 7;
 					int end = s.indexOf("\" />");
 					GGApplication.viewState = s.substring(begin, end);
+					Log.d(IntoGrade.class.getSimpleName(),"get VIEW STATE");
 				}
 				if (gotYear) {
 					if (s.contains("</select>")) {

@@ -11,10 +11,10 @@
         android:id="@+id/main_iv_user"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginLeft="40dp"
         android:layout_alignBottom="@+id/main_user_name"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="8dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_account_circle_grey_500_24dp"/>
 
@@ -29,7 +29,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="numberSigned"
             android:maxLength="10"
             android:singleLine="true"
             android:text="@string/test_username"/>
@@ -41,9 +41,9 @@
         android:layout_height="24dp"
         android:layout_alignBottom="@+id/main_password"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginLeft="40dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_lock_grey_500_24dp"/>
 
@@ -69,9 +69,9 @@
         android:layout_height="24dp"
         android:layout_alignBottom="@+id/main_check_code"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginLeft="40dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_verified_user_grey_500_24dp"/>
 
@@ -86,12 +86,11 @@
             android:id="@+id/et_check_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="textVisiblePassword"
             android:maxLength="4"
             android:minWidth="90dp"
             android:singleLine="true"/>
     </android.support.design.widget.TextInputLayout>
-
 
     <ImageView
         android:id="@+id/check_code"
@@ -103,14 +102,14 @@
         android:clickable="true"
         android:scaleType="centerCrop"/>
 
-   <Button
-        android:layout_marginRight="32dp"
+    <Button
         android:id="@+id/login"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignBottom="@id/main_check_code"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="32dp"
         android:text="登录"/>
 
     <android.support.design.widget.CoordinatorLayout

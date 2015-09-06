@@ -1,6 +1,7 @@
 package com.seasonyuu.getgrade.ui;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -8,17 +9,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.seasonyuu.getgrade.R;
 import com.seasonyuu.getgrade.app.GGApplication;
+import com.seasonyuu.getgrade.net.ApiHelper;
 import com.seasonyuu.getgrade.net.BaseRunnable;
 import com.seasonyuu.getgrade.net.api.GetCheckCode;
 import com.seasonyuu.getgrade.net.api.GetPage;
@@ -28,7 +30,6 @@ import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 	private final String TAG = "ConnectionTest";
-	private final int GET_PAGE_RESULT = 0;
 
 	private ArrayList<ImageView> iconList;
 
@@ -45,23 +46,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.obj != null && msg.obj instanceof Exception) {
-				Toast.makeText(LoginActivity.this,
-						((Exception) msg.obj).toString(), Toast.LENGTH_SHORT).show();
+				progressDialog.cancel();
+				showWarning(((Exception) msg.obj).toString(), null);
 				Log.e(TAG, "get Exception");
 				return;
 			}
-			if (msg.what == GET_PAGE_RESULT) {
+			if (msg.what == ApiHelper.GET_PAGE_RESULT) {
 				progressDialog.cancel();
 				GGApplication.viewState = (String) msg.obj;
-				getCheckCode();//http://jwgl.gdut.edu.cn/CheckCode.aspx
-			} else if (msg.what == 1)
+				getCheckCode();
+			} else if (msg.what == ApiHelper.GET_CHECK_CODE_SUCCESS)
 				if (msg.obj != null) {
 					checkCodeBitmap = (Bitmap) msg.obj;
 					((ImageView) findViewById(R.id.check_code)).setImageBitmap(checkCodeBitmap);
 				} else {
 					Log.e(TAG, "bitmap is null");
 				}
-			else if (msg.what == 2) {
+			else if (msg.what == ApiHelper.LOGIN_SUCCESS) {
 				progressDialog.cancel();
 				GGApplication.getInstance().rememberUser(
 						mTILUserName.getEditText().getText().toString(),
@@ -69,6 +70,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 				);
 				startActivity(new Intent(LoginActivity.this, GetGradeActivity.class));
 				finish();
+			} else if (msg.what == ApiHelper.LOGIN_FAILED) {
+				progressDialog.cancel();
+				showWarning((String) msg.obj, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						getCheckCode();
+					}
+				});
 			}
 		}
 
@@ -77,10 +86,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.check_code:
-				mTILSecretCode.getEditText().setText("");
+				progressDialog.show();
 				handler.sendEmptyMessage(0);
 				break;
 			case R.id.login:
+				if (mTILSecretCode.getEditText().getText().toString().equals("")) {
+					Toast.makeText(this, "验证码不能为空", Toast.LENGTH_SHORT).show();
+					return;
+				}
 				login();
 				break;
 		}
@@ -146,31 +159,42 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 			new Thread(new Login(
 					mTILUserName.getEditText().getText().toString(),
 					mTILPassword.getEditText().getText().toString(),
-					((EditText) findViewById(R.id.et_check_code)).getText().toString(),
+					mTILSecretCode.getEditText().getText().toString(),
 					GGApplication.viewState, new BaseRunnable.GGCallback() {
 				@Override
 				public void onCall(Object obj) {
 					if (obj == null) {
-						handler.sendEmptyMessage(2);
+						handler.sendEmptyMessage(ApiHelper.LOGIN_SUCCESS);
 						GGApplication.userName =
 								mTILUserName.getEditText().getText().toString();
 					} else {
-						Log.e(TAG, obj.toString());
+						Message msg = Message.obtain();
+						msg.what = ApiHelper.LOGIN_FAILED;
+						msg.obj = obj;
+						handler.sendMessage(msg);
 					}
 				}
 			})).start();
-		} else
-			Toast.makeText(this, "连接异常，请刷新页面", Toast.LENGTH_SHORT).show();
+		} else {
+			progressDialog.cancel();
+			showWarning("连接异常，请刷新页面", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					progressDialog.show();
+					initConnection();
+				}
+			});
+		}
 	}
 
 	private void getCheckCode() {
-
+		mTILSecretCode.getEditText().setText("");
 		new Thread(new GetCheckCode(new BaseRunnable.GGCallback() {
 			@Override
 			public void onCall(Object obj) {
 				Message msg = Message.obtain();
 				msg.obj = obj;
-				msg.what = 1;
+				msg.what = ApiHelper.GET_CHECK_CODE_SUCCESS;
 				handler.sendMessage(msg);
 			}
 		})).start();
@@ -181,7 +205,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 			@Override
 			public void onCall(Object obj) {
 				Message msg = Message.obtain();
-				msg.what = GET_PAGE_RESULT;
+				msg.what = ApiHelper.GET_PAGE_RESULT;
 				msg.obj = obj;
 				handler.sendMessage(msg);
 			}
@@ -220,5 +244,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 				break;
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	public void showWarning(String message, DialogInterface.OnClickListener onClickListener) {
+		new AlertDialog.Builder(this)
+				.setMessage(message)
+				.setTitle("警告")
+				.setPositiveButton("确定", onClickListener)
+				.show();
 	}
 }

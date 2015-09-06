@@ -35,4 +35,5 @@ public class UIUtils {
 		float dp = px / (metrics.densityDpi / 160f);
 		return dp;
 	}
+
 }

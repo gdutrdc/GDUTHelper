@@ -15,6 +15,12 @@ public class ApiHelper {
 	public static final String LOGIN = "default2.aspx";
 	public static final String INTO_GRADE="";
 
+	public static final int LOGIN_SUCCESS = 0x1;
+	public static final int LOGIN_FAILED = 0x2;
+	public static final int GET_CHECK_CODE_SUCCESS = 0x3;
+	public static final int GET_CHECK_CODE_FAILED = 0x4;
+	public static final int GET_PAGE_RESULT = 0x5;
+
 	public static String getURl(){
 		if(GGApplication.getInstance().isUseDx())
 			return URL_DX;

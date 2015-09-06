@@ -5,10 +5,10 @@
     <item
         android:title="装个逼"
         android:id="@+id/grade_zb"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/grade_menu"
-        android:icon="@drawable/ic_more_vert_white_24dp"
+        android:icon="@drawable/ic_sort_white_24dp"
         android:title="@string/menu"
         app:showAsAction="always">
         <menu>
