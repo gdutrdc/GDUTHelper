@@ -7,11 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.seasonyuu.getgrade.R;
+import com.seasonyuu.getgrade.app.GGApplication;
 
 /**
  * Created by seasonyuu on 15/9/3.
  */
 public class SettingsActivity extends AppCompatActivity {
+	public boolean needRefresh = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,8 @@ public class SettingsActivity extends AppCompatActivity {
 			getFragmentManager().beginTransaction()
 					.replace(R.id.settings_content, new SettingsFragment()).commit();
 		}
+
+		needRefresh = GGApplication.getInstance().isUseDx();
 	}
 
 	public static class SettingsFragment extends PreferenceFragment {
@@ -38,10 +42,17 @@ public class SettingsActivity extends AppCompatActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
-			Intent intent = new Intent();
-			setResult(0, intent);
-			finish();
+			onBackPressed();
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onBackPressed() {
+		Intent intent = new Intent();
+		if (needRefresh != GGApplication.getInstance().isUseDx())
+			intent.putExtra("need_refresh", true);
+		setResult(0, intent);
+		super.onBackPressed();
 	}
 }
