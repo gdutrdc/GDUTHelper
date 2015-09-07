@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.check_code:
+			case R.id.login_change_check_code:
 				progressDialog.show();
 				handler.sendEmptyMessage(ApiHelper.GET_PAGE_RESULT);
 				break;
@@ -126,15 +127,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 	private void initEditText() {
 		iconList = new ArrayList<>();
-		iconList.add((ImageView) findViewById(R.id.main_iv_user));
-		iconList.add((ImageView) findViewById(R.id.main_iv_password));
-		iconList.add((ImageView) findViewById(R.id.main_iv_check_code));
+		iconList.add((ImageView) findViewById(R.id.login_iv_user));
+		iconList.add((ImageView) findViewById(R.id.login_iv_password));
+		iconList.add((ImageView) findViewById(R.id.login_iv_check_code));
 
-		mTILUserName = ((TextInputLayout) findViewById(R.id.main_user_name));
+		mTILUserName = ((TextInputLayout) findViewById(R.id.login_user_name));
 		mTILUserName.setHint(getString(R.string.user_name));
-		mTILPassword = ((TextInputLayout) findViewById(R.id.main_password));
+		mTILPassword = ((TextInputLayout) findViewById(R.id.login_password));
 		mTILPassword.setHint(getString(R.string.password));
-		mTILSecretCode = (TextInputLayout) findViewById(R.id.main_check_code);
+		mTILSecretCode = (TextInputLayout) findViewById(R.id.login_check_code);
 		mTILSecretCode.setHint(getString(R.string.check_code));
 
 		if (GGApplication.getInstance().needRememberUser()) {
@@ -222,7 +223,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.main_settings)
 			startActivityForResult(new Intent(this, SettingsActivity.class), 0);
-		else if (item.getItemId() == R.id.main_refresh) {
+		else if (item.getItemId() == R.id.login_refresh) {
 			showProgressDialog("正在刷新");
 			initConnection();
 		}
