@@ -17,8 +17,8 @@ public class BaseActivity extends AppCompatActivity {
 		if (themeId != -1)
 			setTheme(themeId);
 		else
-			getTheme().applyStyle(R.style.AppTheme_Blue, true);
-		getTheme().applyStyle(themeId, true);
+			setTheme(R.style.AppTheme_Blue);
+		setTheme(themeId);
 		super.onCreate(savedInstanceState);
 	}
 
