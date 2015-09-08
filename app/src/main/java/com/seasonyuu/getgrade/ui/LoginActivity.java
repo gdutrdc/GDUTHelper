@@ -10,7 +10,6 @@ import android.os.Message;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +27,7 @@ import com.seasonyuu.getgrade.net.api.Login;
 
 import java.util.ArrayList;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 	private final String TAG = "ConnectionTest";
 
 	private ArrayList<ImageView> iconList;
@@ -104,6 +103,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+
+		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+		getSupportActionBar().setHomeButtonEnabled(false);
+		getSupportActionBar().setLogo(R.mipmap.ic_launcher);
 
 		progressDialog = new ProgressDialog(this);
 //		progressDialog.setCancelable(false);
@@ -235,12 +238,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 		switch (resultCode) {
 			case 0:
 				boolean needRefresh = data.getBooleanExtra("need_refresh", false);
+				boolean needChangeTheme = data.getBooleanExtra("need_change_theme",false);
+				if (!GGApplication.getInstance().needRememberUser()) {
+					GGApplication.getInstance().rememberUser("", "");
+				}
+				if(needChangeTheme) {
+					recreate();
+					return;
+				}
 				if (needRefresh) {
 					showProgressDialog("正在刷新");
 					initConnection();
-				}
-				if (!GGApplication.getInstance().needRememberUser()) {
-					GGApplication.getInstance().rememberUser("", "");
 				}
 				break;
 		}

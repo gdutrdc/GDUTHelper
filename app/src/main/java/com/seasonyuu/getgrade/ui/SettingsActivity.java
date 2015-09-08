@@ -3,7 +3,6 @@ package com.seasonyuu.getgrade.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.seasonyuu.getgrade.R;
@@ -12,8 +11,9 @@ import com.seasonyuu.getgrade.app.GGApplication;
 /**
  * Created by seasonyuu on 15/9/3.
  */
-public class SettingsActivity extends AppCompatActivity {
-	public boolean needRefresh = false;
+public class SettingsActivity extends BaseActivity {
+	private boolean needRefresh = false;
+	private int themeId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
 		}
 
 		needRefresh = GGApplication.getInstance().isUseDx();
+		themeId = GGApplication.getInstance().getThemeId();
 	}
 
 	public static class SettingsFragment extends PreferenceFragment {
@@ -52,6 +53,8 @@ public class SettingsActivity extends AppCompatActivity {
 		Intent intent = new Intent();
 		if (needRefresh != GGApplication.getInstance().isUseDx())
 			intent.putExtra("need_refresh", true);
+		if(themeId != GGApplication.getInstance().getThemeId())
+			intent.putExtra("need_change_theme",true);
 		setResult(0, intent);
 		super.onBackPressed();
 	}

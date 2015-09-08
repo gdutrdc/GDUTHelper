@@ -62,4 +62,17 @@ public class GGApplication extends Application {
 		return sp.getString("remember_user_data", null);
 	}
 
+	public int getThemeId() {
+		int themeId = Integer.parseInt(sp.getString("theme", "-1"));
+		switch (themeId) {
+			case 0:
+				themeId = R.style.AppTheme_Blue;
+				break;
+			case 1:
+				themeId = R.style.AppTheme_Pink;
+				break;
+		}
+		return themeId;
+	}
+
 }

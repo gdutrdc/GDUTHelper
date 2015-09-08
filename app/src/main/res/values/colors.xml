@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2196F3</color>
-    <color name="colorPrimaryDrk">#1976D2</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="blue_500">#2196F3</color>
+    <color name="blue_700">#1976D2</color>
+    <color name="pink_a200">#FF4081</color>
+
+    <color name="pink_500">#E91E63</color>
+    <color name="pink_700">#C2185B</color>
+    <color name="green_a200">#69F0AE</color>
 </resources>

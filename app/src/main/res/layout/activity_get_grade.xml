@@ -24,15 +24,15 @@
                 android:id="@+id/grade_year_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:popupTheme="@style/AppTheme"
-                app:theme="@style/AppTheme.Dark"/>
+                app:theme="@style/Theme.AppCompat"
+                app:popupTheme="@style/Theme.AppCompat.Light"/>
 
             <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/grade_term_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:popupTheme="@style/AppTheme"
-                app:theme="@style/AppTheme.Dark"/>
+                app:popupTheme="@style/Theme.AppCompat.Light"
+                app:theme="@style/Theme.AppCompat"/>
 
         </LinearLayout>
 
@@ -48,23 +48,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="按学期查询"
-                android:theme="@style/AppTheme.Dark"/>
+                android:textColor="@android:color/white"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+                app:buttonTint="@android:color/white"/>
 
             <android.support.v7.widget.AppCompatRadioButton
                 android:id="@+id/grade_get_year"
+                app:buttonTint="@android:color/white"
                 style="@style/Widget.AppCompat.CompoundButton.RadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
                 android:text="按学年查询"
-                android:theme="@style/AppTheme.Dark"/>
+                app:theme="@style/Theme.AppCompat"/>
 
             <android.support.v7.widget.AppCompatRadioButton
                 android:id="@+id/grade_get_all"
                 style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                app:buttonTint="@android:color/white"
                 android:layout_width="wrap_content"
+                android:textColor="@android:color/white"
                 android:layout_height="wrap_content"
                 android:text="在校成绩查询"
-                android:theme="@style/AppTheme.Dark"/>
+                app:theme="@style/Theme.AppCompat"/>
         </RadioGroup>
     </LinearLayout>
 
@@ -72,10 +78,10 @@
         android:id="@+id/grade_point"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:gravity="center"
-        android:text="平均绩点:"
         android:background="#12121212"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="平均绩点:"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
 
@@ -89,12 +95,12 @@
         android:choiceMode="none"/>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/grade_fab"
         style="@style/FABStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/grade_bottom"
         android:layout_alignParentRight="true"
         android:onClick="onClick"
-        android:src="@drawable/ic_search_white_24dp"
-        android:id="@+id/grade_fab"/>
+        android:src="@drawable/ic_search_white_24dp"/>
 </RelativeLayout>

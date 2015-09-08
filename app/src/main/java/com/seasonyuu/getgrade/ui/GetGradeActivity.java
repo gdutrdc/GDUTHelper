@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,7 +38,7 @@ import java.util.Calendar;
 /**
  * Created by seasonyuu on 15/8/28.
  */
-public class GetGradeActivity extends AppCompatActivity {
+public class GetGradeActivity extends BaseActivity {
 	private final String TAG = GetGradeActivity.class.getSimpleName();
 	private boolean firstLoad = true;
 
@@ -68,9 +67,6 @@ public class GetGradeActivity extends AppCompatActivity {
 //		progressDialog.setCancelable(false);
 		progressDialog.setMessage(getString(R.string.loading));
 		progressDialog.show();
-
-		mYearSpinner = (Spinner) findViewById(R.id.grade_year_spinner);
-		mTermSpinner = (Spinner) findViewById(R.id.grade_term_spinner);
 
 		tvGradePoint = (TextView) findViewById(R.id.grade_point);
 
@@ -109,6 +105,9 @@ public class GetGradeActivity extends AppCompatActivity {
 				return true;
 			}
 		});
+
+		mYearSpinner = (Spinner) findViewById(R.id.grade_year_spinner);
+		mTermSpinner = (Spinner) findViewById(R.id.grade_term_spinner);
 
 		((AppCompatRadioButton) findViewById(R.id.grade_get_all)).setChecked(true);
 
