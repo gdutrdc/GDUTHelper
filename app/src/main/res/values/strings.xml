@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">GDUT GG助手</string>
-    <string name="get_grade">查询成绩</string>
 
     <string name="user_name">学号</string>
     <string name="password">密码</string>
@@ -13,6 +12,16 @@
     <string name="settings">设置</string>
     <string name="menu">菜单</string>
     <string name="help">帮助</string>
+
+    <!-- 主界面 -->
+    <string name="information_manage">信息维护</string>
+    <string name="information_query">信息查询</string>
+    <string name="get_grade">查询成绩</string>
+    <string name="get_information">查询个人信息</string>
+    <string name="modify_password">修改密码</string>
+    <string name="get_exam_time">查询考试时间</string>
+    <string name="get_schedule">查询个人课表</string>
+    <string name="get_level_exam_grade">查询等级考试成绩</string>
 
     <!-- 设置中相关文本 -->
     <string name="theme">主题</string>
@@ -29,10 +38,10 @@
     <string name="remember_user_off">关闭(不再记住账号密码)</string>
     <string name="remember_user">记住账号密码</string>
     <string name="remember_user_key">remember_user</string>
-    <string name="use_dx">使用外网URL访问教务系统(登录失败时可尝试)</string>
+    <string name="use_dx">使用外网URL访问教务系统</string>
     <string name="use_dx_key">use_dx</string>
-    <string name="use_dx_on">http://jwgldx.gdut.edu.cn</string>
-    <string name="use_dx_off">http://jwgl.gdut.edu.cn</string>
+    <string name="use_dx_on">(需重新登录)http://jwgldx.gdut.edu.cn</string>
+    <string name="use_dx_off">(需重新登录)http://jwgl.gdut.edu.cn</string>
     <string name="licenses">开源协议</string>
     <string name="about">关于</string>
 

@@ -67,7 +67,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 						mTILUserName.getEditText().getText().toString(),
 						mTILPassword.getEditText().getText().toString()
 				);
-				startActivity(new Intent(LoginActivity.this, GetGradeActivity.class));
+				startActivity(new Intent(LoginActivity.this, MainActivity.class));
 				finish();
 			} else if (msg.what == ApiHelper.LOGIN_FAILED) {
 				progressDialog.cancel();
@@ -94,6 +94,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 					Toast.makeText(this, "验证码不能为空", Toast.LENGTH_SHORT).show();
 					return;
 				}
+				showProgressDialog("正在登录");
 				login();
 				break;
 		}
@@ -108,17 +109,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		getSupportActionBar().setHomeButtonEnabled(false);
 		getSupportActionBar().setLogo(R.mipmap.ic_launcher);
 
-		progressDialog = new ProgressDialog(this);
-//		progressDialog.setCancelable(false);
-		progressDialog.setMessage(getString(R.string.loading));
-		progressDialog.show();
-
 		findViewById(R.id.login).setOnClickListener(this);
 		findViewById(R.id.check_code).setOnClickListener(this);
 
 		initSnackBar();
 
 		initEditText();
+
+		showProgressDialog("正在加载");
 
 		initConnection();
 	}
@@ -152,6 +150,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 	}
 
 	private void showProgressDialog(String message) {
+		if (progressDialog == null) {
+			progressDialog = new ProgressDialog(this);
+//  		progressDialog.setCancelable(false);
+			progressDialog.show();
+		}
 		progressDialog.setMessage(message);
 		progressDialog.show();
 	}
@@ -218,7 +221,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu_main, menu);
+		getMenuInflater().inflate(R.menu.menu_login, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -238,11 +241,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		switch (resultCode) {
 			case 0:
 				boolean needRefresh = data.getBooleanExtra("need_refresh", false);
-				boolean needChangeTheme = data.getBooleanExtra("need_change_theme",false);
+				boolean needChangeTheme = data.getBooleanExtra("need_change_theme", false);
 				if (!GGApplication.getInstance().needRememberUser()) {
 					GGApplication.getInstance().rememberUser("", "");
 				}
-				if(needChangeTheme) {
+				if (needChangeTheme) {
 					recreate();
 					return;
 				}

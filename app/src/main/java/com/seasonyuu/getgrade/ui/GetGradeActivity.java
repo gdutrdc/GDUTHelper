@@ -5,7 +5,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -223,13 +222,17 @@ public class GetGradeActivity extends BaseActivity {
 	}
 
 	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.grade_menu:
 				return super.onOptionsItemSelected(item);
 			case android.R.id.home:
-				startActivity(new Intent(this, LoginActivity.class));
-				finish();
+				onBackPressed();
 				return true;
 			case R.id.grade_zb:
 				if (zbDialog == null) {

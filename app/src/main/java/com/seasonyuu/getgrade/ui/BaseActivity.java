@@ -2,6 +2,7 @@ package com.seasonyuu.getgrade.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.seasonyuu.getgrade.R;
 import com.seasonyuu.getgrade.app.GGApplication;
@@ -25,6 +26,14 @@ public class BaseActivity extends AppCompatActivity {
 	@Override
 	public void setContentView(int layoutResID) {
 		super.setContentView(layoutResID);
+
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(true);
+	}
+
+	@Override
+	public void setContentView(View view) {
+		super.setContentView(view);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
