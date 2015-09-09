@@ -22,6 +22,20 @@
     <string name="get_exam_time">查询考试时间</string>
     <string name="get_schedule">查询个人课表</string>
     <string name="get_level_exam_grade">查询等级考试成绩</string>
+    
+    <!-- 查询个人信息 -->
+    <string name="information_account">学号</string>
+    <string name="information_sex">性别</string>
+    <string name="information_enrollment_date">入学日期</string>
+    <string name="information_birthday">出生日期</string>
+    <string name="information_middle_school">毕业中学</string>
+    <string name="information_nation">民族</string>
+    <string name="information_dormitory">宿舍</string>
+    <string name="information_degree">学历层次</string>
+    <string name="information_college">学院</string>
+    <string name="information_department">系别</string>
+    <string name="information_clazz">行政班级</string>
+    <string name="information_grade">当前所在级</string>
 
     <!-- 设置中相关文本 -->
     <string name="theme">主题</string>

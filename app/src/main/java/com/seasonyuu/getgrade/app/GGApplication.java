@@ -10,8 +10,9 @@ import com.seasonyuu.getgrade.R;
  */
 public class GGApplication extends Application {
 	public static String cookie;
-	public static String userName;
+	public static String userXh;
 	public static String viewState;
+	public static String userXm;
 	private SharedPreferences sp;
 
 	private static GGApplication mApplication;

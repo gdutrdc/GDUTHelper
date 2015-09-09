@@ -3,6 +3,7 @@ package com.seasonyuu.getgrade.ui;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -23,8 +24,8 @@ public class BaseActivity extends AppCompatActivity {
 		if (themeId != -1)
 			setTheme(themeId);
 		else
-			setTheme(R.style.AppTheme_Blue);
-		setTheme(themeId);
+			getTheme().applyStyle(R.style.AppTheme_Blue, true);
+		getTheme().applyStyle(themeId, true);
 		super.onCreate(savedInstanceState);
 	}
 
@@ -32,8 +33,11 @@ public class BaseActivity extends AppCompatActivity {
 	public void setContentView(int layoutResID) {
 		super.setContentView(layoutResID);
 
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setHomeButtonEnabled(true);
+		ActionBar actionBar = getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+			actionBar.setHomeButtonEnabled(true);
+		}
 	}
 
 	@Override

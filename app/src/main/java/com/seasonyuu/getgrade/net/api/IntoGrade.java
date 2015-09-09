@@ -17,22 +17,20 @@ import java.net.URLConnection;
  * Created by seasonyuu on 15/8/28.
  */
 public class IntoGrade extends BaseRunnable {
-	private String userName;
 
-	public IntoGrade(String userName, GGCallback callback) {
-		this.userName = userName;
+	public IntoGrade(GGCallback callback) {
 		this.callback = callback;
 	}
 
 	@Override
 	public void run() {
-		String address = ApiHelper.getURl() + "xscj.aspx?xh=" + userName + "&xm=%D3%E0%CE%FA%C8%BB&gnmkdm=N121605";
+		String address = ApiHelper.getURl() + "xscj.aspx?xh=" + GGApplication.userXh + "&xm=" + GGApplication.userXm + "&gnmkdm=N121605";
 		try {
 			URL url = new URL(address);
 			URLConnection urlConnection = url.openConnection();
 			urlConnection.addRequestProperty("Cookie", GGApplication.cookie);
 //			urlConnection.addRequestProperty("Host", ApiHelper.getHost());
-			urlConnection.addRequestProperty("Referer", ApiHelper.getURl() + "xs_main.aspx?xh=" + GGApplication.userName);
+			urlConnection.addRequestProperty("Referer", ApiHelper.getURl() + "xs_main.aspx?xh=" + GGApplication.userXh);
 //			urlConnection.addRequestProperty("Connection", "keep-alive");
 //			urlConnection.addRequestProperty("Origin", ApiHelper.getURl());
 //			urlConnection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -50,7 +48,7 @@ public class IntoGrade extends BaseRunnable {
 					int begin = s.indexOf("value=\"") + 7;
 					int end = s.indexOf("\" />");
 					GGApplication.viewState = s.substring(begin, end);
-					Log.d(IntoGrade.class.getSimpleName(),"get VIEW STATE");
+					Log.d(IntoGrade.class.getSimpleName(), "get VIEW STATE");
 				}
 				if (gotYear) {
 					if (s.contains("</select>")) {

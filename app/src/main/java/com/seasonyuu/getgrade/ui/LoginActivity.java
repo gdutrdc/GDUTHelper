@@ -1,6 +1,5 @@
 package com.seasonyuu.getgrade.ui;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,7 +8,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,21 +35,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 	private TextInputLayout mTILSecretCode;
 	private CoordinatorLayout mSbContainer;
 
-	private ProgressDialog progressDialog;
-
 	private Bitmap checkCodeBitmap;
 
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.obj != null && msg.obj instanceof Exception) {
-				progressDialog.cancel();
+				cancelDialog() ;
 				showWarning(((Exception) msg.obj).toString(), null);
 				Log.e(TAG, "get Exception");
 				return;
 			}
 			if (msg.what == ApiHelper.GET_PAGE_RESULT) {
-				progressDialog.cancel();
+				cancelDialog();
 				GGApplication.viewState = (String) msg.obj;
 				getCheckCode();
 			} else if (msg.what == ApiHelper.GET_CHECK_CODE_SUCCESS)
@@ -62,7 +58,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 					Log.e(TAG, "bitmap is null");
 				}
 			else if (msg.what == ApiHelper.LOGIN_SUCCESS) {
-				progressDialog.cancel();
+				cancelDialog();
 				GGApplication.getInstance().rememberUser(
 						mTILUserName.getEditText().getText().toString(),
 						mTILPassword.getEditText().getText().toString()
@@ -70,7 +66,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				startActivity(new Intent(LoginActivity.this, MainActivity.class));
 				finish();
 			} else if (msg.what == ApiHelper.LOGIN_FAILED) {
-				progressDialog.cancel();
+				cancelDialog();
 				showWarning((String) msg.obj, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -86,7 +82,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		switch (view.getId()) {
 			case R.id.check_code:
 			case R.id.login_change_check_code:
-				progressDialog.show();
+				showProgressDialog("正在加载");
 				handler.sendEmptyMessage(ApiHelper.GET_PAGE_RESULT);
 				break;
 			case R.id.login:
@@ -149,15 +145,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		}
 	}
 
-	private void showProgressDialog(String message) {
-		if (progressDialog == null) {
-			progressDialog = new ProgressDialog(this);
-//  		progressDialog.setCancelable(false);
-			progressDialog.show();
-		}
-		progressDialog.setMessage(message);
-		progressDialog.show();
-	}
+
 
 
 	private void login() {
@@ -172,7 +160,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				public void onCall(Object obj) {
 					if (obj == null) {
 						handler.sendEmptyMessage(ApiHelper.LOGIN_SUCCESS);
-						GGApplication.userName =
+						GGApplication.userXh =
 								mTILUserName.getEditText().getText().toString();
 					} else {
 						Message msg = Message.obtain();
@@ -183,11 +171,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				}
 			})).start();
 		} else {
-			progressDialog.cancel();
+			cancelDialog();
 			showWarning("连接异常，请刷新页面", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					progressDialog.show();
+					showProgressDialog("正在加载");
 					initConnection();
 				}
 			});
@@ -256,13 +244,5 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				break;
 		}
 		super.onActivityResult(requestCode, resultCode, data);
-	}
-
-	public void showWarning(String message, DialogInterface.OnClickListener onClickListener) {
-		new AlertDialog.Builder(this)
-				.setMessage(message)
-				.setTitle("警告")
-				.setPositiveButton("确定", onClickListener)
-				.show();
 	}
 }

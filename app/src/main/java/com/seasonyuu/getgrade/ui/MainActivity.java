@@ -80,6 +80,9 @@ public class MainActivity extends BaseActivity {
 			case R.id.main_get_grade:
 				startActivity(new Intent(this, GetGradeActivity.class));
 				break;
+			case R.id.main_get_information:
+				startActivity(new Intent(this, GetInformationActivity.class));
+				break;
 		}
 	}
 }

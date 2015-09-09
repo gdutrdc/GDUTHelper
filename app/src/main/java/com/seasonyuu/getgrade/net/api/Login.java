@@ -77,7 +77,18 @@ public class Login extends BaseRunnable {
 				if (responseURL.equals(ApiHelper.getURl() + "xs_main.aspx?xh=" + userName)) {
 					//登录成功
 					Log.d(TAG, "login success");
-
+					//<span id="xhxm">余晰然同学</span></em>
+					InputStreamReader reader = new InputStreamReader(
+							new BufferedInputStream(httpURLConnection.getInputStream()), "gbk");
+					BufferedReader in = new BufferedReader(reader);
+					String s;
+					while ((s = in.readLine()) != null) {
+						if (s.contains("<span id=\"xhxm\">")) {
+							String[] temps = s.split(">");
+							GGApplication.userXm = URLEncoder.encode(temps[1].split("<")[0], "utf-8");
+							break;
+						}
+					}
 					if (callback != null) {
 						callback.onCall(null);
 					}

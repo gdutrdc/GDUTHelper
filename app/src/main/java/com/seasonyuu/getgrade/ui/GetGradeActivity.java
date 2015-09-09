@@ -183,7 +183,7 @@ public class GetGradeActivity extends BaseActivity {
 
 
 	private void IntoGrade() {
-		new Thread(new IntoGrade(GGApplication.userName, new BaseRunnable.GGCallback() {
+		new Thread(new IntoGrade(new BaseRunnable.GGCallback() {
 			@Override
 			public void onCall(Object obj) {
 				Message msg = Message.obtain();
