@@ -88,16 +88,16 @@ public class GetGrade extends BaseRunnable {
 			out.writeBytes(data);
 			out.flush();
 			out.close();
-			Log.e(TAG, "getGrade in post complete");
+			Log.d(TAG, "getGrade in post complete");
 
 			int responseCode = httpURLConnection.getResponseCode();// 调用此方法就不必再使用conn.connect()方法
 			if (responseCode == 200) {
 				if (httpURLConnection.getURL().toString().equals(ApiHelper.getURl() + "xs_main.aspx?xh=3113006101")) {
-					Log.e(TAG, "getGrade success");
+					Log.d(TAG, "getGrade success");
 				} else if (httpURLConnection.getURL().toString().equals(ApiHelper.getURl() + "zdy.htm?aspxerrorpath=/default2.aspx")) {
 
 				} else {
-					Log.e(TAG, "the url is to \"" + httpURLConnection.getURL().toString() + "\"");
+					Log.d(TAG, "the url is to \"" + httpURLConnection.getURL().toString() + "\"");
 				}
 				InputStreamReader reader = new InputStreamReader(httpURLConnection.getInputStream(), "gbk");
 				BufferedReader in = new BufferedReader(reader);

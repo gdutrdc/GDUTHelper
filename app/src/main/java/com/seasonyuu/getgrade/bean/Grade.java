@@ -64,21 +64,21 @@ public class Grade implements Cloneable {
 		return lessonCode + "\t" + lessonName + "\t" + lessonGrade;
 	}
 
-	public float calculatePoint() {
-		float point = 0;
+	public double calculatePoint() {
+		double point = 0;
 		try {
-			point = Float.parseFloat(lessonGrade) / 10 - 5;
+			point = Double.parseDouble(lessonGrade) / 10 - 5;
 			if (point < 1)
 				point = 0;
 		} catch (NumberFormatException e) {
 			if (lessonGrade.equals("优秀")) {
-				return 4.5f;
+				return 4.5;
 			} else if (lessonGrade.equals("良好")) {
-				return 3.5f;
-			} else if (lessonGrade.equals("中")) {
-				return 2.5f;
+				return 3.5;
+			} else if (lessonGrade.equals("中等")) {
+				return 2.5;
 			} else if (lessonGrade.equals("及格")) {
-				return 1.5f;
+				return 1.5;
 			} else if (lessonGrade.equals("不及格")) {
 				return 0;
 			}

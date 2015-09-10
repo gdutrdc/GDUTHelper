@@ -164,13 +164,17 @@ public class GetGradeActivity extends BaseActivity {
 					if (msg.obj != null) {
 						ArrayList<Grade> list = (ArrayList<Grade>) msg.obj;
 						if (list.size() > 0) {
-							float points = 0, credits = 0;
+							double points = 0, credits = 0;
 							for (Grade grade : list) {
-								float point = grade.calculatePoint() * Float.parseFloat(grade.getLessonCredit());
+								double point = Double.parseDouble(
+										String.format("%.2f", grade.calculatePoint() * Double.parseDouble(grade.getLessonCredit())));
 								points += point;
-								credits += Float.parseFloat(grade.getLessonCredit());
+								if (point == 0 && !grade.getLessonBelong().equals("&nbsp;"))
+									continue;
+								credits += Double.parseDouble(grade.getLessonCredit());
 							}
-							tvGradePoint.setText("平均绩点: " + String.format("%.3f", points / credits));
+							tvGradePoint.setText("平均绩点: " + String.format("%.3f", Double.parseDouble(
+									String.format("%.2f", points)) / credits));
 						} else {
 							tvGradePoint.setText("平均绩点: 0");
 						}

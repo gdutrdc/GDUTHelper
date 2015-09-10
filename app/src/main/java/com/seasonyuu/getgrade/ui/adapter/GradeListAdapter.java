@@ -55,16 +55,16 @@ public class GradeListAdapter extends BaseAdapter {
 				public int compare(Object lhs0, Object rhs0) {
 					Grade lhs = (Grade) lhs0;
 					Grade rhs = (Grade) rhs0;
-					float compareLeft = 0;
-					float compareRight = 0;
+					double compareLeft = 0;
+					double compareRight = 0;
 					switch (mSortType) {
 						case GRADE_CREDIT_UP_SORT:
-							compareLeft = Float.parseFloat(lhs.getLessonCredit());
-							compareRight = Float.parseFloat(rhs.getLessonCredit());
+							compareLeft = Double.parseDouble(lhs.getLessonCredit());
+							compareRight = Double.parseDouble(rhs.getLessonCredit());
 							break;
 						case GRADE_CREDIT_DOWN_SORT:
-							compareRight = Float.parseFloat(lhs.getLessonCredit());
-							compareLeft = Float.parseFloat(rhs.getLessonCredit());
+							compareRight = Double.parseDouble(lhs.getLessonCredit());
+							compareLeft = Double.parseDouble(rhs.getLessonCredit());
 							break;
 						case GRADE_DOWN_SORT:
 							compareRight = lhs.calculatePoint();
