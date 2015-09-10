@@ -166,10 +166,13 @@ public class GetGradeActivity extends BaseActivity {
 						if (list.size() > 0) {
 							float points = 0, credits = 0;
 							for (Grade grade : list) {
-								points += grade.calculatePoint() * Float.parseFloat(grade.getLessonCredit());
+								float point = grade.calculatePoint() * Float.parseFloat(grade.getLessonCredit());
+								points += point;
 								credits += Float.parseFloat(grade.getLessonCredit());
 							}
-							tvGradePoint.setText("平均绩点:" + String.format("%.2f", points / credits));
+							tvGradePoint.setText("平均绩点: " + String.format("%.3f", points / credits));
+						} else {
+							tvGradePoint.setText("平均绩点: 0");
 						}
 						adapter.setData(list);
 						adapter.notifyDataSetChanged();

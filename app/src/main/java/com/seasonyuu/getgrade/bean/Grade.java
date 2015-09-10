@@ -73,17 +73,13 @@ public class Grade implements Cloneable {
 		} catch (NumberFormatException e) {
 			if (lessonGrade.equals("优秀")) {
 				return 4.5f;
-			}
-			if (lessonGrade.equals("良好")) {
+			} else if (lessonGrade.equals("良好")) {
 				return 3.5f;
-			}
-			if (lessonGrade.equals("中")) {
+			} else if (lessonGrade.equals("中")) {
 				return 2.5f;
-			}
-			if (lessonGrade.equals("及格")) {
+			} else if (lessonGrade.equals("及格")) {
 				return 1.5f;
-			}
-			if (lessonGrade.equals("不及格")) {
+			} else if (lessonGrade.equals("不及格")) {
 				return 0;
 			}
 		}
