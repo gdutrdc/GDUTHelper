@@ -36,6 +36,9 @@
     <string name="information_department">系别</string>
     <string name="information_clazz">行政班级</string>
     <string name="information_grade">当前所在级</string>
+    <string name="information_avatar">头像</string>
+    <string name="save_picture">保存图片</string>
+    <string name="share">分享</string>
 
     <!-- 设置中相关文本 -->
     <string name="theme">主题</string>

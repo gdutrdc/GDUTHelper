@@ -1,6 +1,8 @@
 package com.seasonyuu.getgrade.ui;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -64,18 +66,18 @@ public class GetInformationActivity extends BaseActivity implements View.OnClick
 	private void showInformation(Information information) {
 		((CollapsingToolbarLayout) findViewById(R.id.get_information_collapsing_toolbar)).setTitle(information.getName());
 
-		((TextView)findViewById(R.id.get_information_account)).setText(information.getAccount());
-		((TextView)findViewById(R.id.get_information_birthday)).setText(information.getBirthday());
-		((TextView)findViewById(R.id.get_information_clazz)).setText(information.getClazz());
-		((TextView)findViewById(R.id.get_information_college)).setText(information.getCollege());
-		((TextView)findViewById(R.id.get_information_degree)).setText(information.getDegree());
-		((TextView)findViewById(R.id.get_information_department)).setText(information.getDepartment());
-		((TextView)findViewById(R.id.get_information_dormitory)).setText(information.getDormitory());
-		((TextView)findViewById(R.id.get_information_enrollment_date)).setText(information.getEnrollmentDate());
-		((TextView)findViewById(R.id.get_information_grade)).setText(information.getGrade());
-		((TextView)findViewById(R.id.get_information_middle_school)).setText(information.getMiddleSchool());
-		((TextView)findViewById(R.id.get_information_nation)).setText(information.getNation());
-		((TextView)findViewById(R.id.get_information_sex)).setText(information.getSex());
+		((TextView) findViewById(R.id.get_information_account)).setText(information.getAccount());
+		((TextView) findViewById(R.id.get_information_birthday)).setText(information.getBirthday());
+		((TextView) findViewById(R.id.get_information_clazz)).setText(information.getClazz());
+		((TextView) findViewById(R.id.get_information_college)).setText(information.getCollege());
+		((TextView) findViewById(R.id.get_information_degree)).setText(information.getDegree());
+		((TextView) findViewById(R.id.get_information_department)).setText(information.getDepartment());
+		((TextView) findViewById(R.id.get_information_dormitory)).setText(information.getDormitory());
+		((TextView) findViewById(R.id.get_information_enrollment_date)).setText(information.getEnrollmentDate());
+		((TextView) findViewById(R.id.get_information_grade)).setText(information.getGrade());
+		((TextView) findViewById(R.id.get_information_middle_school)).setText(information.getMiddleSchool());
+		((TextView) findViewById(R.id.get_information_nation)).setText(information.getNation());
+		((TextView) findViewById(R.id.get_information_sex)).setText(information.getSex());
 
 	}
 
@@ -115,9 +117,13 @@ public class GetInformationActivity extends BaseActivity implements View.OnClick
 	}
 
 	@Override
-	public void onClick(View view){
-		switch (view.getId()){
+	public void onClick(View view) {
+		switch (view.getId()) {
 			case R.id.get_information_appbar:
+				Intent intent = new Intent(this, PictureActivity.class);
+				intent.putExtra("avatar",
+						((BitmapDrawable) ((ImageView) findViewById(R.id.get_information_avatar)).getDrawable()).getBitmap());
+				startActivity(intent);
 				break;
 		}
 	}
