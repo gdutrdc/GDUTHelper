@@ -83,6 +83,9 @@ public class MainActivity extends BaseActivity {
 			case R.id.main_get_information:
 				startActivity(new Intent(this, GetInformationActivity.class));
 				break;
+			case R.id.main_change_password:
+				startActivity(new Intent(this,ChangePswActivity.class));
+				break;
 		}
 	}
 }

@@ -24,9 +24,9 @@ public class IntoGrade extends BaseRunnable {
 
 	@Override
 	public void run() {
-		String address = ApiHelper.getURl() + "xscj.aspx?xh=" + GGApplication.userXh + "&xm=" + GGApplication.userXm + "&gnmkdm=N121605";
+		String requestUrl = ApiHelper.getURl() + "xscj.aspx?xh=" + GGApplication.userXh + "&xm=" + GGApplication.userXm + "&gnmkdm=N121605";
 		try {
-			URL url = new URL(address);
+			URL url = new URL(requestUrl);
 			URLConnection urlConnection = url.openConnection();
 			urlConnection.addRequestProperty("Cookie", GGApplication.cookie);
 //			urlConnection.addRequestProperty("Host", ApiHelper.getHost());

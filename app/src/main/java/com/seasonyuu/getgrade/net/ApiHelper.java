@@ -21,6 +21,8 @@ public class ApiHelper {
 	public static final int GET_PAGE_RESULT = 0x4;
 	public static final int GET_INFORMATION_SUCCESS = 0x5;
 	public static final int GET_INFORMATION_AVATAR = 0x6;
+	public static final int INTO_CHANGE_PSW = 0x7;
+	public static final int CHANGE_PSW_SUCCESS = 0x8;
 
 	public static String getURl(){
 		if(GGApplication.getInstance().isUseDx())

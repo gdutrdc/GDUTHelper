@@ -33,6 +33,8 @@
         <activity
             android:name=".ui.PictureActivity"
             android:label="@string/information_avatar"/>
+        <activity android:name=".ui.ChangePswActivity"
+                  android:label="@string/change_password"/>
     </application>
 
 </manifest>

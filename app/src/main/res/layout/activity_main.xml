@@ -47,7 +47,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/main_modify_password"
+                android:id="@+id/main_change_password"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:layout_margin="4dp"
@@ -62,7 +62,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:padding="16dp"
-                    android:text="@string/modify_password"
+                    android:text="@string/change_password"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:theme="@style/AppTheme.Dark"/>
             </android.support.v7.widget.CardView>

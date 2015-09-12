@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/change_psw_old"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:hint="@string/change_psw_old"
+            android:inputType="textPassword"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelText="@string/change_psw_old"/>
+
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/change_psw_new"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/change_psw_new"
+            android:inputType="textPassword"
+            app:met_floatingLabel="highlight"
+            app:met_helperTextAlwaysShown="true"
+            app:met_helperTextColor="@color/teal_500"/>
+
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/change_psw_ensure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/change_psw_ensure"
+            app:met_helperTextAlwaysShown="true"
+            android:inputType="textPassword"
+            app:met_floatingLabel="highlight"/>
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/change_psw_commit"
+            android:layout_margin="16dp"
+            android:text="@android:string/ok"/>
+
+        <TextView
+            android:id="@+id/change_psw_tips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+    </LinearLayout>
+</ScrollView>

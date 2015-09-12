@@ -1,4 +1,4 @@
-package com.seasonyuu.getgrade.utils;
+package com.seasonyuu.getgrade.bean;
 
 import android.content.res.Resources;
 

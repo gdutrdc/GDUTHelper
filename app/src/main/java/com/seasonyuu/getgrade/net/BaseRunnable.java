@@ -5,6 +5,8 @@ package com.seasonyuu.getgrade.net;
  */
 public abstract class BaseRunnable implements Runnable {
 	protected GGCallback callback;
+	protected String requestUrl;
+
 	public interface GGCallback{
 		void onCall(Object obj);
 	}
