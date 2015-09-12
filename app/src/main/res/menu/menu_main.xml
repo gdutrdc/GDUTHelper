@@ -14,6 +14,10 @@
                 android:id="@+id/main_help"
                 android:icon="@drawable/ic_help_grey_500_24dp"
                 android:title="@string/help"/>
+            <item
+                android:id="@+id/main_logout"
+                android:icon="@drawable/ic_exit_to_app_grey_500_24dp"
+                android:title="@string/logout"/>
         </menu>
     </item>
 </menu>

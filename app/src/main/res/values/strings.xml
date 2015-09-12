@@ -12,6 +12,7 @@
     <string name="settings">设置</string>
     <string name="menu">菜单</string>
     <string name="help">帮助</string>
+    <string name="logout">注销</string>
 
     <!-- 主界面 -->
     <string name="information_manage">信息维护</string>

@@ -42,6 +42,10 @@ public class MainActivity extends BaseActivity {
 				break;
 			case R.id.main_help:
 				break;
+			case R.id.main_logout:
+				startActivity(new Intent(this, LoginActivity.class));
+				finish();
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -84,7 +88,7 @@ public class MainActivity extends BaseActivity {
 				startActivity(new Intent(this, GetInformationActivity.class));
 				break;
 			case R.id.main_change_password:
-				startActivity(new Intent(this,ChangePswActivity.class));
+				startActivity(new Intent(this, ChangePswActivity.class));
 				break;
 		}
 	}
