@@ -12,120 +12,82 @@
         android:layout_centerVertical="true"
         android:paddingBottom="56dp">
 
-        <ImageView
-            android:id="@+id/login_iv_user"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignBottom="@+id/login_user_name"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="8dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_account_circle_grey_500_24dp"/>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/login_user_name"
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/login_user_xh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="32dp"
-            android:layout_toRightOf="@id/login_iv_user">
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="@string/user_xh"
+            android:maxLength="10"
+            android:singleLine="true"
+            app:met_floatingLabel="highlight"
+            app:met_iconLeft="@drawable/ic_account_circle_grey_500_24dp"/>
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberSigned"
-                android:maxLength="10"
-                android:singleLine="true"
-                android:text="@string/test_username"/>
-        </android.support.design.widget.TextInputLayout>
 
-        <ImageView
-            android:id="@+id/login_iv_password"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignBottom="@+id/login_password"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_lock_grey_500_24dp"/>
-
-        <android.support.design.widget.TextInputLayout
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/login_user_name"
-            android:layout_marginRight="32dp"
-            android:layout_toRightOf="@id/login_iv_password">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:singleLine="true"
-                android:text="@string/test_password"/>
-        </android.support.design.widget.TextInputLayout>
-
-        <ImageView
-            android:id="@+id/login_iv_check_code"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignBottom="@+id/login_check_code"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="8dp"
+            android:layout_below="@id/login_user_xh"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_verified_user_grey_500_24dp"/>
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            app:met_floatingLabel="highlight"
+            app:met_iconLeft="@drawable/ic_lock_grey_500_24dp"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/login_check_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:id="@+id/login_check_code_container"
             android:layout_below="@id/login_password"
-            android:layout_toRightOf="@+id/login_iv_check_code">
-
-            <EditText
-                android:id="@+id/et_check_code"
+            android:layout_height="wrap_content">
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/login_check_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/check_code"
                 android:inputType="textVisiblePassword"
                 android:maxLength="4"
-                android:minWidth="90dp"
-                android:singleLine="true"/>
-        </android.support.design.widget.TextInputLayout>
+                app:met_floatingLabel="highlight"
+                app:met_iconLeft="@drawable/ic_verified_user_grey_500_24dp"/>
 
-        <ImageView
-            android:id="@+id/check_code"
-            android:layout_width="75dp"
-            android:layout_height="30dp"
-            android:layout_alignBottom="@id/login_check_code"
-            android:layout_margin="8dp"
-            android:layout_toRightOf="@+id/login_check_code"
-            android:clickable="true"
-            android:scaleType="centerCrop"/>
+            <ImageView
+                android:id="@+id/check_code"
+                android:layout_width="75dp"
+                android:layout_height="30dp"
+                android:layout_margin="8dp"
+                android:clickable="true"
+                android:scaleType="centerCrop"/>
 
-        <TextView
-            android:id="@+id/login_change_check_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/login_check_code"
-            android:layout_toRightOf="@id/check_code"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:padding="8dp"
-            android:text="看不清换一张"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+            <TextView
+                android:id="@+id/login_change_check_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:padding="8dp"
+                android:text="看不清换一张"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
+        </LinearLayout>
         <Button
             android:id="@+id/login"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/login_check_code"
+            android:layout_below="@id/login_check_code_container"
             android:layout_margin="32dp"
             android:text="登录"/>
     </RelativeLayout>

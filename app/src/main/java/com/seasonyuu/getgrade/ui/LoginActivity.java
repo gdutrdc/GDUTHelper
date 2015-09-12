@@ -6,8 +6,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.seasonyuu.getgrade.R;
 import com.seasonyuu.getgrade.app.GGApplication;
 import com.seasonyuu.getgrade.net.ApiHelper;
@@ -23,17 +22,12 @@ import com.seasonyuu.getgrade.net.api.GetCheckCode;
 import com.seasonyuu.getgrade.net.api.GetPage;
 import com.seasonyuu.getgrade.net.api.Login;
 
-import java.util.ArrayList;
-
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
-	private final String TAG = "ConnectionTest";
+	private final String TAG = LoginActivity.class.getSimpleName();
 
-	private ArrayList<ImageView> iconList;
-
-	private TextInputLayout mTILUserName;
-	private TextInputLayout mTILPassword;
-	private TextInputLayout mTILSecretCode;
-	private CoordinatorLayout mSbContainer;
+	private MaterialEditText mEtUserXh;
+	private MaterialEditText mEtPassword;
+	private MaterialEditText mEtSecretCode;
 
 	private Bitmap checkCodeBitmap;
 
@@ -43,7 +37,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 			if (msg.obj != null && msg.obj instanceof Exception) {
 				cancelDialog() ;
 				showWarning(((Exception) msg.obj).toString(), null);
-				Log.e(TAG, "get Exception");
+				Log.d(TAG, "get Exception");
 				return;
 			}
 			if (msg.what == ApiHelper.GET_PAGE_RESULT) {
@@ -55,13 +49,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 					checkCodeBitmap = (Bitmap) msg.obj;
 					((ImageView) findViewById(R.id.check_code)).setImageBitmap(checkCodeBitmap);
 				} else {
-					Log.e(TAG, "bitmap is null");
+					Log.d(TAG, "bitmap is null");
 				}
 			else if (msg.what == ApiHelper.LOGIN_SUCCESS) {
 				cancelDialog();
 				GGApplication.getInstance().rememberUser(
-						mTILUserName.getEditText().getText().toString(),
-						mTILPassword.getEditText().getText().toString()
+						mEtUserXh.getText().toString(),
+						mEtPassword.getText().toString()
 				);
 				startActivity(new Intent(LoginActivity.this, MainActivity.class));
 				finish();
@@ -86,7 +80,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				handler.sendEmptyMessage(ApiHelper.GET_PAGE_RESULT);
 				break;
 			case R.id.login:
-				if (mTILSecretCode.getEditText().getText().toString().equals("")) {
+				if (mEtSecretCode.getText().toString().equals("")) {
 					Toast.makeText(this, "验证码不能为空", Toast.LENGTH_SHORT).show();
 					return;
 				}
@@ -108,8 +102,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		findViewById(R.id.login).setOnClickListener(this);
 		findViewById(R.id.check_code).setOnClickListener(this);
 
-		initSnackBar();
-
 		initEditText();
 
 		showProgressDialog("正在加载");
@@ -117,30 +109,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		initConnection();
 	}
 
-	private void initSnackBar() {
-		mSbContainer = (CoordinatorLayout) findViewById(R.id.login_sb_container);
-
-	}
-
 	private void initEditText() {
-		iconList = new ArrayList<>();
-		iconList.add((ImageView) findViewById(R.id.login_iv_user));
-		iconList.add((ImageView) findViewById(R.id.login_iv_password));
-		iconList.add((ImageView) findViewById(R.id.login_iv_check_code));
-
-		mTILUserName = ((TextInputLayout) findViewById(R.id.login_user_name));
-		mTILUserName.setHint(getString(R.string.user_name));
-		mTILPassword = ((TextInputLayout) findViewById(R.id.login_password));
-		mTILPassword.setHint(getString(R.string.password));
-		mTILSecretCode = (TextInputLayout) findViewById(R.id.login_check_code);
-		mTILSecretCode.setHint(getString(R.string.check_code));
+		mEtUserXh = ((MaterialEditText) findViewById(R.id.login_user_xh));
+		mEtPassword = ((MaterialEditText) findViewById(R.id.login_password));
+		mEtSecretCode = (MaterialEditText) findViewById(R.id.login_check_code);
 
 		if (GGApplication.getInstance().needRememberUser()) {
 			String rememberData = GGApplication.getInstance().getRememberUser();
 			if (rememberData != null) {
 				String[] data = rememberData.split(";", 2);
-				mTILUserName.getEditText().setText(data[0]);
-				mTILPassword.getEditText().setText(data[1]);
+				mEtUserXh.setText(data[0]);
+				mEtPassword.setText(data[1]);
 			}
 		}
 	}
@@ -152,16 +131,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		if (GGApplication.cookie != null && GGApplication.viewState != null) {
 			showProgressDialog("正在登陆");
 			new Thread(new Login(
-					mTILUserName.getEditText().getText().toString(),
-					mTILPassword.getEditText().getText().toString(),
-					mTILSecretCode.getEditText().getText().toString(),
+					mEtUserXh.getText().toString(),
+					mEtPassword.getText().toString(),
+					mEtSecretCode.getText().toString(),
 					GGApplication.viewState, new BaseRunnable.GGCallback() {
 				@Override
 				public void onCall(Object obj) {
 					if (obj == null) {
 						handler.sendEmptyMessage(ApiHelper.LOGIN_SUCCESS);
 						GGApplication.userXh =
-								mTILUserName.getEditText().getText().toString();
+								mEtUserXh.getText().toString();
 					} else {
 						Message msg = Message.obtain();
 						msg.what = ApiHelper.LOGIN_FAILED;
@@ -183,7 +162,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 	}
 
 	private void getCheckCode() {
-		mTILSecretCode.getEditText().setText("");
+		mEtSecretCode.setText("");
 		new Thread(new GetCheckCode(new BaseRunnable.GGCallback() {
 			@Override
 			public void onCall(Object obj) {
