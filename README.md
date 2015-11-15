@@ -1,11 +1,3 @@
 >##暂时是一个提供给广东工业大学(GDUT)学子查询教务系统成绩的App
 >
->尚在建设中
-
-#TODO List
-
-* 自动识别验证码 -- killed
-* 抓取考试时间
-* 抓取课程表？？
-* 获取选课列表？
-* 获取四六级成绩
+>项目迁移到 [GDUTHelper](https://github.com/gdutrdc/GDUTHelper)
