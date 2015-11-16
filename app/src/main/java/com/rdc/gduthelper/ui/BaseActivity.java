@@ -22,10 +22,9 @@ public class BaseActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		int themeId = GDUTHelperApp.getInstance().getThemeId();
 		if (themeId != -1)
-			setTheme(themeId);
+			getTheme().applyStyle(themeId, true);
 		else
-			getTheme().applyStyle(R.style.AppTheme_Blue, true);
-		getTheme().applyStyle(themeId, true);
+			getTheme().applyStyle(R.style.Blue, true);
 		super.onCreate(savedInstanceState);
 	}
 
