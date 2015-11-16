@@ -6,7 +6,7 @@ import android.preference.PreferenceFragment;
 import android.view.MenuItem;
 
 import com.rdc.gduthelper.R;
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 
 /**
  * Created by seasonyuu on 15/9/3.
@@ -27,8 +27,8 @@ public class SettingsActivity extends BaseActivity {
 					.replace(R.id.settings_content, new SettingsFragment()).commit();
 		}
 
-		needRefresh = GGApplication.getInstance().isUseDx();
-		themeId = GGApplication.getInstance().getThemeId();
+		needRefresh = GDUTHelperApp.getInstance().isUseDx();
+		themeId = GDUTHelperApp.getInstance().getThemeId();
 	}
 
 	public static class SettingsFragment extends PreferenceFragment {
@@ -51,9 +51,9 @@ public class SettingsActivity extends BaseActivity {
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent();
-		if (needRefresh != GGApplication.getInstance().isUseDx())
+		if (needRefresh != GDUTHelperApp.getInstance().isUseDx())
 			intent.putExtra("need_refresh", true);
-		if(themeId != GGApplication.getInstance().getThemeId())
+		if(themeId != GDUTHelperApp.getInstance().getThemeId())
 			intent.putExtra("need_change_theme",true);
 		setResult(0, intent);
 		super.onBackPressed();

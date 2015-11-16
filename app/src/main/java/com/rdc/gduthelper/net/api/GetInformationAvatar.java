@@ -3,7 +3,7 @@ package com.rdc.gduthelper.net.api;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
 
@@ -22,10 +22,10 @@ public class GetInformationAvatar extends BaseRunnable {
 
 	@Override
 	public void run() {
-		String requestURl = ApiHelper.getURl() + "readimagexs.aspx?xh=" + GGApplication.userXh;
+		String requestURl = ApiHelper.getURl() + "readimagexs.aspx?xh=" + GDUTHelperApp.userXh;
 		try {
 			URLConnection urlConnection = new URL(requestURl).openConnection();
-			urlConnection.addRequestProperty("Cookie",GGApplication.cookie);
+			urlConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
 
 			InputStream inputStream = urlConnection.getInputStream();
 			Bitmap bitmap = BitmapFactory.decodeStream(inputStream);

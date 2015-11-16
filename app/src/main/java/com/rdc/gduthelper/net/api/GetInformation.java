@@ -1,6 +1,6 @@
 package com.rdc.gduthelper.net.api;
 
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Information;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
@@ -23,12 +23,12 @@ public class GetInformation extends BaseRunnable {
 	@Override
 	public void run() {
 		try {
-			String requestUrl = ApiHelper.getURl() + "xsgrxx.aspx?xh=" + GGApplication.userXh + "&xm=" + GGApplication.userXm + "&gnmkdm=N121501";
+			String requestUrl = ApiHelper.getURl() + "xsgrxx.aspx?xh=" + GDUTHelperApp.userXh + "&xm=" + GDUTHelperApp.userXm + "&gnmkdm=N121501";
 			URLConnection urlConnection;
 			URL url = new URL(requestUrl);
 			urlConnection = url.openConnection();
-			urlConnection.addRequestProperty("Cookie", GGApplication.cookie);
-			urlConnection.addRequestProperty("Referer", ApiHelper.getURl() + "xs_main.aspx?xh=" + GGApplication.userXh);
+			urlConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
+			urlConnection.addRequestProperty("Referer", ApiHelper.getURl() + "xs_main.aspx?xh=" + GDUTHelperApp.userXh);
 			InputStreamReader reader = new InputStreamReader(new BufferedInputStream(urlConnection.getInputStream()), "gbk");
 			BufferedReader in = new BufferedReader(reader);
 			String s;

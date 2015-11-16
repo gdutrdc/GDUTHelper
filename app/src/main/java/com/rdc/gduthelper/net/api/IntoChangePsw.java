@@ -2,7 +2,7 @@ package com.rdc.gduthelper.net.api;
 
 import android.util.Log;
 
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
 
@@ -23,12 +23,12 @@ public class IntoChangePsw extends BaseRunnable {
 
 	@Override
 	public void run() {
-		String requestUrl = ApiHelper.getURl() + "mmxg.aspx?xh=" + GGApplication.userXh + "&xm=" + GGApplication.userXm + "&gnmkdm=N121502";
+		String requestUrl = ApiHelper.getURl() + "mmxg.aspx?xh=" + GDUTHelperApp.userXh + "&xm=" + GDUTHelperApp.userXm + "&gnmkdm=N121502";
 		try {
 			URL url = new URL(requestUrl);
 			URLConnection urlConnection = url.openConnection();
-			urlConnection.addRequestProperty("Cookie", GGApplication.cookie);
-			urlConnection.addRequestProperty("Referer", ApiHelper.getURl() + "xs_main.aspx?xh=" + GGApplication.userXh);
+			urlConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
+			urlConnection.addRequestProperty("Referer", ApiHelper.getURl() + "xs_main.aspx?xh=" + GDUTHelperApp.userXh);
 			InputStreamReader reader = new InputStreamReader(new BufferedInputStream(urlConnection.getInputStream()), "gbk");
 			BufferedReader in = new BufferedReader(reader);
 			String s;
@@ -41,7 +41,7 @@ public class IntoChangePsw extends BaseRunnable {
 				if (s.contains("__VIEWSTATE")) {
 					int begin = s.indexOf("value=\"") + 7;
 					int end = s.indexOf("\" />");
-					GGApplication.viewState = s.substring(begin, end);
+					GDUTHelperApp.viewState = s.substring(begin, end);
 					Log.d(IntoGrade.class.getSimpleName(), "get VIEW STATE");
 				}
 				if (s.contains("登录密码修改规则说明：")) {

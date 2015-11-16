@@ -3,7 +3,7 @@ package com.rdc.gduthelper.bean;
 import android.content.res.Resources;
 
 import com.rdc.gduthelper.R;
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 
 /**
  * Created by seasonyuu on 15/9/8.
@@ -36,7 +36,7 @@ public class MaterialColors {
 
 
 	private MaterialColors() {
-		Resources resource = GGApplication.getInstance().getApplicationContext().getResources();
+		Resources resource = GDUTHelperApp.getInstance().getApplicationContext().getResources();
 		colors = new int[21];
 		colors[RED] = resource.getColor(R.color.red_500);
 		colors[PINK] = resource.getColor(R.color.pink_500);

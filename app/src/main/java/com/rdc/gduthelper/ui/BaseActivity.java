@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.rdc.gduthelper.R;
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 
 /**
  * Created by seasonyuu on 15/9/7.
@@ -20,7 +20,7 @@ public class BaseActivity extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		int themeId = GGApplication.getInstance().getThemeId();
+		int themeId = GDUTHelperApp.getInstance().getThemeId();
 		if (themeId != -1)
 			setTheme(themeId);
 		else

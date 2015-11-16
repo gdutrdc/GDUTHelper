@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.rdc.gduthelper.R;
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -78,7 +78,7 @@ public class PictureActivity extends BaseActivity implements View.OnClickListene
 				return true;
 			case R.id.picture_share:
 				File f = new File(Environment.getExternalStoragePublicDirectory(
-						Environment.DIRECTORY_PICTURES), "教务系统头像" + GGApplication.userXh + ".jpg");
+						Environment.DIRECTORY_PICTURES), "教务系统头像" + GDUTHelperApp.userXh + ".jpg");
 				if (!f.exists())
 					savePicture();
 				Uri u = Uri.fromFile(f);
@@ -97,7 +97,7 @@ public class PictureActivity extends BaseActivity implements View.OnClickListene
 
 	private String savePicture() {
 		File file = new File(Environment.getExternalStoragePublicDirectory(
-				Environment.DIRECTORY_PICTURES), "教务系统头像" + GGApplication.userXh + ".jpg");
+				Environment.DIRECTORY_PICTURES), "教务系统头像" + GDUTHelperApp.userXh + ".jpg");
 		try {
 			if (!file.exists()) {
 

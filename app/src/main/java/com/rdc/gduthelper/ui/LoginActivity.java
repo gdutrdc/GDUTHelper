@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.rdc.gduthelper.R;
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetCheckCode;
@@ -42,7 +42,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 			}
 			if (msg.what == ApiHelper.GET_PAGE_RESULT) {
 				cancelDialog();
-				GGApplication.viewState = (String) msg.obj;
+				GDUTHelperApp.viewState = (String) msg.obj;
 				getCheckCode();
 			} else if (msg.what == ApiHelper.GET_CHECK_CODE_SUCCESS)
 				if (msg.obj != null) {
@@ -53,7 +53,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				}
 			else if (msg.what == ApiHelper.LOGIN_SUCCESS) {
 				cancelDialog();
-				GGApplication.getInstance().rememberUser(
+				GDUTHelperApp.getInstance().rememberUser(
 						mEtUserXh.getText().toString(),
 						mEtPassword.getText().toString()
 				);
@@ -114,8 +114,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		mEtPassword = ((MaterialEditText) findViewById(R.id.login_password));
 		mEtSecretCode = (MaterialEditText) findViewById(R.id.login_check_code);
 
-		if (GGApplication.getInstance().needRememberUser()) {
-			String rememberData = GGApplication.getInstance().getRememberUser();
+		if (GDUTHelperApp.getInstance().needRememberUser()) {
+			String rememberData = GDUTHelperApp.getInstance().getRememberUser();
 			if (rememberData != null) {
 				String[] data = rememberData.split(";", 2);
 				mEtUserXh.setText(data[0]);
@@ -128,18 +128,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
 	private void login() {
-		if (GGApplication.cookie != null && GGApplication.viewState != null) {
+		if (GDUTHelperApp.cookie != null && GDUTHelperApp.viewState != null) {
 			showProgressDialog("正在登陆");
 			new Thread(new Login(
 					mEtUserXh.getText().toString(),
 					mEtPassword.getText().toString(),
 					mEtSecretCode.getText().toString(),
-					GGApplication.viewState, new BaseRunnable.GGCallback() {
+					GDUTHelperApp.viewState, new BaseRunnable.GGCallback() {
 				@Override
 				public void onCall(Object obj) {
 					if (obj == null) {
 						handler.sendEmptyMessage(ApiHelper.LOGIN_SUCCESS);
-						GGApplication.userXh =
+						GDUTHelperApp.userXh =
 								mEtUserXh.getText().toString();
 					} else {
 						Message msg = Message.obtain();
@@ -209,8 +209,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 			case 0:
 				boolean needRefresh = data.getBooleanExtra("need_refresh", false);
 				boolean needChangeTheme = data.getBooleanExtra("need_change_theme", false);
-				if (!GGApplication.getInstance().needRememberUser()) {
-					GGApplication.getInstance().rememberUser("", "");
+				if (!GDUTHelperApp.getInstance().needRememberUser()) {
+					GDUTHelperApp.getInstance().rememberUser("", "");
 				}
 				if (needChangeTheme) {
 					recreate();

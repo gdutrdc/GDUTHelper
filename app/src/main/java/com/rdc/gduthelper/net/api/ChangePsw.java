@@ -1,6 +1,6 @@
 package com.rdc.gduthelper.net.api;
 
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
 
@@ -28,10 +28,10 @@ public class ChangePsw extends BaseRunnable {
 
 	@Override
 	public void run() {
-		requestUrl = ApiHelper.getURl() + "/mmxg.aspx?xh=" + GGApplication.userXh + "&gnmkdm=N121502";
+		requestUrl = ApiHelper.getURl() + "/mmxg.aspx?xh=" + GDUTHelperApp.userXh + "&gnmkdm=N121502";
 		try {
 			HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(requestUrl).openConnection();
-			httpURLConnection.addRequestProperty("Cookie", GGApplication.cookie);
+			httpURLConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
 			httpURLConnection.addRequestProperty("Referer", requestUrl);
 			httpURLConnection.setRequestMethod("POST");
 			httpURLConnection.setDoOutput(true);
@@ -39,7 +39,7 @@ public class ChangePsw extends BaseRunnable {
 			httpURLConnection.setDoInput(true);
 			httpURLConnection.setUseCaches(false);
 			String data = "__VIEWSTATE="
-					+ URLEncoder.encode(GGApplication.viewState, "iso-8859-1")
+					+ URLEncoder.encode(GDUTHelperApp.viewState, "iso-8859-1")
 					+ "&TextBox2=" + oldPassword
 					+ "&TextBox3=" + newPassword
 					+ "&TextBox4=" + newPassword

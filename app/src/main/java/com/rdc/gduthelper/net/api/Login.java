@@ -2,7 +2,7 @@ package com.rdc.gduthelper.net.api;
 
 import android.util.Log;
 
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
 
@@ -39,7 +39,7 @@ public class Login extends BaseRunnable {
 		try {
 			HttpURLConnection httpURLConnection
 					= (HttpURLConnection) new URL(ApiHelper.getURl() + "default2.aspx").openConnection();
-			httpURLConnection.addRequestProperty("Cookie", GGApplication.cookie);
+			httpURLConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
 //			httpURLConnection.addRequestProperty("Host", ApiHelper.getHost());
 //			httpURLConnection.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
 			httpURLConnection.addRequestProperty("Referer", ApiHelper.getURl() + "default2.aspx");
@@ -85,7 +85,7 @@ public class Login extends BaseRunnable {
 					while ((s = in.readLine()) != null) {
 						if (s.contains("<span id=\"xhxm\">")) {
 							String[] temps = s.split(">");
-							GGApplication.userXm = URLEncoder.encode(temps[1].split("<")[0], "utf-8");
+							GDUTHelperApp.userXm = URLEncoder.encode(temps[1].split("<")[0], "utf-8");
 							break;
 						}
 					}

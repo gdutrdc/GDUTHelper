@@ -1,6 +1,6 @@
 package com.rdc.gduthelper.net;
 
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 
 /**
  * Created by seasonyuu on 15/8/28.
@@ -25,14 +25,14 @@ public class ApiHelper {
 	public static final int CHANGE_PSW_SUCCESS = 0x8;
 
 	public static String getURl(){
-		if(GGApplication.getInstance().isUseDx())
+		if(GDUTHelperApp.getInstance().isUseDx())
 			return URL_DX;
 		else
 			return URL_XYW;
 	}
 
 	public static String getHost(){
-		if(GGApplication.getInstance().isUseDx())
+		if(GDUTHelperApp.getInstance().isUseDx())
 			return HOST_DX;
 		else
 			return HOST_XYW;

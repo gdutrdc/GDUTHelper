@@ -2,7 +2,7 @@ package com.rdc.gduthelper.net.api;
 
 import android.util.Log;
 
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
 
@@ -33,7 +33,7 @@ public class GetPage extends BaseRunnable {
 			InputStreamReader reader = new InputStreamReader(new BufferedInputStream(urlConnection.getInputStream()), "gbk");
 			BufferedReader in = new BufferedReader(reader);
 			List<String> cookies = urlConnection.getHeaderFields().get("Set-Cookie");
-			GGApplication.cookie = cookies.get(0).split(";", 2)[0];
+			GDUTHelperApp.cookie = cookies.get(0).split(";", 2)[0];
 			urlConnection.setConnectTimeout(5 * 1000);
 
 			String s;

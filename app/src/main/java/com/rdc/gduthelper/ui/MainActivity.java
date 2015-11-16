@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.rdc.gduthelper.R;
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 
 /**
  * Created by seasonyuu on 15/9/8.
@@ -55,8 +55,8 @@ public class MainActivity extends BaseActivity {
 		if (requestCode == 0) {
 			boolean needRefresh = data.getBooleanExtra("need_refresh", false);
 			boolean needChangeTheme = data.getBooleanExtra("need_change_theme", false);
-			if (!GGApplication.getInstance().needRememberUser()) {
-				GGApplication.getInstance().rememberUser("", "");
+			if (!GDUTHelperApp.getInstance().needRememberUser()) {
+				GDUTHelperApp.getInstance().rememberUser("", "");
 			}
 			if (needChangeTheme) {
 				recreate();

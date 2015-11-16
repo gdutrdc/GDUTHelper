@@ -3,7 +3,7 @@ package com.rdc.gduthelper.net.api;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
 
@@ -27,7 +27,7 @@ public class GetCheckCode extends BaseRunnable {
 		try {
 			URL url = new URL(checkCode);
 			URLConnection urlConnection = url.openConnection();
-			urlConnection.addRequestProperty("Cookie", GGApplication.cookie);
+			urlConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
 //			urlConnection.addRequestProperty("Accept", "image/webp,*/*;q=0.8");
 //			urlConnection.addRequestProperty("Accept-Encoding", "gzip, deflate, sdch");
 //			urlConnection.addRequestProperty("Connection", "keep-alive");

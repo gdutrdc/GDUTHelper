@@ -2,7 +2,7 @@ package com.rdc.gduthelper.net.api;
 
 import android.util.Log;
 
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Grade;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
@@ -49,14 +49,14 @@ public class GetGrade extends BaseRunnable {
 	public void run() {
 		try {
 			HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(
-					ApiHelper.getURl() + "xscj.aspx?xh=" + GGApplication.userXh + "&xm=" + GGApplication.userXm + "&gnmkdm=N121605").openConnection();
-			httpURLConnection.addRequestProperty("Cookie", GGApplication.cookie);
+					ApiHelper.getURl() + "xscj.aspx?xh=" + GDUTHelperApp.userXh + "&xm=" + GDUTHelperApp.userXm + "&gnmkdm=N121605").openConnection();
+			httpURLConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
 //			httpURLConnection.addRequestProperty("Host", ApiHelper.getHost());
 //			httpURLConnection.addRequestProperty("Accept-Encoding", "gzip, deflate");
 //			httpURLConnection.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
 //			httpURLConnection.addRequestProperty("Cache-Control", "max-age=0");
 			httpURLConnection.addRequestProperty("Referer", ApiHelper.getURl()
-					+ "xscj.aspx?xh=" + GGApplication.userXh + "&xm=" + GGApplication.userXm + "&gnmkdm=N121605");
+					+ "xscj.aspx?xh=" + GDUTHelperApp.userXh + "&xm=" + GDUTHelperApp.userXm + "&gnmkdm=N121605");
 //			httpURLConnection.addRequestProperty("Connection", "keep-alive");
 //			httpURLConnection.addRequestProperty("Origin", ApiHelper.getURl());
 //			httpURLConnection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -67,7 +67,7 @@ public class GetGrade extends BaseRunnable {
 			httpURLConnection.setDoInput(true);
 			httpURLConnection.setUseCaches(false);
 			String data = "__VIEWSTATE="
-					+ URLEncoder.encode(GGApplication.viewState, "iso-8859-1")
+					+ URLEncoder.encode(GDUTHelperApp.viewState, "iso-8859-1")
 					+ "&ddlXN=" + year //学年
 					+ "&ddlXQ=" + term //学期
 					+ "&txtQSCJ=0"

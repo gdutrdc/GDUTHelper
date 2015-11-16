@@ -2,7 +2,7 @@ package com.rdc.gduthelper.net.api;
 
 import android.util.Log;
 
-import com.rdc.gduthelper.app.GGApplication;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
 
@@ -24,13 +24,13 @@ public class IntoGrade extends BaseRunnable {
 
 	@Override
 	public void run() {
-		String requestUrl = ApiHelper.getURl() + "xscj.aspx?xh=" + GGApplication.userXh + "&xm=" + GGApplication.userXm + "&gnmkdm=N121605";
+		String requestUrl = ApiHelper.getURl() + "xscj.aspx?xh=" + GDUTHelperApp.userXh + "&xm=" + GDUTHelperApp.userXm + "&gnmkdm=N121605";
 		try {
 			URL url = new URL(requestUrl);
 			URLConnection urlConnection = url.openConnection();
-			urlConnection.addRequestProperty("Cookie", GGApplication.cookie);
+			urlConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
 //			urlConnection.addRequestProperty("Host", ApiHelper.getHost());
-			urlConnection.addRequestProperty("Referer", ApiHelper.getURl() + "xs_main.aspx?xh=" + GGApplication.userXh);
+			urlConnection.addRequestProperty("Referer", ApiHelper.getURl() + "xs_main.aspx?xh=" + GDUTHelperApp.userXh);
 //			urlConnection.addRequestProperty("Connection", "keep-alive");
 //			urlConnection.addRequestProperty("Origin", ApiHelper.getURl());
 //			urlConnection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -47,7 +47,7 @@ public class IntoGrade extends BaseRunnable {
 				if (s.contains("__VIEWSTATE")) {
 					int begin = s.indexOf("value=\"") + 7;
 					int end = s.indexOf("\" />");
-					GGApplication.viewState = s.substring(begin, end);
+					GDUTHelperApp.viewState = s.substring(begin, end);
 					Log.d(IntoGrade.class.getSimpleName(), "get VIEW STATE");
 				}
 				if (gotYear) {
