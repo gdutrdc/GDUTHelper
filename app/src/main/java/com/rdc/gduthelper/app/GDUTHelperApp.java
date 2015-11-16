@@ -8,14 +8,14 @@ import com.rdc.gduthelper.R;
 /**
  * Created by seasonyuu on 15/8/28.
  */
-public class GGApplication extends Application {
+public class GDUTHelperApp extends Application {
 	public static String cookie;
 	public static String userXh;
 	public static String viewState;
 	public static String userXm;
 	private SharedPreferences sp;
 
-	private static GGApplication mApplication;
+	private static GDUTHelperApp mApplication;
 
 	@Override
 	public void onCreate() {
@@ -24,7 +24,7 @@ public class GGApplication extends Application {
 		sp = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
 	}
 
-	public static GGApplication getInstance() {
+	public static GDUTHelperApp getInstance() {
 		return mApplication;
 	}
 
