@@ -31,6 +31,11 @@ public class MainActivity extends BaseActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
+		MenuItem menuItem = menu.findItem(R.id.main_logout);
+		if(GDUTHelperApp.cookie == null || GDUTHelperApp.userXm == null
+				|| GDUTHelperApp.userXh == null){
+			menuItem.setTitle(R.string.login);
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -80,6 +85,18 @@ public class MainActivity extends BaseActivity {
 	}
 
 	public void onClick(View view) {
+		switch (view.getId()) {
+			case R.id.main_get_exam_time:
+				return;
+			case R.id.main_get_schedule:
+				return;
+		}
+		if (GDUTHelperApp.cookie == null || GDUTHelperApp.userXm == null
+				|| GDUTHelperApp.userXh == null) {
+			startActivity(new Intent(this, LoginActivity.class));
+			finish();
+			return;
+		}
 		switch (view.getId()) {
 			case R.id.main_get_grade:
 				startActivity(new Intent(this, GetGradeActivity.class));

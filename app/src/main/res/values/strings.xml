@@ -12,6 +12,7 @@
     <string name="settings">设置</string>
     <string name="menu">菜单</string>
     <string name="help">帮助</string>
+    <string name="login">登录</string>
     <string name="logout">注销</string>
 
     <!-- 主界面 -->

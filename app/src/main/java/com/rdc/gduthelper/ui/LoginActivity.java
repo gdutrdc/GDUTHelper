@@ -35,7 +35,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.obj != null && msg.obj instanceof Exception) {
-				cancelDialog() ;
+				cancelDialog();
 				showWarning(((Exception) msg.obj).toString(), null);
 				Log.d(TAG, "get Exception");
 				return;
@@ -95,10 +95,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
-		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-		getSupportActionBar().setHomeButtonEnabled(false);
-		getSupportActionBar().setLogo(R.mipmap.ic_launcher);
-
 		findViewById(R.id.login).setOnClickListener(this);
 		findViewById(R.id.check_code).setOnClickListener(this);
 
@@ -123,8 +119,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 			}
 		}
 	}
-
-
 
 
 	private void login() {
