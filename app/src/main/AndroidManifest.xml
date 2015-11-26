@@ -36,6 +36,9 @@
         <activity
             android:name=".ui.ChangePswActivity"
             android:label="@string/change_password"/>
+        <activity
+            android:name=".ui.GetExamTimeActivity"
+            android:label="@string/get_exam_time"/>
     </application>
 
 </manifest>

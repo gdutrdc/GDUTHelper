@@ -29,12 +29,7 @@ public class IntoGrade extends BaseRunnable {
 			URL url = new URL(requestUrl);
 			URLConnection urlConnection = url.openConnection();
 			urlConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
-//			urlConnection.addRequestProperty("Host", ApiHelper.getHost());
 			urlConnection.addRequestProperty("Referer", ApiHelper.getURl() + "xs_main.aspx?xh=" + GDUTHelperApp.userXh);
-//			urlConnection.addRequestProperty("Connection", "keep-alive");
-//			urlConnection.addRequestProperty("Origin", ApiHelper.getURl());
-//			urlConnection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-//			urlConnection.addRequestProperty("Upgrade-Insecure-Requests", "1");
 			InputStreamReader reader = new InputStreamReader(new BufferedInputStream(urlConnection.getInputStream()), "gbk");
 			BufferedReader in = new BufferedReader(reader);
 			String s;
@@ -76,7 +71,6 @@ public class IntoGrade extends BaseRunnable {
 				}
 				if (s.contains("<span id=\"Label2\">学期：</span>")) {
 					gotTerm = true;
-					Log.e("Tag", "got term");
 					in.readLine();
 				}
 			}
