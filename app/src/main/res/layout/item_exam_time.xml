@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="exam"
             type="com.rdc.gduthelper.bean.Exam"/>
@@ -10,8 +11,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="88dp"
+        android:background="?selectableItemBackground"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
+        android:clickable="true"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="8dp">
@@ -23,12 +26,29 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="@{exam.lessonName}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@{exam.lessonName}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:singleLine="true"
+                    android:text="@{exam.examType}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -36,11 +56,30 @@
                 android:singleLine="true"
                 android:text="@{exam.examTime}"/>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="@{exam.examPosition}"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@{exam.examPosition}"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:text="@{@string/get_exam_time_seat}"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@{exam.examSeat}"/>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -53,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="剩余"/>
+                android:text="@{@string/get_exam_time_leave}"/>
 
             <TextView
                 android:layout_width="wrap_content"

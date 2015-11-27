@@ -25,6 +25,10 @@
     <string name="get_schedule">查询个人课表</string>
     <string name="get_level_exam_grade">查询等级考试成绩</string>
 
+    <!-- 查询考试时间 -->
+    <string name="get_exam_time_seat">座位：</string>
+    <string name="get_exam_time_leave">剩余</string>
+
     <!-- 修改密码 -->
     <string name="change_psw_old">请输入原密码</string>
     <string name="change_psw_new">请输入新密码</string>

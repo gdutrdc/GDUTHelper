@@ -1,5 +1,10 @@
 package com.rdc.gduthelper.bean;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Created by seasonyuu on 15/11/26.
  */
@@ -44,6 +49,23 @@ public class Exam {
 
 	public void setExamTime(String examTime) {
 		this.examTime = examTime;
+		try {
+			Date date = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA).parse(examTime);
+			this.examCount = (date.getTime() - new Date().getTime()) / 24 / 60 / 60 / 1000 + "天";
+		} catch (ParseException e) {
+			e.printStackTrace();
+			examTime = examTime.split("周")[2];
+			examTime = examTime.split("\\(")[1];
+			examTime = examTime.split("\\)")[0];
+			Date date = null;
+			try {
+				date = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(examTime);
+				this.examCount = (date.getTime() - new Date().getTime()) / 24 / 60 / 60 / 1000 + "天";
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+		}
+
 	}
 
 	public String getExamPosition() {
@@ -59,7 +81,10 @@ public class Exam {
 	}
 
 	public void setExamType(String examType) {
-		this.examType = examType;
+		if (examType.equals("&nbsp;"))
+			this.examType = " ";
+		else
+			this.examType = examType;
 	}
 
 	public String getCampus() {

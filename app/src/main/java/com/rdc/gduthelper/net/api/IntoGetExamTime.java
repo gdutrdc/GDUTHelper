@@ -90,7 +90,8 @@ public class IntoGetExamTime extends BaseRunnable {
 					exam.setExamTime(datas[3].substring(4, datas[3].length()));
 					exam.setExamPosition(datas[4].substring(4, datas[4].length()));
 					exam.setExamType(datas[5].substring(4, datas[5].length()));
-					exam.setCampus(datas[6].substring(4, datas[6].length()));
+					exam.setExamSeat(datas[6].substring(4,datas[6].length()));
+					exam.setCampus(datas[7].substring(4, datas[7].length()));
 					exams.add(exam);
 					in.readLine();
 				}
