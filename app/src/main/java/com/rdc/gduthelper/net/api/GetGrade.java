@@ -134,10 +134,9 @@ public class GetGrade extends BaseRunnable {
 				if (callback != null)
 					callback.onCall(gradeList);
 			} else {
-				Log.e(TAG, "the url is to \"" + httpURLConnection.getURL().toString() + "\"");
+				Log.i(TAG, "the url is to \"" + httpURLConnection.getURL().toString() + "\"");
 				Log.i(TAG, "访问失败" + responseCode);
 			}
-			Log.e(TAG, "getGrade in complete");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

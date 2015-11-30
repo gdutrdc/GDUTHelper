@@ -26,7 +26,10 @@
     <string name="get_level_exam_grade">查询等级考试成绩</string>
 
     <!-- 查询考试时间 -->
-    <string name="get_exam_time_seat">座位：</string>
+    <string name="get_exam_time_space"> </string>
+    <string name="get_exam_time_day">天</string>
+    <string name="get_exam_time_past">此考试已结束</string>
+    <string name="get_exam_time_seat"> 座位：</string>
     <string name="get_exam_time_leave">剩余</string>
 
     <!-- 修改密码 -->

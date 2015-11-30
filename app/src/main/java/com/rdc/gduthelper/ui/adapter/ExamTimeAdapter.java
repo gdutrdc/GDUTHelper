@@ -33,8 +33,9 @@ public class ExamTimeAdapter extends RecyclerView.Adapter<ExamTimeAdapter.ExamTi
 
 	public void setExams(ArrayList<JSONObject> exams) {
 		this.exams = new ArrayList<>();
-		for (int i = 0; i < exams.size(); i++)
-			this.exams.add(JSON.parseObject(exams.get(i).toString(), Exam.class));
+		if (exams != null)
+			for (int i = 0; i < exams.size(); i++)
+				this.exams.add(JSON.parseObject(exams.get(i).toString(), Exam.class));
 	}
 
 	@Override

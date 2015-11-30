@@ -57,7 +57,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 						mEtUserXh.getText().toString(),
 						mEtPassword.getText().toString()
 				);
-				startActivity(new Intent(LoginActivity.this, MainActivity.class));
 				finish();
 			} else if (msg.what == ApiHelper.LOGIN_FAILED) {
 				cancelDialog();

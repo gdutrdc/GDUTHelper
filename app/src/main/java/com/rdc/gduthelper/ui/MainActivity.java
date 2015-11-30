@@ -92,7 +92,6 @@ public class MainActivity extends BaseActivity {
 		if (GDUTHelperApp.cookie == null || GDUTHelperApp.userXm == null
 				|| GDUTHelperApp.userXh == null) {
 			startActivity(new Intent(this, LoginActivity.class));
-			finish();
 			return;
 		}
 		switch (view.getId()) {

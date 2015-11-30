@@ -17,7 +17,7 @@ public class Exam {
 	private String examType;//考试形式
 	private String campus;//校区
 	private String examSeat;//座位号
-	private String examCount;//考试倒计时
+	private int examCount;//考试倒计时
 
 	public String getId() {
 		return id;
@@ -48,21 +48,24 @@ public class Exam {
 	}
 
 	public void setExamTime(String examTime) {
-		this.examTime = examTime;
-		try {
-			Date date = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA).parse(examTime);
-			this.examCount = (date.getTime() - new Date().getTime()) / 24 / 60 / 60 / 1000 + "天";
-		} catch (ParseException e) {
-			e.printStackTrace();
-			examTime = examTime.split("周")[2];
-			examTime = examTime.split("\\(")[1];
-			examTime = examTime.split("\\)")[0];
-			Date date = null;
+		if (examTime.equals("&nbsp;"))
+			this.examTime = " ";
+		else {
+			this.examTime = examTime;
 			try {
-				date = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(examTime);
-				this.examCount = (date.getTime() - new Date().getTime()) / 24 / 60 / 60 / 1000 + "天";
-			} catch (ParseException e1) {
-				e1.printStackTrace();
+				Date date = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA).parse(examTime);
+				this.examCount = (int) ((date.getTime() - new Date().getTime()) / 24 / 60 / 60 / 1000);
+			} catch (ParseException e) {
+				try {
+					examTime = examTime.split("周")[2];
+					examTime = examTime.split("\\(")[1];
+					examTime = examTime.split("\\)")[0];
+					Date date = null;
+
+					date = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(examTime);
+					this.examCount = (int) ((date.getTime() - new Date().getTime()) / 24 / 60 / 60 / 1000);
+				} catch (Exception e1) {
+				}
 			}
 		}
 
@@ -73,7 +76,10 @@ public class Exam {
 	}
 
 	public void setExamPosition(String examPosition) {
-		this.examPosition = examPosition;
+		if (examPosition.equals("&nbsp;"))
+			this.examPosition = " ";
+		else
+			this.examPosition = examPosition;
 	}
 
 	public String getExamType() {
@@ -92,7 +98,10 @@ public class Exam {
 	}
 
 	public void setCampus(String campus) {
-		this.campus = campus;
+		if (campus.equals("&nbsp;"))
+			this.campus = " ";
+		else
+			this.campus = campus;
 	}
 
 	public String getExamSeat() {
@@ -100,14 +109,17 @@ public class Exam {
 	}
 
 	public void setExamSeat(String examSeat) {
-		this.examSeat = examSeat;
+		if (examSeat.equals("&nbsp;"))
+			this.examSeat = " ";
+		else
+			this.examSeat = examSeat;
 	}
 
-	public String getExamCount() {
+	public int getExamCount() {
 		return examCount;
 	}
 
-	public void setExamCount(String examCount) {
+	public void setExamCount(int examCount) {
 		this.examCount = examCount;
 	}
 }

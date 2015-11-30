@@ -1,7 +1,5 @@
 package com.rdc.gduthelper.net.api;
 
-import android.util.Log;
-
 import com.alibaba.fastjson.JSON;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Exam;
@@ -50,7 +48,6 @@ public class IntoGetExamTime extends BaseRunnable {
 					int begin = s.indexOf("value=\"") + 7;
 					int end = s.indexOf("\" />");
 					GDUTHelperApp.viewState = s.substring(begin, end);
-					Log.d(IntoGrade.class.getSimpleName(), "get VIEW STATE");
 				}
 				if (gotYear) {
 					if (years == null)
