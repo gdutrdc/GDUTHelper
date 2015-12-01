@@ -11,10 +11,12 @@ import android.widget.ArrayAdapter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.rdc.gduthelper.R;
+import com.rdc.gduthelper.bean.Exam;
 import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetExamTime;
 import com.rdc.gduthelper.net.api.IntoGetExamTime;
 import com.rdc.gduthelper.ui.adapter.ExamTimeAdapter;
+import com.rdc.gduthelper.utils.database.DatabaseHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,6 +85,10 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 							}
 							cancelDialog();
 							mExamTimeAdapter.setExams(exams);
+							DatabaseHelper helper = new DatabaseHelper(GetExamTimeActivity.this);
+							for (com.alibaba.fastjson.JSONObject jsonObject : exams) {
+								helper.insertExamTime(JSON.parseObject(jsonObject.toString(), Exam.class));
+							}
 							mExamTimeAdapter.notifyDataSetChanged();
 						}
 					});
@@ -101,6 +107,11 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 				ArrayList<com.alibaba.fastjson.JSONObject> list =
 						JSON.parseObject(obj.toString(), ArrayList.class);
 				mExamTimeAdapter.setExams(list);
+				DatabaseHelper helper = new DatabaseHelper(GetExamTimeActivity.this);
+				if (list != null)
+					for (com.alibaba.fastjson.JSONObject jsonObject : list) {
+						helper.insertExamTime(JSON.parseObject(jsonObject.toString(), Exam.class));
+					}
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {

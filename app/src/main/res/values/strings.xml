@@ -23,14 +23,19 @@
     <string name="change_password">修改密码</string>
     <string name="get_exam_time">查询考试时间</string>
     <string name="get_schedule">查询个人课表</string>
+    <string name="done">完成</string>
     <string name="get_level_exam_grade">查询等级考试成绩</string>
 
     <!-- 查询考试时间 -->
     <string name="get_exam_time_space"> </string>
     <string name="get_exam_time_day">天</string>
     <string name="get_exam_time_past">此考试已结束</string>
-    <string name="get_exam_time_seat"> 座位：</string>
+    <string name="get_exam_time_seat">&#160;&#160;座位:</string>
     <string name="get_exam_time_leave">剩余</string>
+    <string name="get_exam_time_no_data">教务系统不包含此时间</string>
+    <string name="get_exam_time_xnd">学年第</string>
+    <string name="get_exam_time_widget_preview">预览如上(桌面控件可自定义大小)</string>
+    <string name="get_exam_time_xqd">学期</string>
 
     <!-- 修改密码 -->
     <string name="change_psw_old">请输入原密码</string>

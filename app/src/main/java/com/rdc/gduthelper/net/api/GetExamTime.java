@@ -119,7 +119,7 @@ public class GetExamTime extends BaseRunnable {
 							exams = new ArrayList<>();
 						String[] datas = s.split("</td>");
 						Exam exam = new Exam();
-						exam.setId(datas[0].substring(8, datas[0].length()));
+						exam.setId(datas[0].substring(6, datas[0].length()));
 						exam.setLessonName(datas[1].substring(4, datas[1].length()));
 						exam.setStudentName(datas[2].substring(4, datas[2].length()));
 						exam.setExamTime(datas[3].substring(4, datas[3].length()));

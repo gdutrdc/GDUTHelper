@@ -1,5 +1,8 @@
 package com.rdc.gduthelper.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,7 +11,7 @@ import java.util.Locale;
 /**
  * Created by seasonyuu on 15/11/26.
  */
-public class Exam {
+public class Exam implements Parcelable {
 	private String id;//选课课号
 	private String lessonName;//课程名称
 	private String studentName;//姓名
@@ -48,8 +51,10 @@ public class Exam {
 	}
 
 	public void setExamTime(String examTime) {
-		if (examTime.equals("&nbsp;"))
+		if (examTime.equals("&nbsp;")) {
 			this.examTime = " ";
+			setExamCount(366);
+		}
 		else {
 			this.examTime = examTime;
 			try {
@@ -122,4 +127,47 @@ public class Exam {
 	public void setExamCount(int examCount) {
 		this.examCount = examCount;
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(this.id);
+		dest.writeString(this.lessonName);
+		dest.writeString(this.studentName);
+		dest.writeString(this.examTime);
+		dest.writeString(this.examPosition);
+		dest.writeString(this.examType);
+		dest.writeString(this.campus);
+		dest.writeString(this.examSeat);
+		dest.writeInt(this.examCount);
+	}
+
+	public Exam() {
+	}
+
+	protected Exam(Parcel in) {
+		this.id = in.readString();
+		this.lessonName = in.readString();
+		this.studentName = in.readString();
+		this.examTime = in.readString();
+		this.examPosition = in.readString();
+		this.examType = in.readString();
+		this.campus = in.readString();
+		this.examSeat = in.readString();
+		this.examCount = in.readInt();
+	}
+
+	public static final Parcelable.Creator<Exam> CREATOR = new Parcelable.Creator<Exam>() {
+		public Exam createFromParcel(Parcel source) {
+			return new Exam(source);
+		}
+
+		public Exam[] newArray(int size) {
+			return new Exam[size];
+		}
+	};
 }
