@@ -33,6 +33,7 @@
     <string name="get_exam_time_seat">&#160;&#160;座位:</string>
     <string name="get_exam_time_leave">剩余</string>
     <string name="get_exam_time_no_data">教务系统不包含此时间</string>
+    <string name="get_exam_time_no_local">本地无数据或未登录同步数据</string>
     <string name="get_exam_time_xnd">学年第</string>
     <string name="get_exam_time_widget_preview">预览如上(桌面控件可自定义大小)</string>
     <string name="get_exam_time_xqd">学期</string>
