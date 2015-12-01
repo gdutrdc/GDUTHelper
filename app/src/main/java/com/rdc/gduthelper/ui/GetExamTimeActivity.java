@@ -9,8 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Exam;
@@ -83,8 +81,8 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 				public void onCall(Object obj) {
 					JSONObject jsonObject = (JSONObject) obj;
 					try {
-						final JSONArray terms = JSON.parseArray(jsonObject.getString("terms"));
-						final JSONArray years = JSON.parseArray(jsonObject.getString("years"));
+						final ArrayList<String> terms = (ArrayList<String>) SerializeUtil.deSerialization(jsonObject.getString("terms"));
+						final ArrayList<String> years = (ArrayList<String>) SerializeUtil.deSerialization(jsonObject.getString("years"));
 						final ArrayList<Exam> exams =
 								(ArrayList<Exam>) SerializeUtil.deSerialization(jsonObject.getString("exams"));
 						runOnUiThread(new Runnable() {

@@ -76,18 +76,24 @@ public class AppWidgetConfig extends BaseActivity implements AdapterView.OnItemS
 
 	private void preDealData() {
 		try {
-			String[] data = GDUTHelperApp.getInstance().getRememberUser().split(";", 2);
-			xh = data[0];
+			String s = GDUTHelperApp.getInstance().getRememberUser();
+			if (s == null) {
+				Toast.makeText(this, R.string.get_exam_time_no_local, Toast.LENGTH_SHORT).show();
+				finish();
+			} else {
+				String[] data = s.split(";", 2);
+				xh = data[0];
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		if (xh != null) {
 			DatabaseHelper helper = new DatabaseHelper(this);
 			mWholeList = helper.getExamTimes(xh, null);
-			if (mWholeList.size() < 0) {
-				Toast.makeText(this, "本地未找到倒计时数据", Toast.LENGTH_SHORT).show();
+			if (mWholeList.size() == 0) {
+				Toast.makeText(this, R.string.get_exam_time_no_local, Toast.LENGTH_SHORT).show();
+				xh = null;
 				finish();
-				return;
 			} else {
 				Map<String, String> yearsMap = new HashMap<>();
 				Map<String, String> termsMap = new HashMap<>();

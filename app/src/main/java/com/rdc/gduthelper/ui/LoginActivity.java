@@ -7,13 +7,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.net.ApiHelper;
@@ -21,6 +23,7 @@ import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetCheckCode;
 import com.rdc.gduthelper.net.api.GetPage;
 import com.rdc.gduthelper.net.api.Login;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 	private final String TAG = LoginActivity.class.getSimpleName();
@@ -109,6 +112,23 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		mEtPassword = ((MaterialEditText) findViewById(R.id.login_password));
 		mEtSecretCode = (MaterialEditText) findViewById(R.id.login_check_code);
 
+		mEtSecretCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				boolean handled = false;
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					handled = true;
+					if (mEtSecretCode.getText().toString().equals("")) {
+						Toast.makeText(LoginActivity.this, "验证码不能为空", Toast.LENGTH_SHORT).show();
+						return handled;
+					}
+					showProgressDialog("正在登录");
+					login();
+				}
+				return handled;
+			}
+		});
+
 		if (GDUTHelperApp.getInstance().needRememberUser()) {
 			String rememberData = GDUTHelperApp.getInstance().getRememberUser();
 			if (rememberData != null) {
@@ -187,9 +207,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.main_settings)
-			startActivityForResult(new Intent(this, SettingsActivity.class), 0);
-		else if (item.getItemId() == R.id.login_refresh) {
+		if (item.getItemId() == R.id.login_refresh) {
 			showProgressDialog("正在刷新");
 			initConnection();
 		}

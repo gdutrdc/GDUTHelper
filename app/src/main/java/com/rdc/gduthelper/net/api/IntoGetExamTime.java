@@ -1,6 +1,5 @@
 package com.rdc.gduthelper.net.api;
 
-import com.alibaba.fastjson.JSON;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Exam;
 import com.rdc.gduthelper.net.ApiHelper;
@@ -108,8 +107,8 @@ public class IntoGetExamTime extends BaseRunnable {
 			JSONObject jsonObject = null;
 			try {
 				jsonObject = new JSONObject();
-				jsonObject.put("years", JSON.toJSONString(years));
-				jsonObject.put("terms", JSON.toJSONString(terms));
+				jsonObject.put("years", SerializeUtil.serialize(years));
+				jsonObject.put("terms", SerializeUtil.serialize(terms));
 				jsonObject.put("exams", SerializeUtil.serialize(exams));
 			} catch (JSONException e) {
 				jsonObject = null;
