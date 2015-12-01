@@ -3,6 +3,7 @@ package com.rdc.gduthelper.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +12,7 @@ import java.util.Locale;
 /**
  * Created by seasonyuu on 15/11/26.
  */
-public class Exam implements Parcelable {
+public class Exam implements Parcelable, Serializable {
 	private String id;//选课课号
 	private String lessonName;//课程名称
 	private String studentName;//姓名
@@ -51,11 +52,10 @@ public class Exam implements Parcelable {
 	}
 
 	public void setExamTime(String examTime) {
-		if (examTime.equals("&nbsp;")) {
+		if (examTime.equals("&nbsp;") || examTime.equals(" ")) {
 			this.examTime = " ";
 			setExamCount(366);
-		}
-		else {
+		} else {
 			this.examTime = examTime;
 			try {
 				Date date = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA).parse(examTime);
@@ -65,9 +65,7 @@ public class Exam implements Parcelable {
 					examTime = examTime.split("周")[2];
 					examTime = examTime.split("\\(")[1];
 					examTime = examTime.split("\\)")[0];
-					Date date = null;
-
-					date = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(examTime);
+					Date date =  new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(examTime);
 					this.examCount = (int) ((date.getTime() - new Date().getTime()) / 24 / 60 / 60 / 1000);
 				} catch (Exception e1) {
 				}
@@ -81,7 +79,7 @@ public class Exam implements Parcelable {
 	}
 
 	public void setExamPosition(String examPosition) {
-		if (examPosition.equals("&nbsp;"))
+		if (examPosition.equals("&nbsp;") || examPosition.equals(" "))
 			this.examPosition = " ";
 		else
 			this.examPosition = examPosition;
@@ -92,7 +90,7 @@ public class Exam implements Parcelable {
 	}
 
 	public void setExamType(String examType) {
-		if (examType.equals("&nbsp;"))
+		if (examType.equals("&nbsp;") || examType.equals(" "))
 			this.examType = " ";
 		else
 			this.examType = examType;
@@ -103,7 +101,7 @@ public class Exam implements Parcelable {
 	}
 
 	public void setCampus(String campus) {
-		if (campus.equals("&nbsp;"))
+		if (campus.equals("&nbsp;") || campus.equals(" "))
 			this.campus = " ";
 		else
 			this.campus = campus;
@@ -114,7 +112,7 @@ public class Exam implements Parcelable {
 	}
 
 	public void setExamSeat(String examSeat) {
-		if (examSeat.equals("&nbsp;"))
+		if (examSeat.equals("&nbsp;") || examSeat.equals(" "))
 			this.examSeat = " ";
 		else
 			this.examSeat = examSeat;
@@ -170,4 +168,6 @@ public class Exam implements Parcelable {
 			return new Exam[size];
 		}
 	};
+
+
 }

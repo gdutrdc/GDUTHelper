@@ -38,7 +38,7 @@ public class GDUTHelperApp extends Application {
 			editor.putString("ZBText", text);
 		else
 			editor.putString("ZBText", getString(R.string.default_zb_text));
-		editor.commit();
+		editor.apply();
 	}
 
 	public String getZBText() {
@@ -56,7 +56,7 @@ public class GDUTHelperApp extends Application {
 	public void rememberUser(String userName, String password) {
 		SharedPreferences.Editor editor = sp.edit();
 		editor.putString("remember_user_data", userName + ";" + password);
-		editor.commit();
+		editor.apply();
 	}
 
 	public String getRememberUser() {
@@ -67,13 +67,16 @@ public class GDUTHelperApp extends Application {
 		int themeId = Integer.parseInt(sp.getString("theme", "-1"));
 		switch (themeId) {
 			case 0:
-				themeId = R.style.Blue;
+				themeId = R.style.AppTheme_Blue;
 				break;
 			case 1:
-				themeId = R.style.Pink;
+				themeId = R.style.AppTheme_Pink;
 				break;
 		}
 		return themeId;
 	}
 
+	public static boolean isLogin() {
+		return userXh != null && cookie != null && userXm != null;
+	}
 }

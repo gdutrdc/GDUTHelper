@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rdc.gduthelper.R;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Information;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
@@ -46,8 +47,12 @@ public class GetInformationActivity extends BaseActivity implements View.OnClick
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.NoActionBar);
 		super.onCreate(savedInstanceState);
+		int themeId = GDUTHelperApp.getInstance().getThemeId();
+		if (themeId == R.style.AppTheme_Blue)
+			themeId = R.style.AppTheme_Blue_NoActionBar;
+		else themeId = R.style.AppTheme_Pink_NoActionBar;
+		setTheme(themeId);
 		setContentView(R.layout.activity_get_information);
 
 		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));

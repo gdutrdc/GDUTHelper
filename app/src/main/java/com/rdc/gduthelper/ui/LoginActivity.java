@@ -36,8 +36,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		public void handleMessage(Message msg) {
 			if (msg.obj != null && msg.obj instanceof Exception) {
 				cancelDialog();
-				showWarning(((Exception) msg.obj).toString(), null);
-				Log.d(TAG, "get Exception");
+				showWarning(((Exception) msg.obj).getMessage(), null);
 				return;
 			}
 			if (msg.what == ApiHelper.GET_PAGE_RESULT) {
@@ -57,6 +56,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 						mEtUserXh.getText().toString(),
 						mEtPassword.getText().toString()
 				);
+				startActivity(new Intent(LoginActivity.this, MainActivity.class));
 				finish();
 			} else if (msg.what == ApiHelper.LOGIN_FAILED) {
 				cancelDialog();

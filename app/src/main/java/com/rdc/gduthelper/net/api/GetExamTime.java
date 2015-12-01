@@ -2,11 +2,11 @@ package com.rdc.gduthelper.net.api;
 
 import android.util.Log;
 
-import com.alibaba.fastjson.JSON;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Exam;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
+import com.rdc.gduthelper.utils.SerializeUtil;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -141,11 +141,10 @@ public class GetExamTime extends BaseRunnable {
 						gotTerm = true;
 					}
 				}
-				System.out.print(sb.toString());
 				in.close();
 
 				if (callback != null)
-					callback.onCall(JSON.toJSONString(exams));
+					callback.onCall(SerializeUtil.serialize(exams));
 			} else {
 				Log.i(TAG, "the url is to \"" + httpURLConnection.getURL().toString() + "\"");
 				Log.i(TAG, "访问失败 - " + responseCode);

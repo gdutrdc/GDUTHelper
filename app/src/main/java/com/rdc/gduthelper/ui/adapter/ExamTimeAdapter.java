@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.rdc.gduthelper.BR;
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.bean.Exam;
@@ -31,11 +29,11 @@ public class ExamTimeAdapter extends RecyclerView.Adapter<ExamTimeAdapter.ExamTi
 		return exams;
 	}
 
-	public void setExams(ArrayList<JSONObject> exams) {
-		this.exams = new ArrayList<>();
+	public void setExams(ArrayList<Exam> exams) {
 		if (exams != null)
-			for (int i = 0; i < exams.size(); i++)
-				this.exams.add(JSON.parseObject(exams.get(i).toString(), Exam.class));
+			this.exams = exams;
+		else
+			this.exams = new ArrayList<>();
 	}
 
 	@Override

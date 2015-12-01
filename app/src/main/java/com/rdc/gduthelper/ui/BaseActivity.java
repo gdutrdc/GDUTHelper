@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 
 /**
@@ -23,9 +22,7 @@ public class BaseActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		int themeId = GDUTHelperApp.getInstance().getThemeId();
 		if (themeId != -1)
-			getTheme().applyStyle(themeId, true);
-		else
-			getTheme().applyStyle(R.style.Blue, true);
+			setTheme(themeId);
 		super.onCreate(savedInstanceState);
 	}
 

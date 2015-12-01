@@ -5,6 +5,7 @@ import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Exam;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
+import com.rdc.gduthelper.utils.SerializeUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -104,13 +105,12 @@ public class IntoGetExamTime extends BaseRunnable {
 				}
 			}
 			in.close();
-			System.out.print(sb.toString());
 			JSONObject jsonObject = null;
 			try {
 				jsonObject = new JSONObject();
 				jsonObject.put("years", JSON.toJSONString(years));
 				jsonObject.put("terms", JSON.toJSONString(terms));
-				jsonObject.put("exams", JSON.toJSONString(exams));
+				jsonObject.put("exams", SerializeUtil.serialize(exams));
 			} catch (JSONException e) {
 				jsonObject = null;
 				e.printStackTrace();
