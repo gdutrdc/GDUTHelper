@@ -50,6 +50,8 @@ public class MainActivity extends BaseActivity {
 			case R.id.main_logout:
 				startActivity(new Intent(this, LoginActivity.class));
 				finish();
+				GDUTHelperApp.userXh = null;
+				GDUTHelperApp.userXm = null;
 				break;
 		}
 		return super.onOptionsItemSelected(item);
