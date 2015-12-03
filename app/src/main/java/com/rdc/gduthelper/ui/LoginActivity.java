@@ -120,7 +120,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 					handled = true;
 					if (mEtSecretCode.getText().toString().equals("")) {
 						Toast.makeText(LoginActivity.this, "验证码不能为空", Toast.LENGTH_SHORT).show();
-						return handled;
+						return true;
 					}
 					showProgressDialog("正在登录");
 					login();

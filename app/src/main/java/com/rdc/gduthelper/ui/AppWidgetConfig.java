@@ -23,6 +23,7 @@ import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Exam;
 import com.rdc.gduthelper.bean.MaterialColors;
+import com.rdc.gduthelper.bean.WidgetConfigs;
 import com.rdc.gduthelper.utils.appwidget.WidgetService;
 import com.rdc.gduthelper.utils.database.DatabaseHelper;
 
@@ -166,6 +167,12 @@ public class AppWidgetConfig extends BaseActivity implements AdapterView.OnItemS
 			adapter.setData(Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME)));
 			adapter.putExtra("selection", mYearsSpinner.getSelectedItem().toString() + "-"
 					+ mTermsSpinner.getSelectedItem().toString());
+			WidgetConfigs widgetConfigs = GDUTHelperApp.getInstance().getAppWidgetConfigs();
+			if (widgetConfigs == null)
+				widgetConfigs = new WidgetConfigs();
+			widgetConfigs.putConfig(mAppWidgetId, mYearsSpinner.getSelectedItem().toString() + "-"
+					+ mTermsSpinner.getSelectedItem().toString());
+			GDUTHelperApp.getInstance().saveAppWidgetConfigs(widgetConfigs);
 			views.setRemoteAdapter(R.id.widget_exam_times, adapter);
 
 			appWidgetManager.updateAppWidget(mAppWidgetId, views);

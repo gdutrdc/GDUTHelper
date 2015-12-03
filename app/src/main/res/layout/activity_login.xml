@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".loginActivity">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -12,10 +11,18 @@
         android:layout_centerVertical="true"
         android:paddingBottom="56dp">
 
+        <ImageView
+            android:id="@+id/login_logo"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:alpha="0.8"
+            android:src="@drawable/large_logo"/>
+
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/login_user_xh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/login_logo"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
@@ -41,24 +48,25 @@
             app:met_iconLeft="@drawable/ic_lock_grey_500_24dp"/>
 
         <LinearLayout
+            android:id="@+id/login_check_code_container"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login_password"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
             android:gravity="bottom"
-            android:orientation="horizontal"
-            android:id="@+id/login_check_code_container"
-            android:layout_below="@id/login_password"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal">
+
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/login_check_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/check_code"
+                android:imeOptions="actionDone"
                 android:inputType="textVisiblePassword"
                 android:maxLength="4"
-                android:imeOptions="actionDone"
                 app:met_floatingLabel="highlight"
                 app:met_iconLeft="@drawable/ic_verified_user_grey_500_24dp"/>
 
@@ -83,6 +91,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
         </LinearLayout>
+
         <Button
             android:id="@+id/login"
             style="@style/Widget.AppCompat.Button.Colored"
@@ -91,6 +100,7 @@
             android:layout_below="@id/login_check_code_container"
             android:layout_margin="32dp"
             android:text="登录"/>
+
     </RelativeLayout>
 
 
