@@ -32,6 +32,12 @@ public class MainActivity extends BaseActivity {
 	}
 
 	@Override
+	protected void onResume() {
+		invalidateOptionsMenu();
+		super.onResume();
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		MenuItem menuItem = menu.findItem(R.id.main_logout);

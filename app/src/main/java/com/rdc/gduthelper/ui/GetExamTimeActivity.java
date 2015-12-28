@@ -85,6 +85,17 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 						final ArrayList<String> years = (ArrayList<String>) SerializeUtil.deSerialization(jsonObject.getString("years"));
 						final ArrayList<Exam> exams =
 								(ArrayList<Exam>) SerializeUtil.deSerialization(jsonObject.getString("exams"));
+
+						Collections.sort(exams, new Comparator<Exam>() {
+							@Override
+							public int compare(Exam lhs, Exam rhs) {
+								if (lhs.getExamCount() < rhs.getExamCount() || rhs.getExamCount() < 0)
+									return -1;
+								else if (lhs.getExamCount() > rhs.getExamCount() || lhs.getExamCount() < 0)
+									return 1;
+								return 0;
+							}
+						});
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
