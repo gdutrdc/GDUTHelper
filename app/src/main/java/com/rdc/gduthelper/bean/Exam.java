@@ -59,14 +59,26 @@ public class Exam implements Parcelable, Serializable {
 			this.examTime = examTime;
 			try {
 				Date date = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA).parse(examTime);
-				this.examCount = (int) ((date.getTime() - new Date().getTime()) / 24 / 60 / 60 / 1000 + 1);
+				long count = date.getTime() - new Date().getTime() + 5 * 24 * 60 * 60 * 1000;
+				if (count > 0)
+					this.examCount = (int) (count / 24 / 60 / 60 / 1000 + 1);
+				else if (count > -((long) 24) * 60 * 60 * 1000)
+					this.examCount = 0;
+				else
+					this.examCount = -1;
 			} catch (ParseException e) {
 				try {
 					examTime = examTime.split("周")[2];
 					examTime = examTime.split("\\(")[1];
 					examTime = examTime.split("\\)")[0];
 					Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(examTime);
-					this.examCount = (int) ((date.getTime() - new Date().getTime()) / 24 / 60 / 60 / 1000 + 1);
+					long count = date.getTime() - new Date().getTime() + 5 * 24 * 60 * 60 * 1000;
+					if (count > 0)
+						this.examCount = (int) (count / 24 / 60 / 60 / 1000 + 1);
+					else if (count > -((long) 24) * 60 * 60 * 1000)
+						this.examCount = 0;
+					else
+						this.examCount = -1;
 				} catch (Exception e1) {
 				}
 			}

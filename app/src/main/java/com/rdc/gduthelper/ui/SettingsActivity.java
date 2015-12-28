@@ -53,8 +53,8 @@ public class SettingsActivity extends BaseActivity {
 		Intent intent = new Intent();
 		if (needRefresh != GDUTHelperApp.getInstance().isUseDx())
 			intent.putExtra("need_refresh", true);
-		if(themeId != GDUTHelperApp.getInstance().getThemeId())
-			intent.putExtra("need_change_theme",true);
+		if (themeId != GDUTHelperApp.getInstance().getThemeId())
+			intent.putExtra("need_change_theme", true);
 		setResult(0, intent);
 		super.onBackPressed();
 	}

@@ -168,7 +168,7 @@ public class AppWidgetConfig extends BaseActivity implements AdapterView.OnItemS
 			adapter.putExtra("selection", mYearsSpinner.getSelectedItem().toString() + "-"
 					+ mTermsSpinner.getSelectedItem().toString());
 			WidgetConfigs widgetConfigs = GDUTHelperApp.getInstance().getAppWidgetConfigs();
-			if (widgetConfigs == null)
+			if (widgetConfigs == null || widgetConfigs.getWidgetConfigs() == null)
 				widgetConfigs = new WidgetConfigs();
 			widgetConfigs.putConfig(mAppWidgetId, mYearsSpinner.getSelectedItem().toString() + "-"
 					+ mTermsSpinner.getSelectedItem().toString());

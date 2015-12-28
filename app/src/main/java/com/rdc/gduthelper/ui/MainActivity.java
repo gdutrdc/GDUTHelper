@@ -11,10 +11,14 @@ import android.view.View;
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 
+import java.util.ArrayList;
+
 /**
  * Created by seasonyuu on 15/9/8.
  */
 public class MainActivity extends BaseActivity {
+	private ArrayList<View> boxList;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -24,7 +28,6 @@ public class MainActivity extends BaseActivity {
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 		getSupportActionBar().setHomeButtonEnabled(false);
-
 
 	}
 
@@ -48,7 +51,6 @@ public class MainActivity extends BaseActivity {
 				break;
 			case R.id.main_logout:
 				startActivity(new Intent(this, LoginActivity.class));
-				finish();
 				GDUTHelperApp.userXh = null;
 				GDUTHelperApp.userXm = null;
 				break;

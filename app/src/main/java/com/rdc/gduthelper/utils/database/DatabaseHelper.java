@@ -10,6 +10,8 @@ import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Exam;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by seasonyuu on 15/12/1.
@@ -59,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 
 	/**
-	 * @param xh 学号
+	 * @param xh        学号
 	 * @param selection 学年-学期 形如 2013-2014-1
 	 * @return
 	 */
@@ -84,6 +86,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			list.add(exam);
 		}
 		db.close();
+		Collections.sort(list, new Comparator<Exam>() {
+			@Override
+			public int compare(Exam lhs, Exam rhs) {
+				if (lhs.getExamCount() < rhs.getExamCount() || rhs.getExamCount() < 0)
+					return -1;
+				else if (lhs.getExamCount() > rhs.getExamCount() || lhs.getExamCount() < 0)
+					return 1;
+				return 0;
+			}
+		});
 		return list;
 	}
 

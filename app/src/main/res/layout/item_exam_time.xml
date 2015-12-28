@@ -72,16 +72,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text='@{exam.examCount>0&amp;&amp;exam.examCount&lt;366?@string/get_exam_time_leave:@string/get_exam_time_space}'/>
+                android:text='@{exam.examCount>=0&amp;&amp;exam.examCount&lt;366?@string/get_exam_time_leave:@string/get_exam_time_space}'/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:singleLine="true"
-                android:text='@{exam.examCount>0?(exam.examCount>=366?@string/get_exam_time_no_data:String.valueOf(exam.examCount)+@string/get_exam_time_day):@string/get_exam_time_past}'
+                android:text='@{exam.examCount>=0?(exam.examCount>=366?@string/get_exam_time_no_data:String.valueOf(exam.examCount)+@string/get_exam_time_day):@string/get_exam_time_past}'
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:textColor="@{exam.examCount>0&amp;&amp;exam.examCount&lt;366?(exam.examCount>5?(exam.examCount>10?(exam.examCount>20?@color/amber_500:@color/orange_500):@color/pink_500):@color/red_500):@color/blue_grey_500}"/>
+                android:textColor="@{exam.examCount>=0&amp;&amp;exam.examCount&lt;366?(exam.examCount>5?(exam.examCount>10?(exam.examCount>20?@color/amber_500:@color/orange_500):@color/pink_500):@color/red_500):@color/blue_grey_500}"/>
         </LinearLayout>
     </LinearLayout>
 </layout>

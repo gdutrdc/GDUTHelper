@@ -28,8 +28,8 @@
         </activity>
         <activity
             android:name=".ui.GetInformationActivity"
-            android:theme="@style/AppTheme.Blue"
-            android:label="@string/get_information"/>
+            android:label="@string/get_information"
+            android:theme="@style/AppTheme.Blue"/>
         <activity
             android:name=".ui.PictureActivity"
             android:label="@string/information_avatar"/>
@@ -45,15 +45,15 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".utils.appwidget.MyAppWidgetProvider">
+        <receiver android:name="com.rdc.gduthelper.utils.appwidget.MyAppWidgetProvider"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_exam_time">
             </meta-data>
-
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-            </intent-filter>
         </receiver>
         <service
             android:name=".utils.appwidget.WidgetService"

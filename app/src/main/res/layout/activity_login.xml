@@ -87,7 +87,7 @@
                 android:gravity="center"
                 android:onClick="onClick"
                 android:padding="8dp"
-                android:text="看不清换一张"
+                android:text="换一张"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
         </LinearLayout>

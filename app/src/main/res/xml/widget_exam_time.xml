@@ -8,6 +8,6 @@
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
     android:configure="com.rdc.gduthelper.ui.AppWidgetConfig"
-    android:updatePeriodMillis="28800000">
+    android:updatePeriodMillis="1800000">
 
 </appwidget-provider>
