@@ -12,9 +12,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/main_box_text_padding"
             android:alpha="0.8"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/main_box_text_padding"
             android:text="@string/information_manage"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:textColor="?attr/colorAccent"/>
@@ -34,7 +34,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:onClick="onClick"
                 app:cardBackgroundColor="@color/purple_500"
-                app:cardCornerRadius="@dimen/main_box_margin">
+                app:cardCornerRadius="4dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -43,6 +43,7 @@
                     android:padding="@dimen/main_box_text_padding"
                     android:text="@string/get_information"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="@dimen/main_box_text_size"
                     android:theme="@style/AppTheme.Dark"/>
             </android.support.v7.widget.CardView>
 
@@ -55,7 +56,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:onClick="onClick"
                 app:cardBackgroundColor="@color/indigo_500"
-                app:cardCornerRadius="@dimen/main_box_margin">
+                app:cardCornerRadius="4dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -64,6 +65,7 @@
                     android:padding="@dimen/main_box_text_padding"
                     android:text="@string/change_password"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="@dimen/main_box_text_size"
                     android:theme="@style/AppTheme.Dark"/>
             </android.support.v7.widget.CardView>
         </LinearLayout>
@@ -94,7 +96,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:onClick="onClick"
                 app:cardBackgroundColor="@color/blue_500"
-                app:cardCornerRadius="@dimen/main_box_margin">
+                app:cardCornerRadius="4dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -103,7 +105,8 @@
                     android:padding="@dimen/main_box_text_padding"
                     android:text="@string/get_grade"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/main_box_text_size"/>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -115,7 +118,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:onClick="onClick"
                 app:cardBackgroundColor="@color/teal_500"
-                app:cardCornerRadius="@dimen/main_box_margin">
+                app:cardCornerRadius="4dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -124,7 +127,8 @@
                     android:padding="@dimen/main_box_text_padding"
                     android:text="@string/get_exam_time"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/main_box_text_size"/>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -136,7 +140,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:onClick="onClick"
                 app:cardBackgroundColor="@color/green_500"
-                app:cardCornerRadius="@dimen/main_box_margin">
+                app:cardCornerRadius="4dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -145,7 +149,8 @@
                     android:padding="@dimen/main_box_text_padding"
                     android:text="@string/get_schedule"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/main_box_text_size"/>
             </android.support.v7.widget.CardView>
 
         </LinearLayout>
@@ -167,7 +172,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:onClick="onClick"
                 app:cardBackgroundColor="@color/yellow_700"
-                app:cardCornerRadius="@dimen/main_box_margin">
+                app:cardCornerRadius="4dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -176,7 +181,8 @@
                     android:padding="@dimen/main_box_text_padding"
                     android:text="@string/get_level_exam_grade"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/main_box_text_size"/>
             </android.support.v7.widget.CardView>
 
         </LinearLayout>

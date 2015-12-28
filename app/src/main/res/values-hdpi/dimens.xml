@@ -3,4 +3,5 @@
     <dimen name="main_box_size">96dp</dimen>
     <dimen name="main_box_margin">4dp</dimen>
     <dimen name="main_box_text_padding">16dp</dimen>
+    <dimen name="main_box_text_size">14sp</dimen>
 </resources>
