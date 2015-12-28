@@ -1,21 +1,18 @@
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:paddingBottom="56dp">
 
         <ImageView
             android:id="@+id/login_logo"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:alpha="0.8"
             android:src="@drawable/large_logo"/>
 
         <com.rengwuxian.materialedittext.MaterialEditText
@@ -74,7 +71,7 @@
                 android:id="@+id/check_code"
                 android:layout_width="75dp"
                 android:layout_height="30dp"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:clickable="true"
                 android:scaleType="centerCrop"/>
 
@@ -82,11 +79,11 @@
                 android:id="@+id/login_change_check_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
+                android:background="?selectableItemBackground"
                 android:clickable="true"
-                android:gravity="center"
+                android:gravity="bottom"
                 android:onClick="onClick"
-                android:padding="8dp"
+                android:padding="4dp"
                 android:text="换一张"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
@@ -103,10 +100,4 @@
 
     </RelativeLayout>
 
-
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/login_sb_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
-</RelativeLayout>
+</ScrollView>

@@ -67,10 +67,10 @@
         <item>活力蓝</item>
         <item>可爱粉</item>
     </string-array>
-    <string-array name="theme_values">
+    <integer-array name="theme_values">
         <item>0</item>
         <item>1</item>
-    </string-array>
+    </integer-array>
     <string name="remember_user_on">开启(下一次启动时记住账号密码)</string>
     <string name="remember_user_off">关闭(不再记住账号密码)</string>
     <string name="remember_user">记住账号密码</string>

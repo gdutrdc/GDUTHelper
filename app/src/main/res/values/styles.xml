@@ -1,14 +1,10 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"/>
 
     <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar"/>
 
-    <style name="AppTheme.Dark" parent="Theme.AppCompat">
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
+    <style name="AppTheme.Dark" parent="Theme.AppCompat"/>
 
     <style name="AppTheme.Blue">
         <item name="colorPrimary">@color/blue_500</item>

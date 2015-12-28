@@ -13,8 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="0.8"
-            android:paddingLeft="@dimen/main_box_text_padding"
-            android:paddingTop="@dimen/main_box_text_padding"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/main_box_text_padding"
             android:text="@string/information_manage"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:textColor="?attr/colorAccent"/>
@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="0.8"
-            android:paddingLeft="@dimen/main_box_text_padding"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:text="@string/information_query"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:textColor="?attr/colorAccent"/>

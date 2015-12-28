@@ -68,13 +68,16 @@ public class GDUTHelperApp extends Application {
 	}
 
 	public int getThemeId() {
-		int themeId = Integer.parseInt(sp.getString("theme", "-1"));
+		int themeId = sp.getInt("theme", -1);
 		switch (themeId) {
 			case 0:
 				themeId = R.style.AppTheme_Blue;
 				break;
 			case 1:
 				themeId = R.style.AppTheme_Pink;
+				break;
+			default:
+				themeId = R.style.AppTheme_Blue;
 				break;
 		}
 		return themeId;

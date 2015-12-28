@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_box_size">96dp</dimen>
+    <dimen name="main_box_margin">4dp</dimen>
+    <dimen name="main_box_text_padding">16dp</dimen>
+</resources>

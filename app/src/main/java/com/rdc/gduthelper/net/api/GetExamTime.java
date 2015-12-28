@@ -16,6 +16,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by seasonyuu on 15/11/26.
@@ -130,6 +132,16 @@ public class GetExamTime extends BaseRunnable {
 						exams.add(exam);
 						in.readLine();
 					}
+					Collections.sort(exams, new Comparator<Exam>() {
+						@Override
+						public int compare(Exam lhs, Exam rhs) {
+							if (lhs.getExamCount() < rhs.getExamCount() || rhs.getExamCount() < 0)
+								return -1;
+							else if (lhs.getExamCount() > rhs.getExamCount() || lhs.getExamCount() < 0)
+								return 1;
+							return 0;
+						}
+					});
 					if (s.contains("<td>选课课号</td><td>课程名称</td><td>姓名</td><td>考试时间</td><td>考试地点</td><td>考试形式</td><td>座位号</td><td>校区</td>")) {
 						isExam = true;
 						in.readLine();

@@ -51,7 +51,8 @@ public class GetInformationActivity extends BaseActivity implements View.OnClick
 		int themeId = GDUTHelperApp.getInstance().getThemeId();
 		if (themeId == R.style.AppTheme_Blue)
 			themeId = R.style.AppTheme_Blue_NoActionBar;
-		else themeId = R.style.AppTheme_Pink_NoActionBar;
+		else
+			themeId = R.style.AppTheme_Pink_NoActionBar;
 		setTheme(themeId);
 		setContentView(R.layout.activity_get_information);
 
