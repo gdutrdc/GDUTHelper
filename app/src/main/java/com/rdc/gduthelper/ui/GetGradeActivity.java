@@ -81,7 +81,7 @@ public class GetGradeActivity extends BaseActivity {
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 				if (position < adapter.getCount() && position >= 0) {
 					Grade grade = adapter.getItem(position);
-					String message = GDUTHelperApp.getInstance().getZBText();
+					String message = GDUTHelperApp.getSettings().getZBText();
 					StringBuffer sb = new StringBuffer(message);
 					String[] matches = new String[]{"$name", "$grade"};
 					for (String match : matches) {
@@ -254,7 +254,7 @@ public class GetGradeActivity extends BaseActivity {
 						public void onClick(DialogInterface dialog, int which) {
 							switch (which) {
 								case DialogInterface.BUTTON_POSITIVE:
-									GDUTHelperApp.getInstance().setZBText(
+									GDUTHelperApp.getSettings().setZBText(
 											((EditText) zbDialogView.findViewById(R.id.dialog_zb_content)).getText().toString());
 									break;
 								case DialogInterface.BUTTON_NEGATIVE:
@@ -266,7 +266,7 @@ public class GetGradeActivity extends BaseActivity {
 					zbDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", onClickListener);
 				}
 				((EditText) zbDialogView.findViewById(R.id.dialog_zb_content))
-						.setText(GDUTHelperApp.getInstance().getZBText());
+						.setText(GDUTHelperApp.getSettings().getZBText());
 				zbDialog.show();
 				return true;
 			case R.id.grade_default_sort:

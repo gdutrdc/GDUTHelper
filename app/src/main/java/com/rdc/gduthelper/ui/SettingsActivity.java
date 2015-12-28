@@ -2,7 +2,6 @@ package com.rdc.gduthelper.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.view.MenuItem;
 
 import com.rdc.gduthelper.R;
@@ -20,25 +19,18 @@ public class SettingsActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
 
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		if (getSupportActionBar() != null)
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
 					.replace(R.id.settings_content, new SettingsFragment()).commit();
 		}
 
-		needRefresh = GDUTHelperApp.getInstance().isUseDx();
-		themeId = GDUTHelperApp.getInstance().getThemeId();
+		needRefresh = GDUTHelperApp.getSettings().isUseDx();
+		themeId = GDUTHelperApp.getSettings().getThemeId();
 	}
 
-	public static class SettingsFragment extends PreferenceFragment {
-
-		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-			addPreferencesFromResource(R.xml.preference_main);
-		}
-	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -51,9 +43,9 @@ public class SettingsActivity extends BaseActivity {
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent();
-		if (needRefresh != GDUTHelperApp.getInstance().isUseDx())
+		if (needRefresh != GDUTHelperApp.getSettings().isUseDx())
 			intent.putExtra("need_refresh", true);
-		if (themeId != GDUTHelperApp.getInstance().getThemeId())
+		if (themeId != GDUTHelperApp.getSettings().getThemeId())
 			intent.putExtra("need_change_theme", true);
 		setResult(0, intent);
 		super.onBackPressed();

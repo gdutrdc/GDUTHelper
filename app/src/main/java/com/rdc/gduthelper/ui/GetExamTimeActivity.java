@@ -127,7 +127,7 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 				@Override
 				public void run() {
 					DatabaseHelper helper = new DatabaseHelper(GetExamTimeActivity.this);
-					String s = GDUTHelperApp.getInstance().getRememberUser();
+					String s = GDUTHelperApp.getSettings().getRememberUser();
 					if (s == null) {
 						noLocalToast();
 					} else {

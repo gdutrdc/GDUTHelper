@@ -55,7 +55,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				}
 			else if (msg.what == ApiHelper.LOGIN_SUCCESS) {
 				cancelDialog();
-				GDUTHelperApp.getInstance().rememberUser(
+				GDUTHelperApp.getSettings().rememberUser(
 						mEtUserXh.getText().toString(),
 						mEtPassword.getText().toString()
 				);
@@ -128,8 +128,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 			}
 		});
 
-		if (GDUTHelperApp.getInstance().needRememberUser()) {
-			String rememberData = GDUTHelperApp.getInstance().getRememberUser();
+		if (GDUTHelperApp.getSettings().needRememberUser()) {
+			String rememberData = GDUTHelperApp.getSettings().getRememberUser();
 			if (rememberData != null) {
 				String[] data = rememberData.split(";", 2);
 				mEtUserXh.setText(data[0]);
@@ -219,8 +219,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 			case 0:
 				boolean needRefresh = data.getBooleanExtra("need_refresh", false);
 				boolean needChangeTheme = data.getBooleanExtra("need_change_theme", false);
-				if (!GDUTHelperApp.getInstance().needRememberUser()) {
-					GDUTHelperApp.getInstance().rememberUser("", "");
+				if (!GDUTHelperApp.getSettings().needRememberUser()) {
+					GDUTHelperApp.getSettings().rememberUser("", "");
 				}
 				if (needChangeTheme) {
 					recreate();

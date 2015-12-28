@@ -77,7 +77,7 @@ public class AppWidgetConfig extends BaseActivity implements AdapterView.OnItemS
 
 	private void preDealData() {
 		try {
-			String s = GDUTHelperApp.getInstance().getRememberUser();
+			String s = GDUTHelperApp.getSettings().getRememberUser();
 			if (s == null) {
 				Toast.makeText(this, R.string.get_exam_time_no_local, Toast.LENGTH_SHORT).show();
 				finish();
@@ -167,12 +167,12 @@ public class AppWidgetConfig extends BaseActivity implements AdapterView.OnItemS
 			adapter.setData(Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME)));
 			adapter.putExtra("selection", mYearsSpinner.getSelectedItem().toString() + "-"
 					+ mTermsSpinner.getSelectedItem().toString());
-			WidgetConfigs widgetConfigs = GDUTHelperApp.getInstance().getAppWidgetConfigs();
+			WidgetConfigs widgetConfigs = GDUTHelperApp.getSettings().getAppWidgetConfigs();
 			if (widgetConfigs == null || widgetConfigs.getWidgetConfigs() == null)
 				widgetConfigs = new WidgetConfigs();
 			widgetConfigs.putConfig(mAppWidgetId, mYearsSpinner.getSelectedItem().toString() + "-"
 					+ mTermsSpinner.getSelectedItem().toString());
-			GDUTHelperApp.getInstance().saveAppWidgetConfigs(widgetConfigs);
+			GDUTHelperApp.getSettings().saveAppWidgetConfigs(widgetConfigs);
 			views.setRemoteAdapter(R.id.widget_exam_times, adapter);
 
 			appWidgetManager.updateAppWidget(mAppWidgetId, views);

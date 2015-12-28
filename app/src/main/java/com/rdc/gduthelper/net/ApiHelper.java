@@ -25,14 +25,14 @@ public class ApiHelper {
 	public static final int CHANGE_PSW_SUCCESS = 0x8;
 
 	public static String getURl(){
-		if(GDUTHelperApp.getInstance().isUseDx())
+		if(GDUTHelperApp.getSettings().isUseDx())
 			return URL_DX;
 		else
 			return URL_XYW;
 	}
 
 	public static String getHost(){
-		if(GDUTHelperApp.getInstance().isUseDx())
+		if(GDUTHelperApp.getSettings().isUseDx())
 			return HOST_DX;
 		else
 			return HOST_XYW;

@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 
 /**
@@ -20,7 +21,7 @@ public class BaseActivity extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		int themeId = GDUTHelperApp.getInstance().getThemeId();
+		int themeId = GDUTHelperApp.getSettings().getThemeId();
 		if (themeId != -1)
 			setTheme(themeId);
 		super.onCreate(savedInstanceState);
@@ -47,9 +48,10 @@ public class BaseActivity extends AppCompatActivity {
 	@Override
 	public void setContentView(View view) {
 		super.setContentView(view);
-
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setHomeButtonEnabled(true);
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			getSupportActionBar().setHomeButtonEnabled(true);
+		}
 	}
 
 	public void showProgressDialog(String message) {
@@ -67,7 +69,7 @@ public class BaseActivity extends AppCompatActivity {
 			warningDialog = new AlertDialog.Builder(this)
 					.setMessage(message)
 					.setTitle("警告")
-					.setPositiveButton("确定", onClickListener)
+					.setPositiveButton(R.string.ensure, onClickListener)
 					.create();
 		else {
 			warningDialog.setMessage(message);

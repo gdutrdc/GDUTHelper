@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <ListPreference
-        android:entries="@array/theme_array"
-        android:entryValues="@array/theme_values"
+    <Preference
         android:key="@string/theme_key"
-        android:defaultValue="0"
-        android:summary="%s"
-        android:title="主题"/>
+        android:title="@string/theme"/>
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="@string/remember_user_key"

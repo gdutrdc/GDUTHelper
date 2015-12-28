@@ -63,8 +63,8 @@ public class MainActivity extends BaseActivity {
 		if (requestCode == 0) {
 			boolean needRefresh = data.getBooleanExtra("need_refresh", false);
 			boolean needChangeTheme = data.getBooleanExtra("need_change_theme", false);
-			if (!GDUTHelperApp.getInstance().needRememberUser()) {
-				GDUTHelperApp.getInstance().rememberUser("", "");
+			if (!GDUTHelperApp.getSettings().needRememberUser()) {
+				GDUTHelperApp.getSettings().rememberUser("", "");
 			}
 			if (needChangeTheme) {
 				recreate();
@@ -73,7 +73,7 @@ public class MainActivity extends BaseActivity {
 			if (needRefresh) {
 				new AlertDialog.Builder(this)
 						.setMessage("您当前修改了要访问的URL，请重新登录")
-						.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+						.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								startActivity(new Intent(MainActivity.this, LoginActivity.class));

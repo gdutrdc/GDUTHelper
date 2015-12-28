@@ -23,7 +23,7 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
 	public ListRemoteViewsFactory(Context context, Intent intent) {
 		mContext = context;
 		String selection = intent.getStringExtra("selection");
-		String[] data = GDUTHelperApp.getInstance().getRememberUser().split(";", 2);
+		String[] data = GDUTHelperApp.getSettings().getRememberUser().split(";", 2);
 		String xh = data[0];
 		DatabaseHelper helper = new DatabaseHelper(context);
 		mExams = helper.getExamTimes(xh, selection);

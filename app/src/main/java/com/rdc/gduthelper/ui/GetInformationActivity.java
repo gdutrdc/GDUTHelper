@@ -48,7 +48,7 @@ public class GetInformationActivity extends BaseActivity implements View.OnClick
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		int themeId = GDUTHelperApp.getInstance().getThemeId();
+		int themeId = GDUTHelperApp.getSettings().getThemeId();
 		if (themeId == R.style.AppTheme_Blue)
 			themeId = R.style.AppTheme_Blue_NoActionBar;
 		else
