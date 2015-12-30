@@ -52,7 +52,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
-            android:gravity="bottom"
             android:orientation="horizontal">
 
             <com.rengwuxian.materialedittext.MaterialEditText
@@ -71,6 +70,7 @@
                 android:id="@+id/check_code"
                 android:layout_width="75dp"
                 android:layout_height="30dp"
+                android:layout_gravity="bottom"
                 android:layout_margin="4dp"
                 android:clickable="true"
                 android:scaleType="centerCrop"/>
@@ -79,11 +79,12 @@
                 android:id="@+id/login_change_check_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="4dp"
                 android:background="?selectableItemBackground"
                 android:clickable="true"
-                android:gravity="bottom"
                 android:onClick="onClick"
-                android:padding="4dp"
+                android:padding="6dp"
                 android:text="换一张"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
