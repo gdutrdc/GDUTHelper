@@ -22,8 +22,8 @@ public class Settings {
 	private SharedPreferences mSharedPreferences;
 
 	public Settings(Context context) {
-		mSharedPreferences = context
-				.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
+		mSharedPreferences = context.getSharedPreferences(
+				context.getPackageName() + "_preferences", Context.MODE_MULTI_PROCESS);
 	}
 
 

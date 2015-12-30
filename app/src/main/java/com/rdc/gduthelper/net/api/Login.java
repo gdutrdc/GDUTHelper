@@ -110,6 +110,9 @@ public class Login extends BaseRunnable {
 					System.out.print(sb.toString());
 					if (callback != null)
 						callback.onCall(failedTips);
+				} else if (responseURL.equals(ApiHelper.getURl() + "zdy.htm?aspxerrorpath=/default2.aspx")) {
+					if (callback != null)
+						callback.onCall("校园网大姨妈了 = =");
 				}
 			} else if (callback != null) {
 				callback.onCall(new Exception("Request Failed : code " + responseCode));

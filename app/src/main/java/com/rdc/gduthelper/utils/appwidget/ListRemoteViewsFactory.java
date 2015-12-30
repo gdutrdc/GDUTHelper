@@ -35,7 +35,6 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
 
 	@Override
 	public void onDataSetChanged() {
-
 	}
 
 	@Override

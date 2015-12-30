@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatSpinner;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -168,7 +169,7 @@ public class AppWidgetConfig extends BaseActivity implements AdapterView.OnItemS
 			adapter.putExtra("selection", mYearsSpinner.getSelectedItem().toString() + "-"
 					+ mTermsSpinner.getSelectedItem().toString());
 			WidgetConfigs widgetConfigs = GDUTHelperApp.getSettings().getAppWidgetConfigs();
-			if (widgetConfigs == null || widgetConfigs.getWidgetConfigs() == null)
+			if (widgetConfigs == null)
 				widgetConfigs = new WidgetConfigs();
 			widgetConfigs.putConfig(mAppWidgetId, mYearsSpinner.getSelectedItem().toString() + "-"
 					+ mTermsSpinner.getSelectedItem().toString());
@@ -176,6 +177,7 @@ public class AppWidgetConfig extends BaseActivity implements AdapterView.OnItemS
 			views.setRemoteAdapter(R.id.widget_exam_times, adapter);
 
 			appWidgetManager.updateAppWidget(mAppWidgetId, views);
+			Log.e("app widget", mAppWidgetId + "");
 			Intent resultValue = new Intent();
 			resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 			setResult(RESULT_OK, resultValue);

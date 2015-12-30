@@ -96,6 +96,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				return 0;
 			}
 		});
+		cursor.close();
 		return list;
 	}
 
