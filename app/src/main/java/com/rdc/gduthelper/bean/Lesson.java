@@ -3,7 +3,7 @@ package com.rdc.gduthelper.bean;
 /**
  * Created by seasonyuu on 15/8/28.
  */
-public class Grade implements Cloneable {
+public class Lesson implements Cloneable {
 	private String lessonCode;//课程代码
 	private String lessonName;//课程名称
 	private String lessonType;//课程性质

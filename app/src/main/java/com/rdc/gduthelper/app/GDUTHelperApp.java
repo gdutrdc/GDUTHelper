@@ -2,7 +2,10 @@ package com.rdc.gduthelper.app;
 
 import android.app.Application;
 
+import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.utils.Settings;
+
+import java.util.ArrayList;
 
 /**
  * Created by seasonyuu on 15/8/28.
@@ -15,6 +18,8 @@ public class GDUTHelperApp extends Application {
 
 	private static GDUTHelperApp mApplication;
 
+	private static ArrayList<Lesson> evaluationList;
+
 	private static Settings mSettings;
 
 	@Override
@@ -22,6 +27,14 @@ public class GDUTHelperApp extends Application {
 		super.onCreate();
 		mApplication = this;
 		mSettings = new Settings(this);
+	}
+
+	public static ArrayList<Lesson> getEvaluationList() {
+		return evaluationList;
+	}
+
+	public static void setEvaluationList(ArrayList<Lesson> list) {
+		evaluationList = list;
 	}
 
 	public static GDUTHelperApp getInstance() {

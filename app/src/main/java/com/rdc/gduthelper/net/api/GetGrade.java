@@ -3,7 +3,7 @@ package com.rdc.gduthelper.net.api;
 import android.util.Log;
 
 import com.rdc.gduthelper.app.GDUTHelperApp;
-import com.rdc.gduthelper.bean.Grade;
+import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
 
@@ -51,16 +51,8 @@ public class GetGrade extends BaseRunnable {
 			HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(
 					ApiHelper.getURl() + "xscj.aspx?xh=" + GDUTHelperApp.userXh + "&xm=" + GDUTHelperApp.userXm + "&gnmkdm=N121605").openConnection();
 			httpURLConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
-//			httpURLConnection.addRequestProperty("Host", ApiHelper.getHost());
-//			httpURLConnection.addRequestProperty("Accept-Encoding", "gzip, deflate");
-//			httpURLConnection.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-//			httpURLConnection.addRequestProperty("Cache-Control", "max-age=0");
 			httpURLConnection.addRequestProperty("Referer", ApiHelper.getURl()
 					+ "xscj.aspx?xh=" + GDUTHelperApp.userXh + "&xm=" + GDUTHelperApp.userXm + "&gnmkdm=N121605");
-//			httpURLConnection.addRequestProperty("Connection", "keep-alive");
-//			httpURLConnection.addRequestProperty("Origin", ApiHelper.getURl());
-//			httpURLConnection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-//			httpURLConnection.addRequestProperty("Upgrade-Insecure-Requests", "1");
 			httpURLConnection.setRequestMethod("POST");
 			httpURLConnection.setDoOutput(true);
 			httpURLConnection.setInstanceFollowRedirects(false);
@@ -92,9 +84,13 @@ public class GetGrade extends BaseRunnable {
 
 			int responseCode = httpURLConnection.getResponseCode();// 调用此方法就不必再使用conn.connect()方法
 			if (responseCode == 200) {
-				if (httpURLConnection.getURL().toString().equals(ApiHelper.getURl() + "xs_main.aspx?xh=3113006101")) {
+				String url = httpURLConnection.getURL().toString();
+				if (url.equals(ApiHelper.getURl() + "xs_main.aspx?xh=3113006101")) {
 					Log.d(TAG, "getGrade success");
-				} else if (httpURLConnection.getURL().toString().equals(ApiHelper.getURl() + "zdy.htm?aspxerrorpath=/default2.aspx")) {
+				} else if (url.equals(ApiHelper.getURl() + "zdy.htm?aspxerrorpath=/default2.aspx")) {
+					if (callback != null)
+						callback.onCall("校园网大姨妈啦！");
+				} else if (url.equals(ApiHelper.getURl() + "xs_main.aspx?xh=3113006101")) {
 
 				} else {
 					Log.d(TAG, "the url is to \"" + httpURLConnection.getURL().toString() + "\"");
@@ -104,7 +100,7 @@ public class GetGrade extends BaseRunnable {
 				String s;
 				StringBuffer sb = new StringBuffer();
 				boolean isGrade = false;
-				ArrayList<Grade> gradeList = new ArrayList<Grade>();
+				ArrayList<Lesson> lessonList = new ArrayList<Lesson>();
 				while ((s = in.readLine()) != null) {
 					sb.append(s);
 					sb.append("\n");
@@ -114,14 +110,14 @@ public class GetGrade extends BaseRunnable {
 							break;
 						}
 						String[] datas = s.split("</td>");
-						Grade grade = new Grade();
-						grade.setLessonCode(datas[0].substring(6, datas[0].length()));
-						grade.setLessonName(datas[1].substring(4, datas[1].length()));
-						grade.setLessonType(datas[2].substring(4, datas[2].length()));
-						grade.setLessonGrade(datas[3].substring(4, datas[3].length()));
-						grade.setLessonBelong(datas[4].substring(4, datas[4].length()));
-						grade.setLessonCredit(datas[7].substring(4, datas[7].length()));
-						gradeList.add(grade);
+						Lesson lesson = new Lesson();
+						lesson.setLessonCode(datas[0].substring(6, datas[0].length()));
+						lesson.setLessonName(datas[1].substring(4, datas[1].length()));
+						lesson.setLessonType(datas[2].substring(4, datas[2].length()));
+						lesson.setLessonGrade(datas[3].substring(4, datas[3].length()));
+						lesson.setLessonBelong(datas[4].substring(4, datas[4].length()));
+						lesson.setLessonCredit(datas[7].substring(4, datas[7].length()));
+						lessonList.add(lesson);
 						in.readLine();
 					}
 					if (s.contains("<td>课程代码</td><td>课程名称</td><td>课程性质</td><td>成绩</td><td>课程归属</td><td>补考成绩</td><td>重修成绩</td><td>学分</td><td>辅修标记</td>")) {
@@ -132,10 +128,10 @@ public class GetGrade extends BaseRunnable {
 				in.close();
 
 				if (callback != null)
-					callback.onCall(gradeList);
+					callback.onCall(lessonList);
 			} else {
 				Log.i(TAG, "the url is to \"" + httpURLConnection.getURL().toString() + "\"");
-				Log.i(TAG, "访问失败" + responseCode);
+				Log.i(TAG, "failed code " + responseCode);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -9,6 +9,8 @@
         android:id="@+id/widget_exam_times"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
         android:divider="@null"
         android:dividerHeight="0dp"/>
 </FrameLayout>

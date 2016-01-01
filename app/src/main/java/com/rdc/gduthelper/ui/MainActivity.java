@@ -7,9 +7,13 @@ import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
+import com.rdc.gduthelper.bean.Lesson;
 
 import java.util.ArrayList;
 
@@ -17,7 +21,6 @@ import java.util.ArrayList;
  * Created by seasonyuu on 15/9/8.
  */
 public class MainActivity extends BaseActivity {
-	private ArrayList<View> boxList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,14 +29,30 @@ public class MainActivity extends BaseActivity {
 		View view = View.inflate(this, R.layout.activity_main, null);
 		setContentView(view);
 
-		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-		getSupportActionBar().setHomeButtonEnabled(false);
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+			getSupportActionBar().setHomeButtonEnabled(false);
+		}
 
 	}
 
 	@Override
 	protected void onResume() {
 		invalidateOptionsMenu();
+		ArrayList<Lesson> evaluationList = GDUTHelperApp.getEvaluationList();
+		if (evaluationList != null && evaluationList.size() > 0) {
+			ViewGroup evaluation = (ViewGroup) findViewById(R.id.main_evaluation);
+			View textView = evaluation.getChildAt(0);
+			AlphaAnimation animation = new AlphaAnimation(0, 1f);
+			animation.setRepeatMode(Animation.REVERSE);
+			animation.setRepeatCount(-1);
+			animation.setDuration(500);
+			textView.startAnimation(animation);
+		} else {
+			ViewGroup evaluation = (ViewGroup) findViewById(R.id.main_evaluation);
+			View textView = evaluation.getChildAt(0);
+			textView.clearAnimation();
+		}
 		super.onResume();
 	}
 
@@ -106,6 +125,8 @@ public class MainActivity extends BaseActivity {
 			return;
 		}
 		switch (view.getId()) {
+			case R.id.main_evaluation:
+				break;
 			case R.id.main_get_grade:
 				startActivity(new Intent(this, GetGradeActivity.class));
 				break;

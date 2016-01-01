@@ -76,6 +76,18 @@ public class IntoGrade extends BaseRunnable {
 			}
 			in.close();
 			System.out.print(sb.toString());
+			if (sb.toString().contains("<script language='javascript'>alert('")) {
+				String warning = sb.toString();
+
+				result = null;
+				try {
+					result = warning.split(">")[1].split(";")[0].split("'")[1];
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if (result == null)
+					result = "unknown error.";
+			}
 			if (callback != null)
 				callback.onCall(result);
 

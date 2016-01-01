@@ -15,6 +15,7 @@
     <string name="login">登录</string>
     <string name="logout">注销</string>
     <string name="ensure">确定</string>
+    <string name="tips">提示</string>
 
     <!-- 主界面 -->
     <string name="information_manage">信息维护</string>
@@ -22,6 +23,7 @@
     <string name="get_grade">查询成绩</string>
     <string name="get_information">查询个人信息</string>
     <string name="change_password">修改密码</string>
+    <string name="evaluation">教学质量评价</string>
     <string name="get_exam_time">查询考试时间</string>
     <string name="get_schedule">查询个人课表</string>
     <string name="done">完成</string>
@@ -86,5 +88,5 @@
     <string name="test_username"></string>
     <string name="test_password"></string>
 
-    <string name="default_zb_text">我特么这次考试$name才得了$grade！</string>
+    <string name="default_zb_text">我特么这次考试$name才得了$lesson！</string>
 </resources>

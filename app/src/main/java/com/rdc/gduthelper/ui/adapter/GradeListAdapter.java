@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.rdc.gduthelper.R;
-import com.rdc.gduthelper.bean.Grade;
+import com.rdc.gduthelper.bean.Lesson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,13 +27,13 @@ public class GradeListAdapter extends BaseAdapter {
 	private Context context;
 	private int mSortType = DEFAULT_SORT;
 
-	private ArrayList<Grade> list;
-	private ArrayList<Grade> sortList;
+	private ArrayList<Lesson> list;
+	private ArrayList<Lesson> sortList;
 
 	public GradeListAdapter(Context context) {
 		this.context = context;
 		list = new ArrayList<>();
-		sortList = (ArrayList<Grade>) list.clone();
+		sortList = (ArrayList<Lesson>) list.clone();
 	}
 
 	@Override
@@ -53,8 +53,8 @@ public class GradeListAdapter extends BaseAdapter {
 			final Comparator<Object> comparator = new Comparator<Object>() {
 				@Override
 				public int compare(Object lhs0, Object rhs0) {
-					Grade lhs = (Grade) lhs0;
-					Grade rhs = (Grade) rhs0;
+					Lesson lhs = (Lesson) lhs0;
+					Lesson rhs = (Lesson) rhs0;
 					double compareLeft = 0;
 					double compareRight = 0;
 					switch (mSortType) {
@@ -88,18 +88,18 @@ public class GradeListAdapter extends BaseAdapter {
 			Arrays.sort(grades, comparator);
 			sortList = new ArrayList<>();
 			for (int i = 0; i < grades.length; i++)
-				sortList.add((Grade) grades[i]);
+				sortList.add((Lesson) grades[i]);
 		}
 		notifyDataSetChanged();
 	}
 
-	public void setData(ArrayList<Grade> list) {
+	public void setData(ArrayList<Lesson> list) {
 		this.list = list;
-		sortList = (ArrayList<Grade>) list.clone();
+		sortList = (ArrayList<Lesson>) list.clone();
 	}
 
 	@Override
-	public Grade getItem(int position) {
+	public Lesson getItem(int position) {
 		return list.get(position);
 	}
 
@@ -139,11 +139,11 @@ public class GradeListAdapter extends BaseAdapter {
 			tvLessonType = (TextView) itemView.findViewById(R.id.item_grade_type);
 		}
 
-		public void setGrade(Grade grade) {
-			tvLessonName.setText(grade.getLessonName());
-			tvLessonGrade.setText(grade.getLessonGrade());
-			tvLessonType.setText(grade.getLessonType());
-			tvLessonCredit.setText(grade.getLessonCredit());
+		public void setGrade(Lesson lesson) {
+			tvLessonName.setText(lesson.getLessonName());
+			tvLessonGrade.setText(lesson.getLessonGrade());
+			tvLessonType.setText(lesson.getLessonType());
+			tvLessonCredit.setText(lesson.getLessonCredit());
 		}
 	}
 }

@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
-import com.rdc.gduthelper.bean.Grade;
+import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetGrade;
 import com.rdc.gduthelper.net.api.IntoGrade;
@@ -80,16 +80,16 @@ public class GetGradeActivity extends BaseActivity {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 				if (position < adapter.getCount() && position >= 0) {
-					Grade grade = adapter.getItem(position);
+					Lesson lesson = adapter.getItem(position);
 					String message = GDUTHelperApp.getSettings().getZBText();
 					StringBuffer sb = new StringBuffer(message);
 					String[] matches = new String[]{"$name", "$grade"};
 					for (String match : matches) {
 						String data = null;
 						if (match.equals("$name"))
-							data = grade.getLessonName();
+							data = lesson.getLessonName();
 						else if (match.equals("$grade"))
-							data = grade.getLessonGrade();
+							data = lesson.getLessonGrade();
 						while (sb.indexOf(match) != -1) {
 							sb.replace(sb.indexOf(match), sb.indexOf(match) + match.length(), data);
 						}
@@ -123,56 +123,68 @@ public class GetGradeActivity extends BaseActivity {
 				if (msg.what == 0) {
 					progressDialog.cancel();
 					String[] spinnerData = ((String) msg.obj).split(";");
-					Calendar calendar = Calendar.getInstance();
-					int section = -1;
+					if (spinnerData.length == 1) {
+						new AlertDialog.Builder(GetGradeActivity.this)
+								.setTitle(R.string.tips)
+								.setMessage(msg.obj.toString())
+								.setNegativeButton(R.string.ensure,
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(DialogInterface dialog, int which) {
+												finish();
+											}
+										}).show();
+					} else {
+						Calendar calendar = Calendar.getInstance();
+						int section = -1;
 
-					ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(GetGradeActivity.this, R.layout.spinner_item);
-					yearAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-					String[] years = spinnerData[0].split(",");
-					for (int i = 0; i < years.length; i++) {
-						yearAdapter.add(years[i]);
-						if (section == -1 && years[i].contains(calendar.get(Calendar.YEAR) + "")) {
-							section = i;
+						ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(GetGradeActivity.this, R.layout.spinner_item);
+						yearAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+						String[] years = spinnerData[0].split(",");
+						for (int i = 0; i < years.length; i++) {
+							yearAdapter.add(years[i]);
+							if (section == -1 && years[i].contains(calendar.get(Calendar.YEAR) + "")) {
+								section = i;
+							}
+						}
+						mYearSpinner.setAdapter(yearAdapter);
+						if (section != -1) {
+							mYearSpinner.setSelection(section);
+						}
+
+						ArrayAdapter<String> termAdapter = new ArrayAdapter<String>(GetGradeActivity.this, R.layout.spinner_item);
+						termAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+						for (String s : spinnerData[1].split(","))
+							termAdapter.add(s);
+						mTermSpinner.setAdapter(termAdapter);
+
+						if (firstLoad) {
+							firstLoad = false;
+							Runnable runnable = new GetGrade(null, null, new BaseRunnable.GGCallback() {
+								@Override
+								public void onCall(Object obj) {
+									Message msg = Message.obtain();
+									msg.what = 1;
+									msg.obj = obj;
+									handler.sendMessage(msg);
+								}
+							});
+							new Thread(runnable).start();
 						}
 					}
-					mYearSpinner.setAdapter(yearAdapter);
-					if (section != -1) {
-						mYearSpinner.setSelection(section);
-					}
-
-					ArrayAdapter<String> termAdapter = new ArrayAdapter<String>(GetGradeActivity.this, R.layout.spinner_item);
-					termAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-					for (String s : spinnerData[1].split(","))
-						termAdapter.add(s);
-					mTermSpinner.setAdapter(termAdapter);
-
-					if (firstLoad) {
-						firstLoad = false;
-						Runnable runnable = new GetGrade(null, null, new BaseRunnable.GGCallback() {
-							@Override
-							public void onCall(Object obj) {
-								Message msg = Message.obtain();
-								msg.what = 1;
-								msg.obj = obj;
-								handler.sendMessage(msg);
-							}
-						});
-						new Thread(runnable).start();
-					}
-
 				} else if (msg.what == 1) {
 					progressDialog.cancel();
 					if (msg.obj != null) {
-						ArrayList<Grade> list = (ArrayList<Grade>) msg.obj;
+						ArrayList<Lesson> list = (ArrayList<Lesson>) msg.obj;
 						if (list.size() > 0) {
 							double points = 0, credits = 0;
-							for (Grade grade : list) {
+							for (Lesson lesson : list) {
 								double point = Double.parseDouble(
-										String.format("%.2f", grade.calculatePoint() * Double.parseDouble(grade.getLessonCredit())));
+										String.format("%.2f", lesson.calculatePoint() * Double.parseDouble(lesson.getLessonCredit())));
 								points += point;
-								if (point == 0 && !grade.getLessonBelong().equals("&nbsp;"))
+								if (point == 0 && !lesson.getLessonBelong().equals("&nbsp;"))
 									continue;
-								credits += Double.parseDouble(grade.getLessonCredit());
+								credits += Double.parseDouble(lesson.getLessonCredit());
 							}
 							tvGradePoint.setText("平均绩点: " + String.format("%.3f", Double.parseDouble(
 									String.format("%.2f", points)) / credits));

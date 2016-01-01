@@ -110,7 +110,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/main_get_exam_time"
+                android:id="@+id/main_evaluation"
                 android:layout_width="@dimen/main_box_size"
                 android:layout_height="@dimen/main_box_size"
                 android:layout_margin="@dimen/main_box_margin"
@@ -125,14 +125,14 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:padding="@dimen/main_box_text_padding"
-                    android:text="@string/get_exam_time"
+                    android:text="@string/evaluation"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/main_box_text_size"/>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/main_get_schedule"
+                android:id="@+id/main_get_exam_time"
                 android:layout_width="@dimen/main_box_size"
                 android:layout_height="@dimen/main_box_size"
                 android:layout_margin="@dimen/main_box_margin"
@@ -147,11 +147,12 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:padding="@dimen/main_box_text_padding"
-                    android:text="@string/get_schedule"
+                    android:text="@string/get_exam_time"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/main_box_text_size"/>
             </android.support.v7.widget.CardView>
+
 
         </LinearLayout>
 
@@ -164,6 +165,28 @@
             android:paddingRight="@dimen/main_box_text_padding">
 
             <android.support.v7.widget.CardView
+                android:id="@+id/main_get_schedule"
+                android:layout_width="@dimen/main_box_size"
+                android:layout_height="@dimen/main_box_size"
+                android:layout_margin="@dimen/main_box_margin"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:onClick="onClick"
+                app:cardBackgroundColor="@color/amber_500"
+                app:cardCornerRadius="4dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="@dimen/main_box_text_padding"
+                    android:text="@string/get_schedule"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/main_box_text_size"/>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
                 android:id="@+id/main_get_level_exam_grade"
                 android:layout_width="@dimen/main_box_size"
                 android:layout_height="@dimen/main_box_size"
@@ -171,7 +194,7 @@
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:onClick="onClick"
-                app:cardBackgroundColor="@color/yellow_700"
+                app:cardBackgroundColor="@color/red_500"
                 app:cardCornerRadius="4dp">
 
                 <TextView

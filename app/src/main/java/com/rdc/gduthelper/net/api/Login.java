@@ -3,6 +3,7 @@ package com.rdc.gduthelper.net.api;
 import android.util.Log;
 
 import com.rdc.gduthelper.app.GDUTHelperApp;
+import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
 
@@ -14,6 +15,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 /**
  * Created by seasonyuu on 15/8/28.
@@ -40,18 +42,12 @@ public class Login extends BaseRunnable {
 			HttpURLConnection httpURLConnection
 					= (HttpURLConnection) new URL(ApiHelper.getURl() + "default2.aspx").openConnection();
 			httpURLConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
-//			httpURLConnection.addRequestProperty("Host", ApiHelper.getHost());
-//			httpURLConnection.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
 			httpURLConnection.addRequestProperty("Referer", ApiHelper.getURl() + "default2.aspx");
-//			httpURLConnection.addRequestProperty("Connection", "keep-alive");
-//			httpURLConnection.addRequestProperty("Origin", ApiHelper.getURl());
-//			httpURLConnection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 			httpURLConnection.addRequestProperty("Upgrade-Insecure-Requests", "1");
 			httpURLConnection.setRequestMethod("POST");
 			httpURLConnection.setDoOutput(true);
 			httpURLConnection.setDoInput(true);
 			httpURLConnection.setUseCaches(false);
-//			httpURLConnection.setInstanceFollowRedirects(false);
 			String data = "__VIEWSTATE="
 					+ URLEncoder.encode(viewState, "iso-8859-1")
 					+ "&txtUserName=" + userName
@@ -77,18 +73,25 @@ public class Login extends BaseRunnable {
 				if (responseURL.equals(ApiHelper.getURl() + "xs_main.aspx?xh=" + userName)) {
 					//登录成功
 					Log.d(TAG, "login success");
-					//<span id="xhxm">余晰然同学</span></em>
 					InputStreamReader reader = new InputStreamReader(
 							new BufferedInputStream(httpURLConnection.getInputStream()), "gbk");
 					BufferedReader in = new BufferedReader(reader);
 					String s;
+					StringBuffer sb = new StringBuffer();
 					while ((s = in.readLine()) != null) {
+						sb.append(s);
+						sb.append("\n");
 						if (s.contains("<span id=\"xhxm\">")) {
 							String[] temps = s.split(">");
 							GDUTHelperApp.userXm = URLEncoder.encode(temps[1].split("<")[0], "utf-8");
-							break;
+						}
+						if (s.contains("<span class='down'> 教学质量评价</span>")) {
+							String evaluationLine = getEvaluationLine(s.split("<li class='top'>"));
+							ArrayList<Lesson> lessonList = getLessonList(evaluationLine);
+							GDUTHelperApp.setEvaluationList(lessonList);
 						}
 					}
+					System.out.println(sb.toString());
 					if (callback != null) {
 						callback.onCall(null);
 					}
@@ -110,7 +113,8 @@ public class Login extends BaseRunnable {
 					System.out.print(sb.toString());
 					if (callback != null)
 						callback.onCall(failedTips);
-				} else if (responseURL.equals(ApiHelper.getURl() + "zdy.htm?aspxerrorpath=/default2.aspx")) {
+				} else if (responseURL.equals(ApiHelper.getURl()
+						+ "zdy.htm?aspxerrorpath=/default2.aspx")) {
 					if (callback != null)
 						callback.onCall("校园网大姨妈了 = =");
 				}
@@ -122,5 +126,30 @@ public class Login extends BaseRunnable {
 			if (callback != null)
 				callback.onCall(e);
 		}
+	}
+
+	private String getEvaluationLine(String[] array) {
+		for (String s : array) {
+			if (s.contains("教学质量评价")) {
+				return s;
+			}
+		}
+		return null;
+	}
+
+	private ArrayList<Lesson> getLessonList(String s) {
+		ArrayList<Lesson> lessonList = new ArrayList<>();
+		String[] split = s.split("<li>");
+		for (String string : split) {
+			if (!string.contains("xsjxpj.aspx?xkkh"))
+				continue;
+			Lesson lesson = new Lesson();
+			int indexXk = string.indexOf("xkkh=") + 5;
+			lesson.setLessonCode(string.substring(indexXk, indexXk + 33));
+			lesson.setLessonName(string.substring(string.indexOf("GetMc('") + 7, string.indexOf("');\"")));
+			System.out.println(lesson.toString());
+			lessonList.add(lesson);
+		}
+		return lessonList;
 	}
 }
