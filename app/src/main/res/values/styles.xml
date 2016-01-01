@@ -41,4 +41,9 @@
         <item name="borderWidth">0dp</item>
     </style>
 
+    <style name="EvaluationFABToolbarStyle">
+        <item name="bottomMargin">0dp</item>
+        <item name="rightMargin">0dp</item>
+    </style>
+
 </resources>

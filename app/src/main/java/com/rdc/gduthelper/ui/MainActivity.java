@@ -119,14 +119,15 @@ public class MainActivity extends BaseActivity {
 				return;
 			case R.id.main_get_schedule:
 				return;
+			case R.id.main_evaluation:
+				startActivity(new Intent(this, EvaluationActivity.class));
+				return;
 		}
 		if (!GDUTHelperApp.isLogin()) {
 			startActivity(new Intent(this, LoginActivity.class));
 			return;
 		}
 		switch (view.getId()) {
-			case R.id.main_evaluation:
-				break;
 			case R.id.main_get_grade:
 				startActivity(new Intent(this, GetGradeActivity.class));
 				break;

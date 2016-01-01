@@ -10,4 +10,9 @@
         <item name="android:layout_margin">16dp</item>
         <item name="borderWidth">0dp</item>
     </style>
+
+    <style name="EvaluationFABToolbarStyle">
+        <item name="rightMargin">16dp</item>
+        <item name="bottomMargin">16dp</item>
+    </style>
 </resources>
