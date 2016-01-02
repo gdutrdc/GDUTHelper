@@ -27,6 +27,7 @@
     <string name="get_exam_time">查询考试时间</string>
     <string name="get_schedule">查询个人课表</string>
     <string name="done">完成</string>
+    <string name="select_all_or_not">全选/反选</string>
     <string name="get_level_exam_grade">查询等级考试成绩</string>
 
     <!-- 查询考试时间 -->

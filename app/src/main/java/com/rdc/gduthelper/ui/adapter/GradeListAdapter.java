@@ -126,7 +126,7 @@ public class GradeListAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	public static class ViewHolder {
+	private static class ViewHolder {
 		private TextView tvLessonName;
 		private TextView tvLessonType;
 		private TextView tvLessonGrade;
