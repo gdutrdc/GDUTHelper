@@ -91,7 +91,6 @@ public class Login extends BaseRunnable {
 							GDUTHelperApp.setEvaluationList(lessonList);
 						}
 					}
-					System.out.println(sb.toString());
 					if (callback != null) {
 						callback.onCall(null);
 					}
@@ -110,7 +109,6 @@ public class Login extends BaseRunnable {
 							+ "<script language='javascript' defer>alert('".length();
 					int indexEnd = sb.indexOf("');document.getElementById(");
 					String failedTips = sb.substring(indexStart, indexEnd);
-					System.out.print(sb.toString());
 					if (callback != null)
 						callback.onCall(failedTips);
 				} else if (responseURL.equals(ApiHelper.getURl()

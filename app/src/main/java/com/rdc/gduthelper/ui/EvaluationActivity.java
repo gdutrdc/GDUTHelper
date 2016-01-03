@@ -1,9 +1,12 @@
 package com.rdc.gduthelper.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +18,9 @@ import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Evaluation;
 import com.rdc.gduthelper.bean.Lesson;
+import com.rdc.gduthelper.net.BaseRunnable;
+import com.rdc.gduthelper.net.api.DoEvaluation;
+import com.rdc.gduthelper.net.api.IntoEvaluation;
 import com.rdc.gduthelper.ui.adapter.EvaluationAdapter;
 
 import java.util.ArrayList;
@@ -28,6 +34,8 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
 	private FloatingActionButton mFAB;
 	private ViewGroup mScoreView;
 	private EvaluationAdapter mAdapter;
+
+	private int done = 0;
 
 	private FABToolbarLayout mFabToolbarLayout;
 
@@ -44,19 +52,19 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
 			ArrayList<Lesson> lessons = new ArrayList<>();
 			Lesson l1 = new Lesson();
 			l1.setLessonName("高等数学");
-			l1.setLessonCode("1234567890");
+			l1.setLessonCode("(2015-2016-1)-24215905-00006033-1");
 			lessons.add(l1);
 			Lesson l2 = new Lesson();
 			l2.setLessonName("大学英语");
-			l2.setLessonCode("1234567890");
+			l2.setLessonCode("(2015-2016-1)-24215905-00006033-1");
 			lessons.add(l2);
 			Lesson l3 = new Lesson();
 			l3.setLessonName("大学物理");
-			l3.setLessonCode("1234567890");
+			l3.setLessonCode("(2015-2016-1)-24215905-00006033-1");
 			lessons.add(l3);
 			Lesson l4 = new Lesson();
 			l4.setLessonName("吧唧吧唧");
-			l4.setLessonCode("1234567890");
+			l4.setLessonCode("(2015-2016-1)-24215905-00006033-1");
 			lessons.add(l4);
 			GDUTHelperApp.setEvaluationList(lessons);
 		}
@@ -104,6 +112,48 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
 
 	private void doEvaluation() {
 		showProgressDialog(R.string.loading);
+		final ArrayList<Evaluation> evaluations = mAdapter.getEvaluationList();
+		done = 0;
+		for (int i = 0; i < evaluations.size(); i++) {
+			final Evaluation evaluation = evaluations.get(i);
+			new Thread(new IntoEvaluation(evaluation.getLessonCode(),
+					new BaseRunnable.GGCallback() {
+						@Override
+						public void onCall(Object obj) {
+							new Thread(new DoEvaluation(evaluation.getLessonCode(),
+									getResources().getString(evaluation.getScore()),
+									new BaseRunnable.GGCallback() {
+										@Override
+										public void onCall(Object obj) {
+											done++;
+											Log.e(EvaluationActivity.class.getSimpleName(),
+													done + "");
+											if (done == evaluations.size()) {
+												runOnUiThread(new Runnable() {
+													@Override
+													public void run() {
+														cancelDialog();
+														new AlertDialog
+																.Builder(EvaluationActivity.this)
+																.setTitle(R.string.tips)
+																.setMessage(R.string.all_eval_done)
+																.setPositiveButton(R.string.ensure,
+																		new DialogInterface
+																				.OnClickListener() {
+																			@Override
+																			public void onClick(
+																					DialogInterface dialog, int which) {
+																				finish();
+																			}
+																		}).show();
+													}
+												});
+											}
+										}
+									})).start();
+						}
+					})).start();
+		}
 	}
 
 	@Override
@@ -112,13 +162,19 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
 		switch (v.getId()) {
 			case R.id.evaluation_fab:
 				int mark = 0;
-				for (Evaluation evaluation : mAdapter.getEvaluationList()) {
+				ArrayList<Evaluation> evaluations = mAdapter.getEvaluationList();
+				for (Evaluation evaluation : evaluations) {
 					if (evaluation.isShowScore())
 						mark++;
 				}
-				if (mark == 0)
-					Toast.makeText(this, R.string.please_select, Toast.LENGTH_SHORT).show();
-				if (mark == mAdapter.getEvaluationList().size()) {
+				if (mark == 0) {
+					for (Evaluation evaluation : evaluations) {
+						evaluation.setSelected(true);
+					}
+					mAdapter.notifyDataSetChanged();
+
+					mFabToolbarLayout.show();
+				} else if (mark == evaluations.size()) {
 					doEvaluation();
 				} else
 					mFabToolbarLayout.hide();
