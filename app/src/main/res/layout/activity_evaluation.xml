@@ -13,6 +13,7 @@
         android:layout_alignParentBottom="true"
         app:containerId="@+id/evaluation_fab_container"
         app:fabId="@+id/evaluation_fab"
+        app:fabToolbarAuto="false"
         app:fabToolbarId="@+id/evaluation_score"
         app:fadeInFraction="0.2"
         app:hideDuration="400"
@@ -21,7 +22,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/evaluation_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:paddingBottom="72dp"/>
 
         <RelativeLayout
             android:id="@+id/evaluation_fab_container"
@@ -48,31 +50,66 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
+            <TextView
+                android:id="@+id/evaluation_score_1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:onClick="onClick"/>
+                android:background="@drawable/bg_score"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="@string/evaluation_score_1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:theme="@style/Theme.AppCompat"/>
 
-            <Button
+            <TextView
+                android:id="@+id/evaluation_score_2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_score"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="@string/evaluation_score_2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:theme="@style/Theme.AppCompat"/>
 
-            <Button
+            <TextView
+                android:id="@+id/evaluation_score_3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_score"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="@string/evaluation_score_3"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:theme="@style/Theme.AppCompat"/>
 
-            <Button
+            <TextView
+                android:id="@+id/evaluation_score_4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_score"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="@string/evaluation_score_4"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:theme="@style/Theme.AppCompat"/>
 
-            <Button
+            <TextView
+                android:id="@+id/evaluation_score_5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_score"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="@string/evaluation_score_5"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:theme="@style/Theme.AppCompat"/>
+
         </LinearLayout>
 
     </com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout>

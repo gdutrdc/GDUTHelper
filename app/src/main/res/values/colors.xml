@@ -84,4 +84,5 @@
     <color name="blue_grey_300">#90a4ae</color>
     <color name="blue_grey_700">#455a64</color>
 
+    <color name="score_background">#40000000</color>
 </resources>

@@ -54,6 +54,10 @@ public class BaseActivity extends AppCompatActivity {
 		}
 	}
 
+	public void showProgressDialog(int stringId) {
+		showProgressDialog(getResources().getString(stringId));
+	}
+
 	public void showProgressDialog(String message) {
 		if (progressDialog == null) {
 			progressDialog = new ProgressDialog(this);

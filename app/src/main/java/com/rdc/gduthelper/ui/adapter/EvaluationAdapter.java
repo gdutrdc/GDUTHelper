@@ -10,8 +10,9 @@ import android.view.ViewGroup;
 
 import com.rdc.gduthelper.BR;
 import com.rdc.gduthelper.R;
+import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Evaluation;
-import com.rdc.gduthelper.bean.MaterialColors;
+import com.rdc.gduthelper.bean.Lesson;
 
 import java.util.ArrayList;
 
@@ -22,16 +23,24 @@ public class EvaluationAdapter extends RecyclerView.Adapter<EvaluationAdapter.Ev
 	private Context mContext;
 	private ArrayList<Evaluation> mEvaluationList;
 
+	public interface OnItemClickListener {
+		public void onItemClick(int position);
+	}
+
+	private OnItemClickListener onItemClickListener;
+
+	public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+		this.onItemClickListener = onItemClickListener;
+	}
+
 	public EvaluationAdapter(Context context) {
 		mContext = context;
 		mEvaluationList = new ArrayList<>();
-		for (int i = 0; i < 5; i++) {
+		ArrayList<Lesson> lessons = GDUTHelperApp.getEvaluationList();
+		for (Lesson lesson : lessons) {
 			Evaluation evaluation = new Evaluation();
-			evaluation.setLessonName("编译原理");
-			evaluation.setLessonCode("(2013-2014)");
-			evaluation.setShowScore(i > 0);
-			evaluation.setScoreColor(MaterialColors.getColor(i));
-			evaluation.setScore(i);
+			evaluation.setLessonCode(lesson.getLessonCode());
+			evaluation.setLessonName(lesson.getLessonName());
 			mEvaluationList.add(evaluation);
 		}
 	}
@@ -40,7 +49,7 @@ public class EvaluationAdapter extends RecyclerView.Adapter<EvaluationAdapter.Ev
 		mEvaluationList = evaluationList;
 	}
 
-	public ArrayList<Evaluation> getEvaluationList(){
+	public ArrayList<Evaluation> getEvaluationList() {
 		return mEvaluationList;
 	}
 
@@ -56,6 +65,11 @@ public class EvaluationAdapter extends RecyclerView.Adapter<EvaluationAdapter.Ev
 
 		holder.getBinding().setVariable(BR.eval, mEvaluationList.get(position));
 		holder.getBinding().executePendingBindings();
+	}
+
+	private void onItemClick(int position) {
+		if (onItemClickListener != null)
+			onItemClickListener.onItemClick(position);
 	}
 
 	@Override
@@ -79,10 +93,7 @@ public class EvaluationAdapter extends RecyclerView.Adapter<EvaluationAdapter.Ev
 
 		@Override
 		public void onClick(View v) {
-			Evaluation evaluation = mEvaluationList.get(position);
-			evaluation.setEvaluated(!evaluation.isEvaluated());
-
-			notifyDataSetChanged();
+			onItemClick(position);
 		}
 	}
 }

@@ -27,7 +27,6 @@
     <string name="get_exam_time">查询考试时间</string>
     <string name="get_schedule">查询个人课表</string>
     <string name="done">完成</string>
-    <string name="select_all_or_not">全选/反选</string>
     <string name="get_level_exam_grade">查询等级考试成绩</string>
 
     <!-- 查询考试时间 -->
@@ -85,6 +84,15 @@
     <string name="use_dx_off">(需重新登录)http://jwgl.gdut.edu.cn</string>
     <string name="licenses">开源协议</string>
     <string name="about">关于</string>
+
+    <!-- 教学质量评价 -->
+    <string name="select_all_or_not">全选/反选</string>
+    <string name="please_select">请选择一个评价的课程</string>
+    <string name="evaluation_score_1">1(不及格)</string>
+    <string name="evaluation_score_2">2(及格)</string>
+    <string name="evaluation_score_3">3(中等)</string>
+    <string name="evaluation_score_4">4(良好)</string>
+    <string name="evaluation_score_5">5(优秀)</string>
 
     <string name="test_username"></string>
     <string name="test_password"></string>

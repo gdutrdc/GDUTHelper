@@ -1,22 +1,24 @@
 package com.rdc.gduthelper.bean;
 
+import com.rdc.gduthelper.R;
+
 /**
  * Created by seasonyuu on 16/1/2.
  */
 public class Evaluation {
 	private String lessonName;
 	private String lessonCode;
-	private String score;
-	private boolean showScore;
+	private int score;
+	private boolean showScore = false;
+	private boolean isSelected = false;
 	private int scoreColor;
-	private boolean isEvaluated;
 
-	public boolean isEvaluated() {
-		return isEvaluated;
+	public boolean isSelected() {
+		return isSelected;
 	}
 
-	public void setEvaluated(boolean evaluated) {
-		isEvaluated = evaluated;
+	public void setSelected(boolean selected) {
+		isSelected = selected;
 	}
 
 	public boolean isShowScore() {
@@ -51,11 +53,25 @@ public class Evaluation {
 		this.lessonCode = lessonCode;
 	}
 
-	public String getScore() {
-		return score;
+	public int getScore() {
+		switch (score) {
+			case 1:
+				return R.string.evaluation_score_1;
+			case 2:
+				return R.string.evaluation_score_2;
+			case 3:
+				return R.string.evaluation_score_3;
+			case 4:
+				return R.string.evaluation_score_4;
+			case 5:
+				return R.string.evaluation_score_5;
+		}
+		return R.string.evaluation_score_1;
 	}
 
 	public void setScore(int score) {
-		this.score = score + "";
+		setShowScore(score > 0);
+		setScoreColor(MaterialColors.getColor(score));
+		this.score = score;
 	}
 }
