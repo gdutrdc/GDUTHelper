@@ -73,7 +73,12 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
-		super.onDeleted(context, appWidgetIds);
+		Settings settings = new Settings(context);
+		WidgetConfigs configs = settings.getAppWidgetConfigs();
+		if (configs == null)
+			return;
+		configs.remove(appWidgetIds[0]);
+		settings.saveAppWidgetConfigs(configs);
 	}
 
 	@Override
