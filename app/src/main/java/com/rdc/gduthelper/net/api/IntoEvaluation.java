@@ -1,6 +1,7 @@
 package com.rdc.gduthelper.net.api;
 
 import com.rdc.gduthelper.app.GDUTHelperApp;
+import com.rdc.gduthelper.bean.Evaluation;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
 
@@ -14,21 +15,22 @@ import java.net.URLConnection;
  * Created by seasonyuu on 16/1/3.
  */
 public class IntoEvaluation extends BaseRunnable {
-	private String lessonCode;
+	private Evaluation evaluation;
 
-	public IntoEvaluation(String lessonCode, GGCallback callback) {
+	public IntoEvaluation(Evaluation evaluation, GGCallback callback) {
 		this.callback = callback;
-		this.lessonCode = lessonCode;
+		this.evaluation = evaluation;
 	}
 
 	@Override
 	public void run() {
-		String requestUrl = ApiHelper.getURl() + "xsjxpj.aspx?xkkh=" + lessonCode
+		String requestUrl = ApiHelper.getURl() + "xsjxpj.aspx?xkkh=" + evaluation.getLessonCode()
 				+ "&xh=" + GDUTHelperApp.userXh + "&gnmkdm=N12141";
 		try {
 			URL url = new URL(requestUrl);
 			URLConnection urlConnection = url.openConnection();
-			urlConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
+			urlConnection.addRequestProperty("Cookie", GDUTHelperApp
+					.cookie);
 			urlConnection.addRequestProperty("Referer",
 					ApiHelper.getURl() + "xs_main.aspx?xh=" + GDUTHelperApp.userXh);
 			InputStreamReader reader = new InputStreamReader(
@@ -36,6 +38,7 @@ public class IntoEvaluation extends BaseRunnable {
 			BufferedReader in = new BufferedReader(reader);
 			String s;
 			StringBuffer sb = new StringBuffer();
+			int num = 0;
 			while ((s = in.readLine()) != null) {
 				sb.append(s);
 				sb.append("\n");
@@ -44,8 +47,11 @@ public class IntoEvaluation extends BaseRunnable {
 					int end = s.indexOf("\" />");
 					GDUTHelperApp.viewState = s.substring(begin, end);
 				}
+				if (s.contains("value=\"4(良好)\"")) {
+					num++;
+				}
 			}
-//			System.out.println(sb.toString());
+			evaluation.setChoices(num);
 			if (callback != null)
 				callback.onCall(null);
 

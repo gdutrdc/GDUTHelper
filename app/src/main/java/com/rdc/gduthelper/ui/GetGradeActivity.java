@@ -11,7 +11,6 @@ import android.os.Message;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRadioButton;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -215,7 +214,7 @@ public class GetGradeActivity extends BaseActivity {
 	}
 
 	public void onClick(View v) {
-		((RecyclerView) v).scrollToPosition(0);
+		((ListView) findViewById(R.id.grade_list)).smoothScrollToPosition(0);
 
 		Runnable runnable = null;
 		String year = null;

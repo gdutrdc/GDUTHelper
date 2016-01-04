@@ -16,9 +16,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 /**
- * Created by seasonyuu on 16/1/4.
+ * Created by seasonyuu on 16/1/3.
  */
-public class DoEvaluation extends BaseRunnable {
+public class SaveEvaluation extends BaseRunnable {
 	private final String DEFAULT_1 = "5(优秀)";
 	private final String DEFAULT_2 = "4(良好)";
 
@@ -28,7 +28,7 @@ public class DoEvaluation extends BaseRunnable {
 	private String score;
 	private String lessonCode;
 
-	public DoEvaluation(Evaluation evaluation, GGCallback callback) {
+	public SaveEvaluation(Evaluation evaluation, GGCallback callback) {
 		this.evaluation = evaluation;
 		this.lessonCode = evaluation.getLessonCode();
 		this.score = GDUTHelperApp.getInstance().getResources().getString(evaluation.getScore());
@@ -82,7 +82,7 @@ public class DoEvaluation extends BaseRunnable {
 			data += "&pjxx=" +
 					"&txt1=" +
 					"&TextBox1=0" +
-					"&Button1=+%CC%E1++%BD%BB+";
+					"&Button1=%B1%A3++%B4%E6";
 
 			DataOutputStream out = new DataOutputStream(httpURLConnection.getOutputStream());// 获得一个输出流,向服务器写数据
 			out.writeBytes(data);

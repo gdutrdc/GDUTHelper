@@ -9,9 +9,18 @@ public class Evaluation {
 	private String lessonName;
 	private String lessonCode;
 	private int score;
+	private int choices;
 	private boolean showScore = false;
 	private boolean isSelected = false;
 	private int scoreColor;
+
+	public int getChoices() {
+		return choices;
+	}
+
+	public void setChoices(int choices) {
+		this.choices = choices;
+	}
 
 	public boolean isSelected() {
 		return isSelected;

@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,7 @@ import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Evaluation;
 import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.net.BaseRunnable;
-import com.rdc.gduthelper.net.api.DoEvaluation;
+import com.rdc.gduthelper.net.api.SaveEvaluation;
 import com.rdc.gduthelper.net.api.IntoEvaluation;
 import com.rdc.gduthelper.ui.adapter.EvaluationAdapter;
 
@@ -110,50 +109,60 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void doEvaluation() {
+	private void saveEvaluation() {
 		showProgressDialog(R.string.loading);
-		final ArrayList<Evaluation> evaluations = mAdapter.getEvaluationList();
 		done = 0;
-		for (int i = 0; i < evaluations.size(); i++) {
-			final Evaluation evaluation = evaluations.get(i);
-			new Thread(new IntoEvaluation(evaluation.getLessonCode(),
-					new BaseRunnable.GGCallback() {
-						@Override
-						public void onCall(Object obj) {
-							new Thread(new DoEvaluation(evaluation.getLessonCode(),
-									getResources().getString(evaluation.getScore()),
-									new BaseRunnable.GGCallback() {
-										@Override
-										public void onCall(Object obj) {
-											done++;
-											Log.e(EvaluationActivity.class.getSimpleName(),
-													done + "");
-											if (done == evaluations.size()) {
-												runOnUiThread(new Runnable() {
+		evaluate(0);
+	}
+
+	private void doEvaluation() {
+		new Thread(new SaveEvaluation(mAdapter.getEvaluationList().get(mAdapter.getItemCount() - 1),
+				new BaseRunnable.GGCallback() {
+					@Override
+					public void onCall(Object obj) {
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								cancelDialog();
+								ArrayList<Lesson> list = new ArrayList<>();
+								GDUTHelperApp.setEvaluationList(list);
+								new AlertDialog
+										.Builder(EvaluationActivity.this)
+										.setTitle(R.string.tips)
+										.setMessage(R.string.all_eval_done)
+										.setPositiveButton(R.string.ensure,
+												new DialogInterface
+														.OnClickListener() {
 													@Override
-													public void run() {
-														cancelDialog();
-														new AlertDialog
-																.Builder(EvaluationActivity.this)
-																.setTitle(R.string.tips)
-																.setMessage(R.string.all_eval_done)
-																.setPositiveButton(R.string.ensure,
-																		new DialogInterface
-																				.OnClickListener() {
-																			@Override
-																			public void onClick(
-																					DialogInterface dialog, int which) {
-																				finish();
-																			}
-																		}).show();
+													public void onClick(
+															DialogInterface dialog, int which) {
+														finish();
 													}
-												});
-											}
-										}
-									})).start();
-						}
-					})).start();
-		}
+												})
+										.show();
+							}
+						});
+					}
+				})).start();
+	}
+
+	private void evaluate(int position) {
+		final Evaluation evaluation = mAdapter.getEvaluationList().get(position);
+		new Thread(new IntoEvaluation(evaluation, new BaseRunnable.GGCallback() {
+			@Override
+			public void onCall(Object obj) {
+				new Thread(new SaveEvaluation(evaluation, new BaseRunnable.GGCallback() {
+					@Override
+					public void onCall(Object obj) {
+						done++;
+						if (done == mAdapter.getItemCount()) {
+							doEvaluation();
+						} else
+							evaluate(done);
+					}
+				})).start();
+			}
+		})).start();
 	}
 
 	@Override
@@ -175,7 +184,7 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
 
 					mFabToolbarLayout.show();
 				} else if (mark == evaluations.size()) {
-					doEvaluation();
+					saveEvaluation();
 				} else
 					mFabToolbarLayout.hide();
 				break;
