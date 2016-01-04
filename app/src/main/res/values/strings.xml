@@ -23,6 +23,7 @@
     <string name="get_grade">查询成绩</string>
     <string name="get_information">查询个人信息</string>
     <string name="change_password">修改密码</string>
+    <string name="url_changed">您当前修改了要访问的URL，请重新登录</string>
     <string name="evaluation">教学质量评价</string>
     <string name="get_exam_time">查询考试时间</string>
     <string name="get_schedule">查询个人课表</string>
@@ -89,6 +90,7 @@
     <string name="select_all_or_not">全选/反选</string>
     <string name="please_select">请选择一个评价的课程</string>
     <string name="all_eval_done">所有评价已提交</string>
+    <string name="no_need_evaluation">当前无需要评价的课程</string>
     <string name="evaluation_score_1">1(不及格)</string>
     <string name="evaluation_score_2">2(及格)</string>
     <string name="evaluation_score_3">3(中等)</string>

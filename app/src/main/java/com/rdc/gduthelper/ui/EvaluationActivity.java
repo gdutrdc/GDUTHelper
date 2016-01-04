@@ -47,27 +47,6 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
 	}
 
 	private void initView() {
-		if (GDUTHelperApp.getEvaluationList() == null) {
-			ArrayList<Lesson> lessons = new ArrayList<>();
-			Lesson l1 = new Lesson();
-			l1.setLessonName("高等数学");
-			l1.setLessonCode("(2015-2016-1)-24215905-00006033-1");
-			lessons.add(l1);
-			Lesson l2 = new Lesson();
-			l2.setLessonName("大学英语");
-			l2.setLessonCode("(2015-2016-1)-24215905-00006033-1");
-			lessons.add(l2);
-			Lesson l3 = new Lesson();
-			l3.setLessonName("大学物理");
-			l3.setLessonCode("(2015-2016-1)-24215905-00006033-1");
-			lessons.add(l3);
-			Lesson l4 = new Lesson();
-			l4.setLessonName("吧唧吧唧");
-			l4.setLessonCode("(2015-2016-1)-24215905-00006033-1");
-			lessons.add(l4);
-			GDUTHelperApp.setEvaluationList(lessons);
-		}
-
 		mEvaluationList = (RecyclerView) findViewById(R.id.evaluation_list);
 		mEvaluationList.setLayoutManager(new LinearLayoutManager(this));
 		mAdapter = new EvaluationAdapter(this);

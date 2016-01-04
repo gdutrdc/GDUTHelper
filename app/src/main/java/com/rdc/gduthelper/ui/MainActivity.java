@@ -97,7 +97,8 @@ public class MainActivity extends BaseActivity {
 			}
 			if (needRefresh) {
 				new AlertDialog.Builder(this)
-						.setMessage("您当前修改了要访问的URL，请重新登录")
+						.setTitle(R.string.tips)
+						.setMessage(R.string.url_changed)
 						.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
@@ -119,9 +120,6 @@ public class MainActivity extends BaseActivity {
 				return;
 			case R.id.main_get_schedule:
 				return;
-			case R.id.main_evaluation:
-				startActivity(new Intent(this, EvaluationActivity.class));
-				return;
 		}
 		if (!GDUTHelperApp.isLogin()) {
 			startActivity(new Intent(this, LoginActivity.class));
@@ -136,6 +134,16 @@ public class MainActivity extends BaseActivity {
 				break;
 			case R.id.main_change_password:
 				startActivity(new Intent(this, ChangePswActivity.class));
+				break;
+			case R.id.main_evaluation:
+				if (GDUTHelperApp.getEvaluationList().size() > 0)
+					startActivity(new Intent(this, EvaluationActivity.class));
+				else
+					new AlertDialog.Builder(this)
+							.setTitle(R.string.tips)
+							.setMessage(R.string.no_need_evaluation)
+							.setPositiveButton(R.string.ensure, null)
+							.show();
 				break;
 		}
 	}
