@@ -17,7 +17,7 @@ import com.rdc.gduthelper.net.api.GetExamTime;
 import com.rdc.gduthelper.net.api.IntoGetExamTime;
 import com.rdc.gduthelper.ui.adapter.ExamTimeAdapter;
 import com.rdc.gduthelper.utils.SerializeUtil;
-import com.rdc.gduthelper.utils.database.DatabaseHelper;
+import com.rdc.gduthelper.utils.database.ExamTimeDBHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -117,7 +117,7 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 								}
 								cancelDialog();
 								mExamTimeAdapter.setExams(exams);
-								DatabaseHelper helper = new DatabaseHelper(GetExamTimeActivity.this);
+								ExamTimeDBHelper helper = new ExamTimeDBHelper(GetExamTimeActivity.this);
 								for (Exam exam : exams) {
 									helper.insertExamTime(exam);
 								}
@@ -137,7 +137,7 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					DatabaseHelper helper = new DatabaseHelper(GetExamTimeActivity.this);
+					ExamTimeDBHelper helper = new ExamTimeDBHelper(GetExamTimeActivity.this);
 					String s = GDUTHelperApp.getSettings().getRememberUser();
 					if (s == null) {
 						noLocalToast();
@@ -246,7 +246,7 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 						e.printStackTrace();
 					}
 					mExamTimeAdapter.setExams(list);
-					DatabaseHelper helper = new DatabaseHelper(GetExamTimeActivity.this);
+					ExamTimeDBHelper helper = new ExamTimeDBHelper(GetExamTimeActivity.this);
 					if (list != null)
 						for (Exam exam : list) {
 							helper.insertExamTime(exam);

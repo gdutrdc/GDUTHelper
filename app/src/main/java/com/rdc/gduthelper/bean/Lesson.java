@@ -10,6 +10,33 @@ public class Lesson implements Cloneable {
 	private String lessonBelong;//课程归属
 	private String lessonCredit;//课程学分
 	private String lessonGrade;//课程成绩
+	private String lessonTime;//上课时间
+	private String lessonClassroom;//上课地点
+	private String lessonTeacher;//教师姓名
+
+	public String getLessonTime() {
+		return lessonTime;
+	}
+
+	public void setLessonTime(String lessonTime) {
+		this.lessonTime = lessonTime;
+	}
+
+	public String getLessonClassroom() {
+		return lessonClassroom;
+	}
+
+	public void setLessonClassroom(String lessonClassroom) {
+		this.lessonClassroom = lessonClassroom;
+	}
+
+	public String getLessonTeacher() {
+		return lessonTeacher;
+	}
+
+	public void setLessonTeacher(String lessonTeacher) {
+		this.lessonTeacher = lessonTeacher;
+	}
 
 	public String getLessonCredit() {
 		return lessonCredit;

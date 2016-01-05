@@ -16,13 +16,13 @@ import java.util.Comparator;
 /**
  * Created by seasonyuu on 15/12/1.
  */
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class ExamTimeDBHelper extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "gdut_helper.db";
 	private static final int VERSION = 1;
 	private static final String TABLE_EXAM_TIME = "exam_time";
 
 
-	public DatabaseHelper(Context context) {
+	public ExamTimeDBHelper(Context context) {
 		super(context, DATABASE_NAME, null, VERSION);
 	}
 

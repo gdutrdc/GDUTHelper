@@ -119,6 +119,7 @@ public class MainActivity extends BaseActivity {
 				startActivity(new Intent(this, GetExamTimeActivity.class));
 				return;
 			case R.id.main_get_schedule:
+				startActivity(new Intent(this, GetScheduleActivity.class));
 				return;
 		}
 		if (!GDUTHelperApp.isLogin()) {

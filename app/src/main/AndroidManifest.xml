@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     package="com.rdc.gduthelper"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -50,6 +50,9 @@
         <activity
             android:name=".ui.EvaluationActivity"
             android:label="@string/evaluation"/>
+        <activity
+            android:name=".ui.GetScheduleActivity"
+            android:label="@string/get_schedule"/>
 
         <receiver
             android:name="com.rdc.gduthelper.utils.appwidget.MyAppWidgetProvider"

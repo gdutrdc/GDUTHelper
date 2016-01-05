@@ -26,7 +26,7 @@ import com.rdc.gduthelper.bean.Exam;
 import com.rdc.gduthelper.bean.MaterialColors;
 import com.rdc.gduthelper.bean.WidgetConfigs;
 import com.rdc.gduthelper.utils.appwidget.WidgetService;
-import com.rdc.gduthelper.utils.database.DatabaseHelper;
+import com.rdc.gduthelper.utils.database.ExamTimeDBHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -90,7 +90,7 @@ public class AppWidgetConfig extends BaseActivity implements AdapterView.OnItemS
 			e.printStackTrace();
 		}
 		if (xh != null) {
-			DatabaseHelper helper = new DatabaseHelper(this);
+			ExamTimeDBHelper helper = new ExamTimeDBHelper(this);
 			mWholeList = helper.getExamTimes(xh, null);
 			if (mWholeList.size() == 0) {
 				Toast.makeText(this, R.string.get_exam_time_no_local, Toast.LENGTH_SHORT).show();

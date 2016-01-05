@@ -145,7 +145,6 @@ public class Login extends BaseRunnable {
 			int indexXk = string.indexOf("xkkh=") + 5;
 			lesson.setLessonCode(string.substring(indexXk, indexXk + 33));
 			lesson.setLessonName(string.substring(string.indexOf("GetMc('") + 7, string.indexOf("');\"")));
-			System.out.println(lesson.toString());
 			lessonList.add(lesson);
 		}
 		return lessonList;

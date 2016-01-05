@@ -9,7 +9,7 @@ import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Exam;
 import com.rdc.gduthelper.bean.MaterialColors;
-import com.rdc.gduthelper.utils.database.DatabaseHelper;
+import com.rdc.gduthelper.utils.database.ExamTimeDBHelper;
 
 import java.util.ArrayList;
 
@@ -25,7 +25,7 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
 		String selection = intent.getStringExtra("selection");
 		String[] data = GDUTHelperApp.getSettings().getRememberUser().split(";", 2);
 		String xh = data[0];
-		DatabaseHelper helper = new DatabaseHelper(context);
+		ExamTimeDBHelper helper = new ExamTimeDBHelper(context);
 		mExams = helper.getExamTimes(xh, selection);
 	}
 
