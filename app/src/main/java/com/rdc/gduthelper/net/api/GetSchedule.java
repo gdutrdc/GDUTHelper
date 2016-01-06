@@ -33,9 +33,9 @@ public class GetSchedule extends BaseRunnable {
 	public void run() {
 		HttpURLConnection httpURLConnection = null;
 		try {
-			httpURLConnection = (HttpURLConnection) new URL(
-					ApiHelper.getURl() + "xsxkqk.aspx?xh=" + GDUTHelperApp.userXh + "&xm="
-							+ GDUTHelperApp.userXm + "&gnmkdm=N121615").openConnection();
+			requestUrl = ApiHelper.getURl() + "xsxkqk.aspx?xh=" + GDUTHelperApp.userXh + "&xm="
+					+ GDUTHelperApp.userXm + "&gnmkdm=N121615";
+			httpURLConnection = (HttpURLConnection) new URL(requestUrl).openConnection();
 			httpURLConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
 			httpURLConnection.addRequestProperty("Referer", requestUrl);
 			httpURLConnection.setRequestMethod("POST");
