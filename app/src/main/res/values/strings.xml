@@ -47,6 +47,7 @@
     <string name="no_local_schedule">本地无课程数据，请先同步数据</string>
     <string name="get_schedule_time_xnd">学年第</string>
     <string name="get_schedule_time_xqd">学期</string>
+    <string name="add_schedule">新增课程表</string>
 
     <!-- 修改密码 -->
     <string name="change_psw_old">请输入原密码</string>
