@@ -32,17 +32,47 @@ public class IntoSchedule extends BaseRunnable {
 			InputStreamReader reader = new InputStreamReader(new BufferedInputStream(urlConnection.getInputStream()), "gbk");
 			BufferedReader in = new BufferedReader(reader);
 			String s;
+			boolean gotYear = false, gotTerm = false;
+			String result = "";
+			StringBuffer sb = new StringBuffer();
 			while ((s = in.readLine()) != null) {
+				sb.append(s);
+				sb.append("\n");
 				if (s.contains("__VIEWSTATE")) {
 					int begin = s.indexOf("value=\"") + 7;
 					int end = s.indexOf("\" />");
 					GDUTHelperApp.viewState = s.substring(begin, end);
-					break;
+				}
+				if (gotYear) {
+					if (s.contains("</select>")) {
+						gotYear = false;
+						result = result.substring(0, result.length() - 1) + ";";
+					} else {
+						String[] temp = s.split(">");
+						if (temp.length > 1 && temp[1].length() >= 9)
+							result += temp[1].substring(0, 9) + ",";
+					}
+				}
+				if (gotTerm) {
+					if (s.contains("</select>")) {
+						gotTerm = false;
+					} else {
+						String[] temp = s.split(">");
+						if (temp.length > 1 && temp[1].length() >= 1) {
+							result += temp[1].substring(0, 1) + ",";
+						}
+					}
+				}
+				if (s.contains("<select name=\"ddlXN\" onchange=\"__doPostBack('ddlXN','')\" language=\"javascript\"")) {
+					gotYear = true;
+				}
+				if (s.contains("<select name=\"ddlXQ\" onchange=\"__doPostBack('ddlXQ','')\" language=\"javascript\"")) {
+					gotTerm = true;
 				}
 			}
 			in.close();
 			if (callback != null)
-				callback.onCall(null);
+				callback.onCall(result);
 
 		} catch (IOException e) {
 			e.printStackTrace();
