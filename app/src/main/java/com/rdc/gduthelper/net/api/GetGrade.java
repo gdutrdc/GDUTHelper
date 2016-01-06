@@ -49,7 +49,8 @@ public class GetGrade extends BaseRunnable {
 	public void run() {
 		try {
 			HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(
-					ApiHelper.getURl() + "xscj.aspx?xh=" + GDUTHelperApp.userXh + "&xm=" + GDUTHelperApp.userXm + "&gnmkdm=N121605").openConnection();
+					ApiHelper.getURl() + "xscj.aspx?xh=" + GDUTHelperApp.userXh
+							+ "&xm=" + GDUTHelperApp.userXm + "&gnmkdm=N121605").openConnection();
 			httpURLConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
 			httpURLConnection.addRequestProperty("Referer", ApiHelper.getURl()
 					+ "xscj.aspx?xh=" + GDUTHelperApp.userXh + "&xm=" + GDUTHelperApp.userXm + "&gnmkdm=N121605");
@@ -59,7 +60,7 @@ public class GetGrade extends BaseRunnable {
 			httpURLConnection.setDoInput(true);
 			httpURLConnection.setUseCaches(false);
 			String data = "__VIEWSTATE="
-					+ URLEncoder.encode(GDUTHelperApp.viewState, "iso-8859-1")
+					+ URLEncoder.encode(GDUTHelperApp.viewState, "gbk")
 					+ "&ddlXN=" + year //学年
 					+ "&ddlXQ=" + term //学期
 					+ "&txtQSCJ=0"

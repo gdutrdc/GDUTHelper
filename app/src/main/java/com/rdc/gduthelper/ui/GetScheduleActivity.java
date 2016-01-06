@@ -13,6 +13,7 @@ import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.net.BaseRunnable;
+import com.rdc.gduthelper.net.api.GetSchedule;
 import com.rdc.gduthelper.net.api.IntoSchedule;
 import com.rdc.gduthelper.utils.database.ScheduleDBHelper;
 
@@ -84,8 +85,17 @@ public class GetScheduleActivity extends BaseActivity {
 		})).start();
 	}
 
+	private void getSchedule(String year, String term) {
+		new Thread(new GetSchedule(year, term, new BaseRunnable.GGCallback() {
+			@Override
+			public void onCall(Object obj) {
+
+			}
+		})).start();
+	}
+
 	private void showAddSchedule() {
-		final View view = LayoutInflater.from(this).inflate(R.layout.activity_add_schedule, null);
+		final View view = LayoutInflater.from(this).inflate(R.layout.dialog_add_schedule, null);
 		mSpinnerYear = (AppCompatSpinner) view.findViewById(R.id.add_schedule_year);
 		mSpinnerTerm = (AppCompatSpinner) view.findViewById(R.id.add_schedule_term);
 		Calendar calendar = Calendar.getInstance();
@@ -113,14 +123,15 @@ public class GetScheduleActivity extends BaseActivity {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-
 				new AlertDialog.Builder(GetScheduleActivity.this)
 						.setTitle(R.string.add_schedule)
 						.setView(view)
 						.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-
+								showProgressDialog(R.string.loading);
+								getSchedule(mSpinnerYear.getSelectedItem().toString(),
+										mSpinnerTerm.getSelectedItem().toString());
 							}
 						})
 						.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

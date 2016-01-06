@@ -83,7 +83,9 @@ public class Login extends BaseRunnable {
 						sb.append("\n");
 						if (s.contains("<span id=\"xhxm\">")) {
 							String[] temps = s.split(">");
-							GDUTHelperApp.userXm = URLEncoder.encode(temps[1].split("<")[0], "utf-8");
+							String text = temps[1].split("<")[0];
+							GDUTHelperApp.userXm = URLEncoder.encode(
+									text.substring(0, text.length() - 2), "gbk");
 						}
 						if (s.contains("<span class='down'> 教学质量评价</span>")) {
 							String evaluationLine = getEvaluationLine(s.split("<li class='top'>"));
