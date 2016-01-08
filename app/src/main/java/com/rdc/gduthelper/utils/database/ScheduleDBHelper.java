@@ -93,11 +93,11 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 			xh = data[0];
 		}
 
-		if (selection != null)
-			cursor = db.query(TABLE_LESSONS, null, "time = ? and xh = ?", new String[]{selection
-					, xh}, null, null, null);
-		else
-			cursor = db.query(TABLE_LESSONS, null, "xh = ?", new String[]{xh}, null, null, null);
+		if (selection == null)
+			return result;
+		cursor = db.query(TABLE_LESSONS, null,
+				Column.SELECTION + " = ? and " + Column.XH + " = ?", new String[]{selection
+						, xh}, null, null, null);
 		while (cursor.moveToNext()) {
 			Lesson lesson = new Lesson();
 			lesson.setLessonCode(cursor.getString(cursor.getColumnIndex(Column.LESSON_CODE)));
@@ -107,6 +107,31 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 			lesson.setLessonTime(cursor.getString(cursor.getColumnIndex(Column.LESSON_TIME)));
 			lesson.setLessonCredit(cursor.getString(cursor.getColumnIndex(Column.LESSON_CREDIT)));
 			lesson.setLessonType(cursor.getString(cursor.getColumnIndex(Column.LESSON_TYPE)));
+			Cursor c = db.query(TABLE_LESSON_TIMES, null,
+					Column.SELECTION + " = ? and " + Column.XH + " = ? and " + Column.LESSON_CODE + " = ?",
+					new String[]{selection, xh, lesson.getLessonCode()}, null, null, null);
+			ArrayList<LessonTACR> tacrs = new ArrayList<>();
+			while (c.moveToNext()) {
+				LessonTACR tacr = new LessonTACR();
+				tacr.setClassroom(c.getString(c.getColumnIndex(Column.LESSON_CLASSROOM)));
+
+				String[] numData = c.getString(c.getColumnIndex(Column.NUM)).split(",");
+				int[] num = new int[numData.length];
+				for (int i = 0; i < num.length; i++)
+					num[i] = Integer.parseInt(numData[i]);
+				tacr.setNum(num);
+
+				tacr.setWeekday(Integer.parseInt(c.getString(c.getColumnIndex(Column.WEEKDAY))));
+
+				String[] weekData = c.getString(c.getColumnIndex(Column.WEEK)).split(",");
+				int[] week = new int[weekData.length];
+				for (int i = 0; i < week.length; i++)
+					week[i] = Integer.parseInt(weekData[i]);
+				tacr.setWeek(week);
+
+				tacrs.add(tacr);
+			}
+			lesson.setLessonTACRs(tacrs);
 			result.add(lesson);
 		}
 		cursor.close();

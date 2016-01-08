@@ -11,20 +11,116 @@
         android:layout_height="?actionBarSize"
         android:background="?colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/get_schedule_tab_layout"
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/get_schedule_week_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:layout_margin="8dp"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+    </android.support.v7.widget.Toolbar>
+
+
+    <android.support.percent.PercentRelativeLayout
+        android:id="@+id/get_schedule_weekday"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:layout_below="@+id/toolbar"
-        android:background="?colorPrimary"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/get_schedule_view_pager"
+        <TextView
+            android:id="@+id/get_schedule_tv_month"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="1月"
+            android:textColor="?colorPrimaryDark"
+            android:textStyle="bold"
+            app:layout_widthPercent="9%"/>
+
+        <TextView
+            android:id="@+id/get_schedule_tv_sun"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_toRightOf="@id/get_schedule_tv_month"
+            android:gravity="center"
+            android:text="周日"
+            app:layout_widthPercent="13%"/>
+
+        <TextView
+            android:id="@+id/get_schedule_tv_mon"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_toRightOf="@id/get_schedule_tv_sun"
+            android:gravity="center"
+            android:text="周一"
+            app:layout_widthPercent="13%"/>
+
+        <TextView
+            android:id="@+id/get_schedule_tv_tue"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_toRightOf="@id/get_schedule_tv_mon"
+            android:gravity="center"
+            android:text="周二"
+            app:layout_widthPercent="13%"/>
+
+        <TextView
+            android:id="@+id/get_schedule_tv_wed"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_toRightOf="@id/get_schedule_tv_tue"
+            android:gravity="center"
+            android:text="周三"
+            app:layout_widthPercent="13%"/>
+
+        <TextView
+            android:id="@+id/get_schedule_tv_thu"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_toRightOf="@+id/get_schedule_tv_wed"
+            android:gravity="center"
+            android:text="周四"
+            app:layout_widthPercent="13%"/>
+
+        <TextView
+            android:id="@+id/get_schedule_tv_fri"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_toRightOf="@+id/get_schedule_tv_thu"
+            android:gravity="center"
+            android:text="周五"
+            app:layout_widthPercent="13%"/>
+
+        <TextView
+            android:id="@+id/get_schedule_tv_sat"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_toRightOf="@+id/get_schedule_tv_fri"
+            android:gravity="center"
+            android:text="周六"
+            app:layout_widthPercent="13%"/>
+    </android.support.percent.PercentRelativeLayout>
+
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/get_schedule_tab_layout"/>
+        android:layout_below="@id/get_schedule_weekday">
+
+        <com.rdc.gduthelper.ui.widget.WeekScheduleView
+            android:id="@+id/get_schedule_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </ScrollView>
+
+    <View
+        android:id="@+id/get_schedule_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_below="@id/get_schedule_weekday"
+        android:background="@drawable/shadow"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/get_schedule_fab"

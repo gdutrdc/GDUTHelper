@@ -1,5 +1,6 @@
 package com.rdc.gduthelper.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
@@ -34,6 +35,19 @@ public class UIUtils {
 		DisplayMetrics metrics = resources.getDisplayMetrics();
 		float dp = px / (metrics.densityDpi / 160f);
 		return dp;
+	}
+
+	public static int getScreenHeight(Context context) {
+		DisplayMetrics displaymetrics = new DisplayMetrics();
+		((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+		return displaymetrics.heightPixels;
+	}
+
+	public static int getScreenWidth(Context context) {
+		DisplayMetrics displaymetrics = new DisplayMetrics();
+		((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+		return displaymetrics.widthPixels;
+
 	}
 
 }

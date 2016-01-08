@@ -2,11 +2,8 @@ package com.rdc.gduthelper.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
 import android.view.LayoutInflater;
@@ -19,7 +16,7 @@ import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetSchedule;
 import com.rdc.gduthelper.net.api.IntoSchedule;
-import com.rdc.gduthelper.ui.adapter.SchedulePagerAdapter;
+import com.rdc.gduthelper.ui.widget.WeekScheduleView;
 import com.rdc.gduthelper.utils.database.ScheduleDBHelper;
 
 import java.util.ArrayList;
@@ -31,14 +28,12 @@ import java.util.Calendar;
 public class GetScheduleActivity extends BaseActivity {
 	private AppCompatSpinner mSpinnerYear;
 	private AppCompatSpinner mSpinnerTerm;
-
-	private TabLayout mTabLayout;
-	private ViewPager mViewPager;
-
-	private SchedulePagerAdapter mPagerAdapter;
+	private AppCompatSpinner mSpinnerWeek;
 
 	private ArrayList<String> mYears;
 	private ArrayList<String> mTerms;
+
+	private WeekScheduleView mWeekScheduleView;
 
 	private boolean isNull;
 
@@ -57,44 +52,32 @@ public class GetScheduleActivity extends BaseActivity {
 		setTheme(themeId);
 		setContentView(R.layout.activity_get_schedule);
 
-		initViewPager();
+		initView();
 
 		mFAB = (FloatingActionButton) findViewById(R.id.get_schedule_fab);
 	}
 
-	private void initViewPager() {
-		mTabLayout = (TabLayout) findViewById(R.id.get_schedule_tab_layout);
-		mViewPager = (ViewPager) findViewById(R.id.get_schedule_view_pager);
-		mPagerAdapter = new SchedulePagerAdapter(getSupportFragmentManager());
-		mViewPager.setAdapter(mPagerAdapter);
+	private void initView() {
+		mSpinnerWeek = (AppCompatSpinner) findViewById(R.id.get_schedule_week_spinner);
 
-		mTabLayout.setTabTextColors(getResources().getColor(R.color.grey_300), Color.WHITE);
-		mTabLayout.setupWithViewPager(mViewPager);
+		String[] s = new String[21];
+		for (int i = 1; i <= s.length; i++)
+			s[i - 1] = "第 " + i + " 周";
+		ArrayAdapter<String> weekAdapter = new ArrayAdapter<>(this, R.layout.spinner_item);
+		weekAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+		weekAdapter.addAll(s);
+		mSpinnerWeek.setAdapter(weekAdapter);
 
-		mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-			@Override
-			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+		mWeekScheduleView = (WeekScheduleView) findViewById(R.id.get_schedule_table);
 
-			}
-
-			@Override
-			public void onPageSelected(int position) {
-				if (!mFAB.isShown())
-					mFAB.show();
-			}
-
-			@Override
-			public void onPageScrollStateChanged(int state) {
-
-			}
-		});
 	}
+
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		ScheduleDBHelper helper = new ScheduleDBHelper(this);
-		ArrayList<Lesson> lessons = helper.getLessonList(null);
+		ArrayList<Lesson> lessons = helper.getLessonList("2015-2016-1");
 		if (lessons == null || lessons.size() == 0) {
 			isNull = true;
 			new AlertDialog.Builder(this)
@@ -111,6 +94,8 @@ public class GetScheduleActivity extends BaseActivity {
 							}
 						}
 					}).show();
+		}else{
+			mWeekScheduleView.setLessons(lessons);
 		}
 	}
 
@@ -131,7 +116,12 @@ public class GetScheduleActivity extends BaseActivity {
 					for (String s : spinnerData[1].split(","))
 						mTerms.add(s);
 
-					showAddSchedule();
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							showAddSchedule();
+						}
+					});
 				}
 			}
 		})).start();
@@ -183,7 +173,6 @@ public class GetScheduleActivity extends BaseActivity {
 						.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								dialog.dismiss();
 								showProgressDialog(R.string.loading);
 								getSchedule(mSpinnerYear.getSelectedItem().toString(),
 										mSpinnerTerm.getSelectedItem().toString());

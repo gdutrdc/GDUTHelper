@@ -66,26 +66,19 @@ public class BaseActivity extends AppCompatActivity {
 	}
 
 	public void showProgressDialog(String message) {
-		if (progressDialog == null) {
-			progressDialog = new ProgressDialog(this);
+		progressDialog = new ProgressDialog(this);
 //  		progressDialog.setCancelable(false);
-			progressDialog.show();
-		}
+		progressDialog.show();
 		progressDialog.setMessage(message);
 		progressDialog.show();
 	}
 
 	public void showWarning(String message, DialogInterface.OnClickListener onClickListener) {
-		if (warningDialog == null)
-			warningDialog = new AlertDialog.Builder(this)
-					.setMessage(message)
-					.setTitle("警告")
-					.setPositiveButton(R.string.ensure, onClickListener)
-					.create();
-		else {
-			warningDialog.setMessage(message);
-			warningDialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定", onClickListener);
-		}
+		warningDialog = new AlertDialog.Builder(this)
+				.setMessage(message)
+				.setTitle("警告")
+				.setPositiveButton(R.string.ensure, onClickListener)
+				.create();
 		warningDialog.show();
 	}
 

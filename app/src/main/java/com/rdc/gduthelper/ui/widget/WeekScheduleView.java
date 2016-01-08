@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
+import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.rdc.gduthelper.R;
+import com.rdc.gduthelper.bean.Lesson;
+import com.rdc.gduthelper.bean.LessonTACR;
+import com.rdc.gduthelper.bean.MaterialColors;
 import com.rdc.gduthelper.utils.UIUtils;
 
 import java.util.ArrayList;
@@ -20,9 +25,14 @@ import java.util.ArrayList;
  * Created by seasonyuu on 16/1/7.
  */
 public class WeekScheduleView extends ViewGroup {
+	private static final String TAG = WeekScheduleView.class.getSimpleName();
+
 	private ArrayList<TextView> lessonNums;
 
 	private ArrayList<View> lessonViews;
+	private int[] cardColors;
+
+	private ArrayList<Lesson> mLessons;
 
 	public WeekScheduleView(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
@@ -36,26 +46,72 @@ public class WeekScheduleView extends ViewGroup {
 
 	private void init() {
 		setWillNotDraw(false);
+		cardColors = new int[]{MaterialColors.getColor(MaterialColors.TEAL),
+				MaterialColors.getColor(MaterialColors.AMBER),
+				MaterialColors.getColor(MaterialColors.BLUE),
+				MaterialColors.getColor(MaterialColors.DEEP_PURPLE)};
 
 		lessonNums = new ArrayList<>();
+		mLessons = new ArrayList<>();
+		int lessonItemHeight = UIUtils.getScreenHeight(getContext()) / 12;
+		if (lessonItemHeight < 48)
+			lessonItemHeight = 48;
 		for (int i = 1; i <= 12; i++) {
 			TextView tv = new TextView(getContext());
 			tv.setText(i + "");
 			tv.setTextSize(12);
 			tv.setBackgroundColor(getResources().getColor(R.color.grey_300));
-			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
-					(int) UIUtils.convertDpToPixel(48, getContext()));
+			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, lessonItemHeight);
 			lessonNums.add(tv);
 			addView(tv, params);
 		}
 
 		lessonViews = new ArrayList<>();
-		for (int i = 0; i < 7; i++) {
-			View lesson0 = LayoutInflater.from(getContext()).inflate(R.layout.item_lesson_week, null);
-			LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT,
-					LayoutParams.WRAP_CONTENT);
-			addView(lesson0, params);
-			lessonViews.add(lesson0);
+	}
+
+	public void setLessons(ArrayList<Lesson> lessons) {
+		mLessons = lessons;
+		for (View v : lessonViews) {
+			if (v.getParent() != null && v.getParent() == this) {
+				removeView(v);
+			}
+		}
+		for (int i = 0; i < mLessons.size(); i++) {
+			Lesson lesson = mLessons.get(i);
+			ArrayList<LessonTACR> tacrs = lesson.getLessonTACRs();
+			for (LessonTACR tacr : tacrs) {
+				View view = null;
+				for (View v : lessonViews) {
+					LessonTACR tag = (LessonTACR) v.getTag();
+					boolean flag = true;
+					int[] num1 = tag.getNum();
+					int[] num2 = tacr.getNum();
+					for (int j = 0; j < num1.length && j < num2.length; j++) {
+						if (num1[j] != num2[j]) {
+							flag = false;
+							break;
+						}
+					}
+					if (!flag)
+						continue;
+					if (tacr.getWeekday() == tag.getWeekday()) {
+						view = v;
+						break;
+					}
+				}
+				if (view == null) {
+					view = LayoutInflater.from(getContext()).inflate(R.layout.item_lesson_week, null);
+					view.setTag(tacr);
+					lessonViews.add(view);
+					addView(view);
+					LayoutParams lp = view.getLayoutParams();
+					lp.width = (int) (getMeasuredWidth() * 0.13);
+					view.setLayoutParams(lp);
+					((TextView) view.findViewById(R.id.item_schedule_text)).setText(lesson.getLessonName());
+					((CardView) view).setCardBackgroundColor(MaterialColors.getColor(i % 16));
+				}
+			}
+
 		}
 	}
 
@@ -71,7 +127,8 @@ public class WeekScheduleView extends ViewGroup {
 		int lineX = 0;
 		for (int i = 0; i < 12; i++) {
 			TextView tv = lessonNums.get(i);
-			canvas.drawLine(0, lineY, width, lineY, paint);
+			if (i != 0)
+				canvas.drawLine(0, lineY, width, lineY, paint);
 			lineY += tv.getMeasuredHeight();
 		}
 		canvas.drawLine((int) (width * 0.09), 0, (int) (width * .09), height, paint);
@@ -104,13 +161,6 @@ public class WeekScheduleView extends ViewGroup {
 			tv.setLayoutParams(lp);
 		}
 
-		int lessonWidth = (int) (sizeWidth * 0.13);
-		for (View v : lessonViews) {
-			LayoutParams lp = v.getLayoutParams();
-			lp.width = lessonWidth;
-			v.setLayoutParams(lp);
-		}
-
 		setMeasuredDimension(sizeWidth, (heightMode == MeasureSpec.EXACTLY) ? sizeHeight
 				: height);
 	}
@@ -130,10 +180,24 @@ public class WeekScheduleView extends ViewGroup {
 			lessonItemHeight = tv.getMeasuredHeight();
 		}
 
-		for (int i = 0; i < lessonViews.size(); i++) {
-			View view = lessonViews.get(i);
-			view.layout((int) (width * (0.09 + 0.13 * i)) + 2, lessonItemHeight * i + 2,
-					(int) (width * (0.09 + 0.13 * (i + 1))) - 2, lessonItemHeight * (2 + i) - 2);
+		if (mLessons.size() > 0) {
+			int margin = getResources().getDimensionPixelOffset(R.dimen.lesson_item_margin);
+			if (Build.VERSION.SDK_INT < 21)
+				margin = 0;
+			for (View view : lessonViews) {
+				if (view != null && view.getParent() == this) {
+					LessonTACR tacr = (LessonTACR) view.getTag();
+
+					LayoutParams lp1 = view.findViewById(R.id.item_schedule_text).getLayoutParams();
+					lp1.width = (int) (getMeasuredWidth() * 0.13);
+					view.findViewById(R.id.item_schedule_text).setLayoutParams(lp1);
+
+					view.layout((int) (width * (0.09 + 0.13 * tacr.getWeekday() % 7)) + margin,
+							(tacr.getNum()[0] - 1) * lessonItemHeight + margin,
+							(int) (width * (0.09 + 0.13 * (tacr.getWeekday() % 7 + 1))),
+							(tacr.getNum()[0] - 1 + tacr.getNum().length) * lessonItemHeight);
+				}
+			}
 		}
 	}
 }

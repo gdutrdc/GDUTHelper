@@ -10,12 +10,13 @@
     app:cardBackgroundColor="@color/teal_500">
 
     <TextView
+        android:id="@+id/item_schedule_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:padding="6dp"
         android:text="高等数学@教5-106"
         android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-        android:textSize="12sp"/>
+        android:textSize="@dimen/lesson_item_text_size"/>
 
 </android.support.v7.widget.CardView>
