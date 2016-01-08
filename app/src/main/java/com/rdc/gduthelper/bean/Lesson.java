@@ -1,5 +1,7 @@
 package com.rdc.gduthelper.bean;
 
+import java.util.ArrayList;
+
 /**
  * Created by seasonyuu on 15/8/28.
  */
@@ -13,6 +15,15 @@ public class Lesson implements Cloneable {
 	private String lessonTime;//上课时间
 	private String lessonClassroom;//上课地点
 	private String lessonTeacher;//教师姓名
+	private ArrayList<LessonTACR> lessonTACRs;//上课时间与地点集合
+
+	public ArrayList<LessonTACR> getLessonTACRs() {
+		return lessonTACRs;
+	}
+
+	public void setLessonTACRs(ArrayList<LessonTACR> lessonTACRs) {
+		this.lessonTACRs = lessonTACRs;
+	}
 
 	public String getLessonTime() {
 		return lessonTime;
@@ -27,6 +38,8 @@ public class Lesson implements Cloneable {
 	}
 
 	public void setLessonClassroom(String lessonClassroom) {
+		if(lessonClassroom.equals("&nbsp;"))
+			lessonClassroom = "";
 		this.lessonClassroom = lessonClassroom;
 	}
 
@@ -67,6 +80,8 @@ public class Lesson implements Cloneable {
 	}
 
 	public void setLessonType(String lessonType) {
+		if(lessonType.equals("&nbsp;"))
+			lessonType = "";
 		this.lessonType = lessonType;
 	}
 
@@ -88,29 +103,10 @@ public class Lesson implements Cloneable {
 
 	@Override
 	public String toString() {
-		return lessonCode + "\t" + lessonName + "\t" + lessonGrade;
-	}
-
-	public double calculatePoint() {
-		double point = 0;
-		try {
-			point = Double.parseDouble(lessonGrade) / 10 - 5;
-			if (point < 1)
-				point = 0;
-		} catch (NumberFormatException e) {
-			if (lessonGrade.equals("优秀")) {
-				return 4.5;
-			} else if (lessonGrade.equals("良好")) {
-				return 3.5;
-			} else if (lessonGrade.equals("中等")) {
-				return 2.5;
-			} else if (lessonGrade.equals("及格")) {
-				return 1.5;
-			} else if (lessonGrade.equals("不及格")) {
-				return 0;
-			}
-		}
-		return point;
+		return "课程代码:" + lessonCode + ",课程名字:" + lessonName +
+				",課程教師:" + lessonTeacher + ",上课时间:" + lessonTime
+				+ ",上课地点:" + lessonClassroom + ",课程学分:" + lessonCredit
+				+ ",课程性质:" + lessonType + ",课程成绩:" + lessonGrade;
 	}
 
 }

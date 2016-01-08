@@ -29,6 +29,7 @@ import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetGrade;
 import com.rdc.gduthelper.net.api.IntoGrade;
 import com.rdc.gduthelper.ui.adapter.GradeListAdapter;
+import com.rdc.gduthelper.utils.LessonUtils;
 import com.rdc.gduthelper.utils.UIUtils;
 
 import java.util.ArrayList;
@@ -179,7 +180,7 @@ public class GetGradeActivity extends BaseActivity {
 							double points = 0, credits = 0;
 							for (Lesson lesson : list) {
 								double point = Double.parseDouble(
-										String.format("%.2f", lesson.calculatePoint() * Double.parseDouble(lesson.getLessonCredit())));
+										String.format("%.2f", LessonUtils.calculatePoint(lesson) * Double.parseDouble(lesson.getLessonCredit())));
 								points += point;
 								if (point == 0 && !lesson.getLessonBelong().equals("&nbsp;"))
 									continue;

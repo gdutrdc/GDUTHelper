@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -56,11 +55,8 @@ public class GetInformationActivity extends BaseActivity implements View.OnClick
 		setTheme(themeId);
 		setContentView(R.layout.activity_get_information);
 
-		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-		getSupportActionBar().setHomeButtonEnabled(true);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		((CollapsingToolbarLayout) findViewById(R.id.get_information_collapsing_toolbar)).setTitle(getString(R.string.get_information));
+		((CollapsingToolbarLayout) findViewById(R.id.get_information_collapsing_toolbar))
+				.setTitle(getString(R.string.get_information));
 
 		findViewById(R.id.get_information_appbar).setOnClickListener(this);
 

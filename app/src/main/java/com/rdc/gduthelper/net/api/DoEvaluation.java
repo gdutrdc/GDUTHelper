@@ -1,7 +1,5 @@
 package com.rdc.gduthelper.net.api;
 
-import android.util.Log;
-
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Evaluation;
 import com.rdc.gduthelper.net.ApiHelper;
@@ -41,7 +39,7 @@ public class DoEvaluation extends BaseRunnable {
 
 	@Override
 	public void run() {
-		String requestUrl = ApiHelper.getURl() + "xsjxpj.aspx?xkkh=" + lessonCode
+		requestUrl = ApiHelper.getURl() + "xsjxpj.aspx?xkkh=" + lessonCode
 				+ "&xh=" + GDUTHelperApp.userXh + "&gnmkdm=N12141";
 		try {
 			URL url = new URL(requestUrl);
@@ -82,7 +80,7 @@ public class DoEvaluation extends BaseRunnable {
 			data += "&pjxx=" +
 					"&txt1=" +
 					"&TextBox1=0" +
-					"&Button1=+%CC%E1++%BD%BB+";
+					"&Button2=+%CC%E1++%BD%BB+";
 
 			DataOutputStream out = new DataOutputStream(httpURLConnection.getOutputStream());// 获得一个输出流,向服务器写数据
 			out.writeBytes(data);
@@ -106,6 +104,7 @@ public class DoEvaluation extends BaseRunnable {
 					GDUTHelperApp.viewState = s.substring(begin, end);
 				}
 			}
+			System.out.println(sb.toString());
 			if (callback != null)
 				callback.onCall(null);
 		} catch (Exception e) {

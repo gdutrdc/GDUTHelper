@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.bean.Lesson;
+import com.rdc.gduthelper.utils.LessonUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,12 +68,12 @@ public class GradeListAdapter extends BaseAdapter {
 							compareLeft = Double.parseDouble(rhs.getLessonCredit());
 							break;
 						case GRADE_DOWN_SORT:
-							compareRight = lhs.calculatePoint();
-							compareLeft = rhs.calculatePoint();
+							compareRight = LessonUtils.calculatePoint(lhs);
+							compareLeft = LessonUtils.calculatePoint(rhs);
 							break;
 						case GRADE_UP_SORT:
-							compareRight = rhs.calculatePoint();
-							compareLeft = lhs.calculatePoint();
+							compareRight = LessonUtils.calculatePoint(rhs);
+							compareLeft = LessonUtils.calculatePoint(lhs);
 							break;
 					}
 					if (compareLeft == compareRight) {

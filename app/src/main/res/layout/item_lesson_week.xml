@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:foreground="?selectableItemBackground"
+    android:orientation="vertical"
+    app:cardBackgroundColor="@color/teal_500">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="6dp"
+        android:text="高等数学@教5-106"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+        android:textSize="12sp"/>
+
+</android.support.v7.widget.CardView>

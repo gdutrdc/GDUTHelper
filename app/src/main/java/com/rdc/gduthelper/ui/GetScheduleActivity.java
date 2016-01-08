@@ -2,7 +2,11 @@ package com.rdc.gduthelper.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
 import android.view.LayoutInflater;
@@ -15,6 +19,7 @@ import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetSchedule;
 import com.rdc.gduthelper.net.api.IntoSchedule;
+import com.rdc.gduthelper.ui.adapter.SchedulePagerAdapter;
 import com.rdc.gduthelper.utils.database.ScheduleDBHelper;
 
 import java.util.ArrayList;
@@ -27,15 +32,62 @@ public class GetScheduleActivity extends BaseActivity {
 	private AppCompatSpinner mSpinnerYear;
 	private AppCompatSpinner mSpinnerTerm;
 
+	private TabLayout mTabLayout;
+	private ViewPager mViewPager;
+
+	private SchedulePagerAdapter mPagerAdapter;
+
 	private ArrayList<String> mYears;
 	private ArrayList<String> mTerms;
 
 	private boolean isNull;
 
+	private FloatingActionButton mFAB;
+
+	private int themeId;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		themeId = GDUTHelperApp.getSettings().getThemeId();
+		if (themeId == R.style.AppTheme_Blue)
+			themeId = R.style.AppTheme_Blue_NoActionBar;
+		else
+			themeId = R.style.AppTheme_Pink_NoActionBar;
+		setTheme(themeId);
 		setContentView(R.layout.activity_get_schedule);
+
+		initViewPager();
+
+		mFAB = (FloatingActionButton) findViewById(R.id.get_schedule_fab);
+	}
+
+	private void initViewPager() {
+		mTabLayout = (TabLayout) findViewById(R.id.get_schedule_tab_layout);
+		mViewPager = (ViewPager) findViewById(R.id.get_schedule_view_pager);
+		mPagerAdapter = new SchedulePagerAdapter(getSupportFragmentManager());
+		mViewPager.setAdapter(mPagerAdapter);
+
+		mTabLayout.setTabTextColors(getResources().getColor(R.color.grey_300), Color.WHITE);
+		mTabLayout.setupWithViewPager(mViewPager);
+
+		mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+			}
+
+			@Override
+			public void onPageSelected(int position) {
+				if (!mFAB.isShown())
+					mFAB.show();
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {
+
+			}
+		});
 	}
 
 	@Override
@@ -85,11 +137,13 @@ public class GetScheduleActivity extends BaseActivity {
 		})).start();
 	}
 
-	private void getSchedule(String year, String term) {
+	private void getSchedule(final String year, final String term) {
 		new Thread(new GetSchedule(year, term, new BaseRunnable.GGCallback() {
 			@Override
 			public void onCall(Object obj) {
-
+				ArrayList<Lesson> lessons = (ArrayList<Lesson>) obj;
+				ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
+				helper.addLessonList(lessons, year + "-" + term);
 			}
 		})).start();
 	}
@@ -129,6 +183,7 @@ public class GetScheduleActivity extends BaseActivity {
 						.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
 								showProgressDialog(R.string.loading);
 								getSchedule(mSpinnerYear.getSelectedItem().toString(),
 										mSpinnerTerm.getSelectedItem().toString());

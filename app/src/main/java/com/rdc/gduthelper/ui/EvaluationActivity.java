@@ -18,6 +18,7 @@ import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Evaluation;
 import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.net.BaseRunnable;
+import com.rdc.gduthelper.net.api.DoEvaluation;
 import com.rdc.gduthelper.net.api.SaveEvaluation;
 import com.rdc.gduthelper.net.api.IntoEvaluation;
 import com.rdc.gduthelper.ui.adapter.EvaluationAdapter;
@@ -95,7 +96,7 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
 	}
 
 	private void doEvaluation() {
-		new Thread(new SaveEvaluation(mAdapter.getEvaluationList().get(mAdapter.getItemCount() - 1),
+		new Thread(new DoEvaluation(mAdapter.getEvaluationList().get(mAdapter.getItemCount() - 1),
 				new BaseRunnable.GGCallback() {
 					@Override
 					public void onCall(Object obj) {
