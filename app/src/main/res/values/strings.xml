@@ -107,5 +107,5 @@
     <string name="test_username"></string>
     <string name="test_password"></string>
 
-    <string name="default_zb_text">我特么这次考试$name才得了$lesson！</string>
+    <string name="default_zb_text">我特么这次考试$name才得了$grade！</string>
 </resources>
