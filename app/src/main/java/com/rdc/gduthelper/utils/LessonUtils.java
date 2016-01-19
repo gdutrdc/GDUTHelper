@@ -95,17 +95,8 @@ public class LessonUtils {
 			int flag = -1;
 			for (int ii = 0; ii < lessonTACRs.size(); ii++) {
 				LessonTACR lessonTACR = lessonTACRs.get(ii);
-				if (lessonTACR.getWeekday() == tacr.getWeekday()) {
-					for (int j = 0; j < tacr.getNum().length; j++) {
-						if (tacr.getNum()[j] == lessonTACR.getNum()[j]) {
-							flag = ii;
-							break;
-						}
-					}
-					if (flag != -1) {
-						break;
-					}
-				}
+				if (isSameTime(lessonTACR, tacr))
+					flag = ii;
 			}
 			if (flag == -1)
 				lessonTACRs.add(tacr);
@@ -131,6 +122,18 @@ public class LessonUtils {
 		return lessonTACRs;
 	}
 
+	public static boolean isSameTime(LessonTACR tacr0, LessonTACR tacr1) {
+		if (tacr0.getWeekday() == tacr1.getWeekday()) {
+			for (int j = 0; j < tacr0.getNum().length; j++) {
+				if (tacr0.getNum()[j] != tacr1.getNum()[j]) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 	public static double calculatePoint(Lesson lesson) {
 		String lessonGrade = lesson.getLessonGrade();
 		double point = 0;
@@ -152,5 +155,24 @@ public class LessonUtils {
 			}
 		}
 		return point;
+	}
+
+
+	public static Lesson findLesson(ArrayList<Lesson> lessons, String lessonCode) {
+		for (Lesson lesson : lessons) {
+			if (lesson.getLessonCode().equals(lessonCode))
+				return lesson;
+		}
+		return null;
+	}
+
+	public static boolean lessonInThisWeek(LessonTACR tacr, int week) {
+		int[] weeks = tacr.getWeek();
+		for (int ii = 0; ii < weeks.length; ii++) {
+			if (weeks[ii] == week) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

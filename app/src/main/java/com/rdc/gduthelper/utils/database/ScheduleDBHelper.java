@@ -113,6 +113,7 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 			ArrayList<LessonTACR> tacrs = new ArrayList<>();
 			while (c.moveToNext()) {
 				LessonTACR tacr = new LessonTACR();
+				tacr.setLessonCode(lesson.getLessonCode());
 				tacr.setClassroom(c.getString(c.getColumnIndex(Column.LESSON_CLASSROOM)));
 
 				String[] numData = c.getString(c.getColumnIndex(Column.NUM)).split(",");

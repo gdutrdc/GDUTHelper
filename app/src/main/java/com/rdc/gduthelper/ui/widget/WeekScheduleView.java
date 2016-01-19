@@ -17,6 +17,7 @@ import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.bean.LessonTACR;
 import com.rdc.gduthelper.bean.MaterialColors;
+import com.rdc.gduthelper.utils.LessonUtils;
 import com.rdc.gduthelper.utils.UIUtils;
 
 import java.util.ArrayList;
@@ -75,52 +76,72 @@ public class WeekScheduleView extends ViewGroup {
 
 	public void setLessons(ArrayList<Lesson> lessons) {
 		mLessons = lessons;
+		for (View view : lessonViews)
+			removeView(view);
+		lessonViews = new ArrayList<>();
 		for (int i = 0; i < mLessons.size(); i++) {
 			Lesson lesson = mLessons.get(i);
 			ArrayList<LessonTACR> tacrs = lesson.getLessonTACRs();
 			for (LessonTACR tacr : tacrs) {
-				View view = null;
-				for (View v : lessonViews) {
-					LessonTACR tag = (LessonTACR) v.getTag();
-					boolean flag = true;
-					int[] num1 = tag.getNum();
-					int[] num2 = tacr.getNum();
-					for (int j = 0; j < num1.length && j < num2.length; j++) {
-						if (num1[j] != num2[j]) {
-							flag = false;
-							break;
-						}
-					}
-					if (!flag)
-						continue;
-					if (tacr.getWeekday() == tag.getWeekday()) {
-						view = v;
-						break;
-					}
-				}
+				View view = findViewWithTag(lessonViews, tacr);
 				if (view == null) {
 					view = LayoutInflater.from(getContext()).inflate(R.layout.item_lesson_week, null);
-					view.setTag(tacr);
-					lessonViews.add(view);
 					addView(view);
+					lessonViews.add(view);
 				}
-				LayoutParams lp = view.getLayoutParams();
-				lp.width = (int) (getMeasuredWidth() * 0.13);
-				view.setLayoutParams(lp);
-				((TextView) view.findViewById(R.id.item_schedule_text))
-						.setText(lesson.getLessonName() + "@" + tacr.getClassroom());
-				int color = colorOut;
-				int[] weeks = tacr.getWeek();
-				for (int ii = 0; ii < weeks.length; ii++) {
-					if (weeks[ii] == week) {
-						color = colorIn;
-						break;
-					}
+				ArrayList<LessonTACR> lessonTACRs = null;
+				if (view.getTag() != null)
+					lessonTACRs = (ArrayList<LessonTACR>) view.getTag();
+				else {
+					lessonTACRs = new ArrayList<>();
+					view.setTag(lessonTACRs);
 				}
-				((CardView) view).setCardBackgroundColor(color);
-			}
+				lessonTACRs.add(tacr);
 
+				if (lessonTACRs.size() == 1) {
+					((TextView) view.findViewById(R.id.item_schedule_text))
+							.setText(lesson.getLessonName() + "@" + tacr.getClassroom());
+					int color = colorOut;
+					if (LessonUtils.lessonInThisWeek(tacr, week))
+						color = colorIn;
+					view.findViewById(R.id.item_schedule_dog_ear).setVisibility(GONE);
+					((CardView) view).setCardBackgroundColor(color);
+				} else {
+					boolean isShown = false;
+					for (LessonTACR tacr1 : lessonTACRs) {
+						if (LessonUtils.lessonInThisWeek(tacr1, week)) {
+							isShown = true;
+							int color = colorIn;
+							((TextView) view.findViewById(R.id.item_schedule_text)).setText(
+									LessonUtils.findLesson(
+											mLessons, tacr1.getLessonCode()).getLessonName()
+											+ "@" + tacr1.getClassroom());
+							view.findViewById(R.id.item_schedule_dog_ear).setVisibility(GONE);
+							((CardView) view).setCardBackgroundColor(color);
+						}
+					}
+					if (!isShown) {
+						((TextView) view.findViewById(R.id.item_schedule_text))
+								.setText(lesson.getLessonName() + "@" + tacr.getClassroom());
+						int color = colorOut;
+						((CardView) view).setCardBackgroundColor(color);
+					}
+					view.findViewById(R.id.item_schedule_dog_ear).setVisibility(VISIBLE);
+				}
+			}
 		}
+	}
+
+	private View findViewWithTag(ArrayList<View> views, LessonTACR tacr) {
+		for (View v : views) {
+			ArrayList<LessonTACR> lessonTACRs = (ArrayList<LessonTACR>) v.getTag();
+			for (LessonTACR lessonTACR : lessonTACRs) {
+				if (LessonUtils.isSameTime(lessonTACR, tacr)) {
+					return v;
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -194,7 +215,8 @@ public class WeekScheduleView extends ViewGroup {
 				margin = 0;
 			for (View view : lessonViews) {
 				if (view != null && view.getParent() == this) {
-					LessonTACR tacr = (LessonTACR) view.getTag();
+					ArrayList<LessonTACR> tacrs = (ArrayList<LessonTACR>) view.getTag();
+					LessonTACR tacr = tacrs.get(0);
 
 					LayoutParams lp1 = view.findViewById(R.id.item_schedule_text).getLayoutParams();
 					lp1.width = (int) (getMeasuredWidth() * 0.13);

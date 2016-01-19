@@ -6,6 +6,7 @@ package com.rdc.gduthelper.bean;
  * Created by seasonyuu on 15/8/28.
  */
 public class LessonTACR {
+	private String lessonCode;
 	private int[] week;
 	private int weekday;
 	private int[] num;
@@ -13,6 +14,14 @@ public class LessonTACR {
 
 	public LessonTACR(){
 
+	}
+
+	public String getLessonCode() {
+		return lessonCode;
+	}
+
+	public void setLessonCode(String lessonCode) {
+		this.lessonCode = lessonCode;
 	}
 
 	public int[] getWeek() {
