@@ -7,6 +7,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
@@ -76,27 +78,32 @@ public class GetScheduleActivity extends BaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		ScheduleDBHelper helper = new ScheduleDBHelper(this);
-		ArrayList<Lesson> lessons = helper.getLessonList("2015-2016-1");
-		if (lessons == null || lessons.size() == 0) {
-			isNull = true;
-			new AlertDialog.Builder(this)
-					.setTitle(R.string.tips)
-					.setMessage(R.string.no_local_schedule)
-					.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							if (GDUTHelperApp.isLogin()) {
-								intoSchedule();
-								showProgressDialog(R.string.loading);
-							} else {
-								startActivity(new Intent(GetScheduleActivity.this, LoginActivity.class));
-							}
-						}
-					}).show();
-		}else{
-			mWeekScheduleView.setLessons(lessons);
-		}
+		if (mWeekScheduleView != null)
+			if (mWeekScheduleView.getLessons().size() == 0) {
+				ScheduleDBHelper helper = new ScheduleDBHelper(this);
+				ArrayList<Lesson> lessons = helper.getLessonList("2015-2016-1");
+				if (lessons == null || lessons.size() == 0) {
+					isNull = true;
+					new AlertDialog.Builder(this)
+							.setTitle(R.string.tips)
+							.setMessage(R.string.no_local_schedule)
+							.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									if (GDUTHelperApp.isLogin()) {
+										intoSchedule();
+										showProgressDialog(R.string.loading);
+									} else {
+										startActivity(new Intent(GetScheduleActivity.this, LoginActivity.class));
+									}
+								}
+							}).show();
+				} else {
+					mWeekScheduleView.setLessons(lessons);
+				}
+			}else{
+				mWeekScheduleView.requestLayout();
+			}
 	}
 
 	private void intoSchedule() {
@@ -132,8 +139,16 @@ public class GetScheduleActivity extends BaseActivity {
 			@Override
 			public void onCall(Object obj) {
 				ArrayList<Lesson> lessons = (ArrayList<Lesson>) obj;
-				ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
+				final ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
 				helper.addLessonList(lessons, year + "-" + term);
+				cancelDialog();
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						ArrayList<Lesson> lessons = helper.getLessonList("2015-2016-1");
+						mWeekScheduleView.setLessons(lessons);
+					}
+				});
 			}
 		})).start();
 	}
@@ -189,5 +204,19 @@ public class GetScheduleActivity extends BaseActivity {
 			}
 		});
 
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_schedule, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.schedule_settings) {
+
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

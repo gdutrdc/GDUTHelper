@@ -74,6 +74,10 @@ public class WeekScheduleView extends ViewGroup {
 		lessonViews = new ArrayList<>();
 	}
 
+	public ArrayList<Lesson> getLessons(){
+		return mLessons;
+	}
+
 	public void setLessons(ArrayList<Lesson> lessons) {
 		mLessons = lessons;
 		for (View view : lessonViews)
