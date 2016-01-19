@@ -27,10 +27,13 @@ import java.util.ArrayList;
 public class WeekScheduleView extends ViewGroup {
 	private static final String TAG = WeekScheduleView.class.getSimpleName();
 
+	private int week = 10;
+
 	private ArrayList<TextView> lessonNums;
 
 	private ArrayList<View> lessonViews;
-	private int[] cardColors;
+	private int colorIn = MaterialColors.getColor(MaterialColors.BLUE);
+	private int colorOut = Color.GRAY;
 
 	private ArrayList<Lesson> mLessons;
 
@@ -44,12 +47,13 @@ public class WeekScheduleView extends ViewGroup {
 		init();
 	}
 
+	public void setWeek(int week) {
+		this.week = week;
+		invalidate();
+	}
+
 	private void init() {
 		setWillNotDraw(false);
-		cardColors = new int[]{MaterialColors.getColor(MaterialColors.TEAL),
-				MaterialColors.getColor(MaterialColors.AMBER),
-				MaterialColors.getColor(MaterialColors.BLUE),
-				MaterialColors.getColor(MaterialColors.DEEP_PURPLE)};
 
 		lessonNums = new ArrayList<>();
 		mLessons = new ArrayList<>();
@@ -71,11 +75,6 @@ public class WeekScheduleView extends ViewGroup {
 
 	public void setLessons(ArrayList<Lesson> lessons) {
 		mLessons = lessons;
-		for (View v : lessonViews) {
-			if (v.getParent() != null && v.getParent() == this) {
-				removeView(v);
-			}
-		}
 		for (int i = 0; i < mLessons.size(); i++) {
 			Lesson lesson = mLessons.get(i);
 			ArrayList<LessonTACR> tacrs = lesson.getLessonTACRs();
@@ -104,12 +103,21 @@ public class WeekScheduleView extends ViewGroup {
 					view.setTag(tacr);
 					lessonViews.add(view);
 					addView(view);
-					LayoutParams lp = view.getLayoutParams();
-					lp.width = (int) (getMeasuredWidth() * 0.13);
-					view.setLayoutParams(lp);
-					((TextView) view.findViewById(R.id.item_schedule_text)).setText(lesson.getLessonName());
-					((CardView) view).setCardBackgroundColor(MaterialColors.getColor(i % 16));
 				}
+				LayoutParams lp = view.getLayoutParams();
+				lp.width = (int) (getMeasuredWidth() * 0.13);
+				view.setLayoutParams(lp);
+				((TextView) view.findViewById(R.id.item_schedule_text))
+						.setText(lesson.getLessonName() + "@" + tacr.getClassroom());
+				int color = colorOut;
+				int[] weeks = tacr.getWeek();
+				for (int ii = 0; ii < weeks.length; ii++) {
+					if (weeks[ii] == week) {
+						color = colorIn;
+						break;
+					}
+				}
+				((CardView) view).setCardBackgroundColor(color);
 			}
 
 		}
@@ -121,7 +129,7 @@ public class WeekScheduleView extends ViewGroup {
 		int height = getMeasuredHeight();
 
 		Paint paint = new Paint();
-		paint.setColor(Color.GRAY);
+		paint.setColor(Color.parseColor("#22888888"));
 		paint.setStrokeWidth(1);
 		int lineY = 0;
 		int lineX = 0;

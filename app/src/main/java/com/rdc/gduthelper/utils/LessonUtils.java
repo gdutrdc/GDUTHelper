@@ -92,8 +92,42 @@ public class LessonUtils {
 
 			tacr.setClassroom(classrooms[i]);
 
-			lessonTACRs.add(tacr);
+			int flag = -1;
+			for (int ii = 0; ii < lessonTACRs.size(); ii++) {
+				LessonTACR lessonTACR = lessonTACRs.get(ii);
+				if (lessonTACR.getWeekday() == tacr.getWeekday()) {
+					for (int j = 0; j < tacr.getNum().length; j++) {
+						if (tacr.getNum()[j] == lessonTACR.getNum()[j]) {
+							flag = ii;
+							break;
+						}
+					}
+					if (flag != -1) {
+						break;
+					}
+				}
+			}
+			if (flag == -1)
+				lessonTACRs.add(tacr);
+			else {
+				LessonTACR tacr1 = lessonTACRs.get(flag);
+				int[] newWeeks = new int[tacr.getWeek().length + tacr1.getWeek().length];
+				for (int ii = 0; ii < newWeeks.length; ii++) {
+					newWeeks[ii] = ii >= tacr.getWeek().length ?
+							tacr1.getWeek()[ii - tacr.getWeek().length] : tacr.getWeek()[ii];
+				}
+				for (int ii = 0; ii < newWeeks.length; ii++)
+					for (int j = 0; j < ii; j++) {
+						if (newWeeks[ii] < newWeeks[j]) {
+							int temp = newWeeks[ii];
+							newWeeks[ii] = newWeeks[j];
+							newWeeks[j] = temp;
+						}
+					}
+				tacr1.setWeek(newWeeks);
+			}
 		}
+
 		return lessonTACRs;
 	}
 
