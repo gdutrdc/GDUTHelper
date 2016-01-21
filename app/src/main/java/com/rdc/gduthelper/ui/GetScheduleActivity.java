@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
@@ -114,6 +115,40 @@ public class GetScheduleActivity extends BaseActivity implements AdapterView.OnI
 					}
 				});
 		fabLocation = ((RelativeLayout.LayoutParams) mFAB.getLayoutParams()).bottomMargin;
+
+	}
+
+	private void updateDate() {
+		int currentWeek = mSpinnerWeek.getSelectedItemPosition();
+		Calendar calendar = mSettings.getScheduleFirstWeek();
+		if (calendar.compareTo(Calendar.getInstance()) > 0) {
+			calendar = Calendar.getInstance();
+		} else
+			calendar.add(Calendar.WEEK_OF_YEAR, currentWeek);
+		((TextView) findViewById(R.id.get_schedule_tv_month))
+				.setText(calendar.get(Calendar.MONTH) + 1 + "月");
+
+		calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		((TextView) findViewById(R.id.get_schedule_tv_sun_date))
+				.setText(calendar.get(Calendar.DAY_OF_MONTH) + "");
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		((TextView) findViewById(R.id.get_schedule_tv_mon_date))
+				.setText(calendar.get(Calendar.DAY_OF_MONTH) + "");
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		((TextView) findViewById(R.id.get_schedule_tv_tue_date))
+				.setText(calendar.get(Calendar.DAY_OF_MONTH) + "");
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		((TextView) findViewById(R.id.get_schedule_tv_wed_date))
+				.setText(calendar.get(Calendar.DAY_OF_MONTH) + "");
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		((TextView) findViewById(R.id.get_schedule_tv_thu_date))
+				.setText(calendar.get(Calendar.DAY_OF_MONTH) + "");
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		((TextView) findViewById(R.id.get_schedule_tv_fri_date))
+				.setText(calendar.get(Calendar.DAY_OF_MONTH) + "");
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		((TextView) findViewById(R.id.get_schedule_tv_sat_date))
+				.setText(calendar.get(Calendar.DAY_OF_MONTH) + "");
 
 	}
 
@@ -366,6 +401,7 @@ public class GetScheduleActivity extends BaseActivity implements AdapterView.OnI
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		if (mWeekScheduleView != null)
 			mWeekScheduleView.setWeek(position);
+		updateDate();
 	}
 
 	@Override

@@ -32,7 +32,7 @@
         <TextView
             android:id="@+id/get_schedule_tv_month"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="36dp"
             android:gravity="center"
             android:text="1月"
             android:textColor="?colorPrimaryDark"
@@ -42,64 +42,141 @@
         <TextView
             android:id="@+id/get_schedule_tv_sun"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="24dp"
             android:layout_toRightOf="@id/get_schedule_tv_month"
-            android:gravity="center"
+            android:gravity="bottom|center"
             android:text="周日"
             app:layout_widthPercent="13%"/>
 
         <TextView
             android:id="@+id/get_schedule_tv_mon"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="24dp"
             android:layout_toRightOf="@id/get_schedule_tv_sun"
-            android:gravity="center"
+            android:gravity="bottom|center"
             android:text="周一"
             app:layout_widthPercent="13%"/>
 
         <TextView
             android:id="@+id/get_schedule_tv_tue"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="24dp"
             android:layout_toRightOf="@id/get_schedule_tv_mon"
-            android:gravity="center"
+            android:gravity="bottom|center"
             android:text="周二"
             app:layout_widthPercent="13%"/>
 
         <TextView
             android:id="@+id/get_schedule_tv_wed"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="24dp"
             android:layout_toRightOf="@id/get_schedule_tv_tue"
-            android:gravity="center"
+            android:gravity="bottom|center"
             android:text="周三"
             app:layout_widthPercent="13%"/>
 
         <TextView
             android:id="@+id/get_schedule_tv_thu"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="24dp"
             android:layout_toRightOf="@+id/get_schedule_tv_wed"
-            android:gravity="center"
+            android:gravity="bottom|center"
             android:text="周四"
             app:layout_widthPercent="13%"/>
 
         <TextView
             android:id="@+id/get_schedule_tv_fri"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="24dp"
             android:layout_toRightOf="@+id/get_schedule_tv_thu"
-            android:gravity="center"
+            android:gravity="bottom|center"
             android:text="周五"
             app:layout_widthPercent="13%"/>
 
         <TextView
             android:id="@+id/get_schedule_tv_sat"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="24dp"
+            android:layout_toRightOf="@+id/get_schedule_tv_fri"
+            android:gravity="bottom|center"
+            android:text="周六"
+            app:layout_widthPercent="13%"/>
+
+        <TextView
+            android:id="@+id/get_schedule_tv_sun_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_below="@+id/get_schedule_tv_mon"
+            android:layout_toRightOf="@id/get_schedule_tv_month"
+            android:gravity="center"
+            android:text="10"
+            app:layout_widthPercent="13%"/>
+
+        <TextView
+            android:id="@+id/get_schedule_tv_mon_date"
+            android:layout_below="@+id/get_schedule_tv_mon"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/get_schedule_tv_sun"
+            android:gravity="center"
+            android:text="11"
+            app:layout_widthPercent="13%"/>
+
+        <TextView
+            android:id="@+id/get_schedule_tv_tue_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_below="@+id/get_schedule_tv_mon"
+            android:layout_toRightOf="@id/get_schedule_tv_mon"
+            android:gravity="center"
+            android:text="12"
+            app:layout_widthPercent="13%"/>
+
+        <TextView
+            android:id="@+id/get_schedule_tv_wed_date"
+            android:layout_width="0dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/get_schedule_tv_mon"
+            android:layout_toRightOf="@id/get_schedule_tv_tue"
+            android:gravity="center"
+            android:text="13"
+            app:layout_widthPercent="13%"/>
+
+        <TextView
+            android:id="@+id/get_schedule_tv_thu_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_toRightOf="@+id/get_schedule_tv_wed"
+            android:layout_below="@+id/get_schedule_tv_mon"
+            android:gravity="center"
+            android:text="14"
+            app:layout_widthPercent="13%"/>
+
+        <TextView
+            android:id="@+id/get_schedule_tv_fri_date"
+            android:layout_width="0dp"
+            android:layout_below="@+id/get_schedule_tv_mon"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_toRightOf="@+id/get_schedule_tv_thu"
+            android:gravity="center"
+            android:text="15"
+            app:layout_widthPercent="13%"/>
+
+        <TextView
+            android:id="@+id/get_schedule_tv_sat_date"
+            android:layout_width="0dp"
+            android:layout_below="@+id/get_schedule_tv_mon"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/get_schedule_tv_fri"
             android:gravity="center"
-            android:text="周六"
+            android:text="16"
             app:layout_widthPercent="13%"/>
     </android.support.percent.PercentRelativeLayout>
 
