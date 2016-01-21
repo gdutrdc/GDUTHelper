@@ -8,6 +8,11 @@ import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.WidgetConfigs;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by seasonyuu on 15/12/28.
@@ -18,6 +23,9 @@ public class Settings {
 	public static final String REMEMBER_USER_DATA = "remember_user_data";
 	public static final String THEME = "theme";
 	public static final String WIDGET_CONFIGS = "widget_configs";
+	public static final String SCHEDULE_CHOOSE_TERM = "schedule_choose_term";
+	public static final String SCHEDULE_FIRST_WEEK = "schedule_first_week";
+	public static final String SCHEDULE_CURRENT_WEEK = "schedule_current_week";
 
 	private SharedPreferences mSharedPreferences;
 
@@ -114,5 +122,58 @@ public class Settings {
 		SharedPreferences.Editor editor = mSharedPreferences.edit();
 		editor.putInt(key, value);
 		editor.apply();
+	}
+
+	public String getScheduleChooseTerm() {
+		return mSharedPreferences.getString(SCHEDULE_CHOOSE_TERM, null);
+	}
+
+	public void setScheduleChooseTerm(String term) {
+		SharedPreferences.Editor editor = mSharedPreferences.edit();
+		editor.putString(SCHEDULE_CHOOSE_TERM, term);
+		editor.apply();
+	}
+
+	public void setScheduleFirstWeek(Calendar calendar) {
+		SharedPreferences.Editor editor = mSharedPreferences.edit();
+		calendar.set(Calendar.DAY_OF_WEEK, 1);
+		editor.putString(SCHEDULE_FIRST_WEEK, new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+				.format(calendar.getTime()));
+		editor.apply();
+	}
+
+	public Calendar getScheduleFirstWeek() {
+		Calendar calendar = Calendar.getInstance();
+		String firstWeekDate = mSharedPreferences.getString(SCHEDULE_FIRST_WEEK, null);
+		if (firstWeekDate == null)
+			return null;
+		else {
+			try {
+				Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(firstWeekDate);
+				calendar.setTime(date);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		return calendar;
+	}
+
+	public void setScheduleCurrentWeek(String currentWeek) {
+		int week = Integer.parseInt(currentWeek);
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.WEEK_OF_YEAR, -week);
+		setScheduleFirstWeek(calendar);
+	}
+
+	public String getScheduleCurrentWeek() {
+		Calendar calendar = getScheduleFirstWeek();
+		if (calendar == null)
+			return null;
+		int firstWeek = calendar.get(Calendar.WEEK_OF_YEAR);
+		int currentWeek = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) - firstWeek;
+		if (currentWeek < 0) {
+			currentWeek = currentWeek + calendar.getMaximum(Calendar.WEEK_OF_YEAR) - 1;
+		}
+		return currentWeek + "";
 	}
 }

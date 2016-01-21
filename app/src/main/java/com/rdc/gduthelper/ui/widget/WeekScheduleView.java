@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class WeekScheduleView extends ViewGroup {
 	private static final String TAG = WeekScheduleView.class.getSimpleName();
 
-	private int week = 10;
+	private int week = 0;
 
 	private ArrayList<TextView> lessonNums;
 
@@ -50,7 +50,12 @@ public class WeekScheduleView extends ViewGroup {
 
 	public void setWeek(int week) {
 		this.week = week;
-		invalidate();
+		if (mLessons == null || mLessons.size() == 0) {
+			return;
+		}
+		for (View view : lessonViews) {
+			makeLessonView(view);
+		}
 	}
 
 	private void init() {
@@ -74,7 +79,7 @@ public class WeekScheduleView extends ViewGroup {
 		lessonViews = new ArrayList<>();
 	}
 
-	public ArrayList<Lesson> getLessons(){
+	public ArrayList<Lesson> getLessons() {
 		return mLessons;
 	}
 
@@ -102,38 +107,37 @@ public class WeekScheduleView extends ViewGroup {
 				}
 				lessonTACRs.add(tacr);
 
-				if (lessonTACRs.size() == 1) {
-					((TextView) view.findViewById(R.id.item_schedule_text))
-							.setText(lesson.getLessonName() + "@" + tacr.getClassroom());
-					int color = colorOut;
-					if (LessonUtils.lessonInThisWeek(tacr, week))
-						color = colorIn;
-					view.findViewById(R.id.item_schedule_dog_ear).setVisibility(GONE);
-					((CardView) view).setCardBackgroundColor(color);
-				} else {
-					boolean isShown = false;
-					for (LessonTACR tacr1 : lessonTACRs) {
-						if (LessonUtils.lessonInThisWeek(tacr1, week)) {
-							isShown = true;
-							int color = colorIn;
-							((TextView) view.findViewById(R.id.item_schedule_text)).setText(
-									LessonUtils.findLesson(
-											mLessons, tacr1.getLessonCode()).getLessonName()
-											+ "@" + tacr1.getClassroom());
-							view.findViewById(R.id.item_schedule_dog_ear).setVisibility(GONE);
-							((CardView) view).setCardBackgroundColor(color);
-						}
-					}
-					if (!isShown) {
-						((TextView) view.findViewById(R.id.item_schedule_text))
-								.setText(lesson.getLessonName() + "@" + tacr.getClassroom());
-						int color = colorOut;
-						((CardView) view).setCardBackgroundColor(color);
-					}
-					view.findViewById(R.id.item_schedule_dog_ear).setVisibility(VISIBLE);
-				}
+				makeLessonView(view);
 			}
 		}
+	}
+
+	private void makeLessonView(View view) {
+		ArrayList<LessonTACR> lessonTACRs = (ArrayList<LessonTACR>) view.getTag();
+
+		boolean isShown = false;
+		for (LessonTACR tacr1 : lessonTACRs) {
+			if (LessonUtils.lessonInThisWeek(tacr1, week)) {
+				isShown = true;
+				int color = colorIn;
+				((TextView) view.findViewById(R.id.item_schedule_text)).setText(
+						LessonUtils.findLesson(
+								mLessons, tacr1.getLessonCode()).getLessonName()
+								+ "@" + tacr1.getClassroom());
+				view.findViewById(R.id.item_schedule_dog_ear).setVisibility(GONE);
+				((CardView) view).setCardBackgroundColor(color);
+			}
+		}
+		if (!isShown) {
+			LessonTACR tacr = lessonTACRs.get(0);
+			Lesson lesson = LessonUtils.findLesson(mLessons, tacr.getLessonCode());
+			((TextView) view.findViewById(R.id.item_schedule_text))
+					.setText(lesson.getLessonName() + "@" + tacr.getClassroom());
+			int color = colorOut;
+			((CardView) view).setCardBackgroundColor(color);
+		}
+		view.findViewById(R.id.item_schedule_dog_ear)
+				.setVisibility(lessonTACRs.size() > 1 ? VISIBLE : GONE);
 	}
 
 	private View findViewWithTag(ArrayList<View> views, LessonTACR tacr) {
@@ -222,14 +226,15 @@ public class WeekScheduleView extends ViewGroup {
 					ArrayList<LessonTACR> tacrs = (ArrayList<LessonTACR>) view.getTag();
 					LessonTACR tacr = tacrs.get(0);
 
-					LayoutParams lp1 = view.findViewById(R.id.item_schedule_text).getLayoutParams();
-					lp1.width = (int) (getMeasuredWidth() * 0.13);
-					view.findViewById(R.id.item_schedule_text).setLayoutParams(lp1);
 
 					view.layout((int) (width * (0.09 + 0.13 * tacr.getWeekday() % 7)) + margin,
 							(tacr.getNum()[0] - 1) * lessonItemHeight + margin,
 							(int) (width * (0.09 + 0.13 * (tacr.getWeekday() % 7 + 1))),
 							(tacr.getNum()[0] - 1 + tacr.getNum().length) * lessonItemHeight);
+
+					LayoutParams lp1 = view.findViewById(R.id.item_schedule_text).getLayoutParams();
+					lp1.width = (int) (getMeasuredWidth() * 0.13);
+					view.findViewById(R.id.item_schedule_text).setLayoutParams(lp1);
 				}
 			}
 		}

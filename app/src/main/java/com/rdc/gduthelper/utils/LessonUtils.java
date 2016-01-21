@@ -124,7 +124,7 @@ public class LessonUtils {
 
 	public static boolean isSameTime(LessonTACR tacr0, LessonTACR tacr1) {
 		if (tacr0.getWeekday() == tacr1.getWeekday()) {
-			for (int j = 0; j < tacr0.getNum().length; j++) {
+			for (int j = 0; j < tacr0.getNum().length && j<tacr1.getNum().length; j++) {
 				if (tacr0.getNum()[j] != tacr1.getNum()[j]) {
 					return false;
 				}

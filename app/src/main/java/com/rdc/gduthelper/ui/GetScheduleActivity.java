@@ -10,7 +10,13 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
@@ -19,6 +25,7 @@ import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetSchedule;
 import com.rdc.gduthelper.net.api.IntoSchedule;
 import com.rdc.gduthelper.ui.widget.WeekScheduleView;
+import com.rdc.gduthelper.utils.Settings;
 import com.rdc.gduthelper.utils.database.ScheduleDBHelper;
 
 import java.util.ArrayList;
@@ -27,7 +34,7 @@ import java.util.Calendar;
 /**
  * Created by seasonyuu on 16/1/4.
  */
-public class GetScheduleActivity extends BaseActivity {
+public class GetScheduleActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
 	private AppCompatSpinner mSpinnerYear;
 	private AppCompatSpinner mSpinnerTerm;
 	private AppCompatSpinner mSpinnerWeek;
@@ -38,10 +45,14 @@ public class GetScheduleActivity extends BaseActivity {
 	private WeekScheduleView mWeekScheduleView;
 
 	private boolean isNull;
+	private ScrollView mScheduleContainer;
 
 	private FloatingActionButton mFAB;
 
 	private int themeId;
+	private int fabLocation = 0;
+
+	private Settings mSettings;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,55 +67,105 @@ public class GetScheduleActivity extends BaseActivity {
 
 		initView();
 
-		mFAB = (FloatingActionButton) findViewById(R.id.get_schedule_fab);
+		mSettings = GDUTHelperApp.getSettings();
+
+		initData();
 	}
 
 	private void initView() {
 		mSpinnerWeek = (AppCompatSpinner) findViewById(R.id.get_schedule_week_spinner);
-
-		String[] s = new String[21];
-		for (int i = 1; i <= s.length; i++)
-			s[i - 1] = "第 " + i + " 周";
-		ArrayAdapter<String> weekAdapter = new ArrayAdapter<>(this, R.layout.spinner_item);
-		weekAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-		weekAdapter.addAll(s);
-		mSpinnerWeek.setAdapter(weekAdapter);
+		mSpinnerWeek.setOnItemSelectedListener(this);
 
 		mWeekScheduleView = (WeekScheduleView) findViewById(R.id.get_schedule_table);
+		mScheduleContainer = (ScrollView) mWeekScheduleView.getParent();
+		mFAB = (FloatingActionButton) findViewById(R.id.get_schedule_fab);
+		mScheduleContainer.getViewTreeObserver()
+				.addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+					int scrollDist = 0;
+					final float MINIMUM = 25;
+					boolean isVisible = true;
+					int lastTime = 0;
+
+					@Override
+					public void onScrollChanged() {
+						int dy = mScheduleContainer.getScrollY() - lastTime;
+						lastTime = mScheduleContainer.getScrollY();
+						if (isVisible && scrollDist > MINIMUM) {
+							hide();
+							scrollDist = 0;
+							isVisible = false;
+						} else if (!isVisible && scrollDist < -MINIMUM) {
+							show();
+							scrollDist = 0;
+							isVisible = true;
+						}
+						if ((isVisible && dy > 0) || (!isVisible && dy < 0)) {
+							scrollDist += dy;
+						}
+					}
+
+					private void show() {
+						mFAB.animate().translationY(0)
+								.setInterpolator(new DecelerateInterpolator(2)).start();
+					}
+
+					private void hide() {
+						mFAB.animate().translationY(
+								mFAB.getHeight() + fabLocation)
+								.setInterpolator(new AccelerateInterpolator(2)).start();
+					}
+				});
+		fabLocation = ((RelativeLayout.LayoutParams) mFAB.getLayoutParams()).bottomMargin;
 
 	}
 
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (mWeekScheduleView != null)
-			if (mWeekScheduleView.getLessons().size() == 0) {
-				ScheduleDBHelper helper = new ScheduleDBHelper(this);
-				ArrayList<Lesson> lessons = helper.getLessonList("2015-2016-1");
-				if (lessons == null || lessons.size() == 0) {
-					isNull = true;
-					new AlertDialog.Builder(this)
-							.setTitle(R.string.tips)
-							.setMessage(R.string.no_local_schedule)
-							.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									if (GDUTHelperApp.isLogin()) {
-										intoSchedule();
-										showProgressDialog(R.string.loading);
-									} else {
-										startActivity(new Intent(GetScheduleActivity.this,
-												LoginActivity.class));
-									}
-								}
-							}).show();
-				} else {
-					mWeekScheduleView.setLessons(lessons);
-				}
-			} else {
-				mWeekScheduleView.requestLayout();
+	private void initData() {
+		if (mWeekScheduleView != null) {
+			ScheduleDBHelper helper = new ScheduleDBHelper(this);
+			String term = mSettings.getScheduleChooseTerm();
+			ArrayList<Lesson> lessons = null;
+			if (term != null) {
+				lessons = helper.getLessonList(term);
+				mWeekScheduleView.setLessons(lessons);
 			}
+			if (lessons == null || lessons.size() == 0) {
+				isNull = true;
+				new AlertDialog.Builder(this)
+						.setTitle(R.string.tips)
+						.setMessage(R.string.no_local_schedule)
+						.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								if (GDUTHelperApp.isLogin()) {
+									intoSchedule();
+									showProgressDialog(R.string.loading);
+								} else {
+									startActivity(new Intent(GetScheduleActivity.this,
+											LoginActivity.class));
+								}
+							}
+						}).show();
+			} else {
+				mWeekScheduleView.setLessons(lessons);
+			}
+		}
+		if (mSpinnerWeek != null) {
+			String[] s = new String[22];
+			s[0] = "非上课时间";
+			for (int i = 1; i < s.length; i++)
+				s[i] = "第 " + i + " 周";
+			ArrayAdapter<String> weekAdapter = new ArrayAdapter<>(this, R.layout.spinner_item);
+			weekAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+			weekAdapter.addAll(s);
+			mSpinnerWeek.setAdapter(weekAdapter);
+			String current = mSettings.getScheduleCurrentWeek();
+			int week = 0;
+			if (current != null)
+				week = Integer.parseInt(current);
+			if (week >= s.length || week < 0)
+				week = 0;
+			mSpinnerWeek.setSelection(week);
+		}
 	}
 
 	private void intoSchedule() {
@@ -135,6 +196,16 @@ public class GetScheduleActivity extends BaseActivity {
 		})).start();
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == 0) {
+			boolean needRefresh = data.getBooleanExtra("need_refresh", false);
+			if (needRefresh)
+				initData();
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
 	private void getSchedule(final String year, final String term) {
 		new Thread(new GetSchedule(year, term, new BaseRunnable.GGCallback() {
 			@Override
@@ -143,12 +214,13 @@ public class GetScheduleActivity extends BaseActivity {
 				final ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
 				helper.addLessonList(lessons, year + "-" + term);
 				cancelDialog();
-				runOnUiThread(new Runnable() {
+				mSettings.setScheduleChooseTerm(year + "-" + term);
+
+				mWeekScheduleView.post(new Runnable() {
 					@Override
 					public void run() {
-						ArrayList<Lesson> lessons = helper.getLessonList("2015-2016-1");
+						ArrayList<Lesson> lessons = helper.getLessonList(year + "-" + term);
 						mWeekScheduleView.setLessons(lessons);
-						mWeekScheduleView.requestLayout();
 					}
 				});
 			}
@@ -217,8 +289,44 @@ public class GetScheduleActivity extends BaseActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.schedule_settings) {
-			startActivity(new Intent(this, ScheduleSettingsActivity.class));
+			startActivityForResult(new Intent(this, ScheduleSettingsActivity.class), 0);
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void onClick(View v) {
+		String[] choices = {getResources().getString(R.string.new_term),
+				getResources().getString(R.string.other_lesson)};
+		new AlertDialog.Builder(this)
+				.setItems(choices, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if (which == 0) {
+							if (GDUTHelperApp.isLogin()) {
+								intoSchedule();
+								showProgressDialog(R.string.loading);
+							} else {
+								startActivity(new Intent(GetScheduleActivity.this,
+										LoginActivity.class));
+							}
+						} else {
+
+						}
+					}
+				})
+				.setTitle(R.string.add)
+				.setPositiveButton(R.string.cancel, null)
+				.show();
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		if (mWeekScheduleView != null)
+			mWeekScheduleView.setWeek(position);
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+
 	}
 }

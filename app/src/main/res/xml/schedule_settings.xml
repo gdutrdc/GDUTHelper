@@ -5,8 +5,8 @@
             android:id="@+id/schedule_choose_term"
             android:key="@string/schedule_choose_term_key"/>
         <Preference
-            android:id="@+id/schedule_choose_week"
-            android:key="@string/schedule_choose_week_key"/>
+            android:id="@+id/schedule_current_week"
+            android:key="@string/schedule_current_week_key"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/interesting">
         <Preference

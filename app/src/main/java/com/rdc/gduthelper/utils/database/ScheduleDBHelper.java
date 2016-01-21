@@ -158,6 +158,9 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 			contentValues.put(Column.LESSON_CREDIT, lesson.getLessonCredit());
 			db.insert(TABLE_LESSONS, null, contentValues);
 
+			db.delete(TABLE_LESSON_TIMES, Column.XH + " = ? and " + Column.LESSON_CODE +
+							" = ? and " + Column.SELECTION + " = ?",
+					new String[]{GDUTHelperApp.userXh, lesson.getLessonCode(), selection});
 			for (LessonTACR tacr : LessonUtils.readTimeAndClassroom(lesson)) {
 				ContentValues foreignValue = new ContentValues();
 				foreignValue.put(Column.XH, GDUTHelperApp.userXh);
@@ -177,13 +180,37 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 
 				foreignValue.put(Column.LESSON_CLASSROOM, tacr.getClassroom());
 
-				db.delete(TABLE_LESSON_TIMES, Column.XH + " = ? and " + Column.LESSON_CODE +
-								" = ? and " + Column.SELECTION + " = ?",
-						new String[]{GDUTHelperApp.userXh, lesson.getLessonCode(), selection});
 				db.insert(TABLE_LESSON_TIMES, null, foreignValue);
 			}
 		}
 		db.close();
+	}
+
+	public String[] getOptionalTerms() {
+		SQLiteDatabase db = getReadableDatabase();
+		String[] result = null;
+		String xh = GDUTHelperApp.userXh;
+		if (xh == null) {
+			String up = GDUTHelperApp.getSettings().getRememberUser();
+			if (up == null) {
+				return result;
+			}
+			String[] data = up.split(";", 2);
+			xh = data[0];
+		}
+		Cursor cursor = db.query(true, TABLE_LESSONS, new String[]{Column.SELECTION},
+				Column.XH + " = ?", new String[]{xh}, null, null, null, null);
+		if (cursor.getCount() > 0) {
+			result = new String[cursor.getCount()];
+			cursor.moveToFirst();
+			for (int i = 0; i < result.length; i++) {
+				result[i] = cursor.getString(cursor.getColumnIndex(Column.SELECTION));
+				cursor.moveToNext();
+			}
+		}
+		cursor.close();
+		db.close();
+		return result;
 	}
 
 	private static class Column {
