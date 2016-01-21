@@ -124,12 +124,44 @@ public class GetScheduleActivity extends BaseActivity implements AdapterView.OnI
 	}
 
 	private void initData() {
-		if (mWeekScheduleView != null)
+		if (mWeekScheduleView != null) {
+			String colors = mSettings.getScheduleCardColors();
+			int[] allColors = getResources().getIntArray(R.array.colors);
+			int[] temp = new int[allColors.length];
+			int[] target = null;
+			if (colors == null) {
+				int themeId = mSettings.getThemeId();
+				int choose = 0;
+				if (themeId == R.style.AppTheme_Blue)
+					choose = 5;
+				else if (themeId == R.style.AppTheme_Pink)
+					choose = 1;
+				temp[0] = allColors[choose];
+			} else {
+				String[] choosedColors = colors.split(",");
+				for (int i = 0; i < choosedColors.length; i++) {
+					int j = Integer.parseInt(choosedColors[i]);
+					temp[i] = allColors[j];
+					temp[i + 1] = -1;
+				}
+			}
+			for (int i = 0; i < temp.length; i++)
+				if (temp[i] == -1)
+					target = new int[i];
+			if (target == null) {
+
+			} else {
+				for (int i = 0; i < target.length; i++) {
+					target[i] = temp[i];
+				}
+				mWeekScheduleView.setColors(target);
+			}
 			if (mWeekScheduleView.getLessons() == null
 					|| mWeekScheduleView.getLessons().size() == 0) {
 				refreshData();
 			} else
 				mWeekScheduleView.requestLayout();
+		}
 		if (mSpinnerWeek != null) {
 			String[] s = new String[22];
 			s[0] = "非上课时间";

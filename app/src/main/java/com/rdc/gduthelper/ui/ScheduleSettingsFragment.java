@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
+import com.rdc.gduthelper.ui.widget.ChooseColorsDialog;
 import com.rdc.gduthelper.utils.Settings;
 import com.rdc.gduthelper.utils.database.ScheduleDBHelper;
 
@@ -53,6 +54,7 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 		mPrefScheCardColors = findPreference(getResources().getString(R.string.schedule_card_colors_key));
 		mPrefScheCardColors.setTitle(R.string.schedule_card_colors);
 		mPrefScheCardColors.setSummary(R.string.schedule_card_colors_tips);
+		mPrefScheCardColors.setOnPreferenceClickListener(this);
 	}
 
 	@Override
@@ -96,7 +98,43 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 							}
 						})
 						.show();
-
+				break;
+			case Settings.SCHEDULE_CARD_COLORS:
+				final ChooseColorsDialog chooseColorsDialog = new ChooseColorsDialog(getActivity());
+				String colors = mSettings.getScheduleCardColors();
+				boolean[] choosed = new boolean[chooseColorsDialog.getChoosedColors().length];
+				if (colors == null) {
+					int themeId = mSettings.getThemeId();
+					int choose = 0;
+					if (themeId == R.style.AppTheme_Blue)
+						choose = 5;
+					else if (themeId == R.style.AppTheme_Pink)
+						choose = 1;
+					choosed[choose] = true;
+				} else {
+					String[] choosedColors = colors.split(",");
+					for (int i = 0; i < choosedColors.length; i++) {
+						int j = Integer.parseInt(choosedColors[i]);
+						choosed[j] = true;
+					}
+				}
+				chooseColorsDialog.setChoosedColors(choosed);
+				chooseColorsDialog.setOnClickListener(new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if (which == DialogInterface.BUTTON_POSITIVE) {
+							boolean[] choosedColors = chooseColorsDialog.getChoosedColors();
+							String colors = "";
+							for (int i = 0; i < choosedColors.length; i++) {
+								if (choosedColors[i])
+									colors += i + ",";
+							}
+							mSettings.setScheduleCardColors(colors.substring(0, colors.length() - 1));
+						}
+					}
+				});
+				chooseColorsDialog.show();
+				break;
 		}
 		return false;
 	}

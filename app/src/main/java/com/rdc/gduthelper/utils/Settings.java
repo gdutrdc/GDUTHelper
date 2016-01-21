@@ -26,6 +26,7 @@ public class Settings {
 	public static final String SCHEDULE_CHOOSE_TERM = "schedule_choose_term";
 	public static final String SCHEDULE_FIRST_WEEK = "schedule_first_week";
 	public static final String SCHEDULE_CURRENT_WEEK = "schedule_current_week";
+	public static final String SCHEDULE_CARD_COLORS = "schedule_card_colors";
 
 	private SharedPreferences mSharedPreferences;
 
@@ -175,5 +176,15 @@ public class Settings {
 			currentWeek = currentWeek + calendar.getMaximum(Calendar.WEEK_OF_YEAR) - 1;
 		}
 		return currentWeek + "";
+	}
+
+	public void setScheduleCardColors(String colors) {
+		SharedPreferences.Editor editor = mSharedPreferences.edit();
+		editor.putString(SCHEDULE_CARD_COLORS, colors);
+		editor.apply();
+	}
+
+	public String getScheduleCardColors() {
+		return mSharedPreferences.getString(SCHEDULE_CARD_COLORS, null);
 	}
 }

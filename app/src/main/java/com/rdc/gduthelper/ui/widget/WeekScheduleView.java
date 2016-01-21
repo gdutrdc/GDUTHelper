@@ -30,10 +30,12 @@ public class WeekScheduleView extends ViewGroup {
 
 	private int week = 0;
 
+	private int cardColorIndex = 0;
+
 	private ArrayList<TextView> lessonNums;
 
 	private ArrayList<View> lessonViews;
-	private int colorIn = MaterialColors.getColor(MaterialColors.BLUE);
+	private int[] colors = new int[]{MaterialColors.getColor(MaterialColors.BLUE)};
 	private int colorOut = Color.GRAY;
 
 	private ArrayList<Lesson> mLessons;
@@ -48,11 +50,21 @@ public class WeekScheduleView extends ViewGroup {
 		init();
 	}
 
+	public int[] getColors() {
+		return colors;
+	}
+
+	public void setColors(int[] colors) {
+		this.colors = colors;
+		invalidate();
+	}
+
 	public void setWeek(int week) {
 		this.week = week;
 		if (mLessons == null || mLessons.size() == 0) {
 			return;
 		}
+		cardColorIndex = 0;
 		for (View view : lessonViews) {
 			makeLessonView(view);
 		}
@@ -84,6 +96,7 @@ public class WeekScheduleView extends ViewGroup {
 	}
 
 	public void setLessons(ArrayList<Lesson> lessons) {
+		cardColorIndex = 0;
 		mLessons = lessons;
 		for (View view : lessonViews)
 			removeView(view);
@@ -119,7 +132,8 @@ public class WeekScheduleView extends ViewGroup {
 		for (LessonTACR tacr1 : lessonTACRs) {
 			if (LessonUtils.lessonInThisWeek(tacr1, week)) {
 				isShown = true;
-				int color = colorIn;
+				int color = colors[cardColorIndex % colors.length];
+				cardColorIndex++;
 				((TextView) view.findViewById(R.id.item_schedule_text)).setText(
 						LessonUtils.findLesson(
 								mLessons, tacr1.getLessonCode()).getLessonName()
