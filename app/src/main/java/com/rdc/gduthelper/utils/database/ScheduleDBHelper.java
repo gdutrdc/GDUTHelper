@@ -146,13 +146,16 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Column.XH, GDUTHelperApp.userXh);
 			contentValues.put(Column.LESSON_CODE, lesson.getLessonCode());
+			contentValues.put(Column.SELECTION, selection);
+			db.delete(TABLE_LESSONS, Column.XH + " = ? and " + Column.LESSON_CODE +
+							" = ? and " + Column.SELECTION + " = ?",
+					new String[]{GDUTHelperApp.userXh, lesson.getLessonCode(), selection});
 			contentValues.put(Column.LESSON_NAME, lesson.getLessonName());
 			contentValues.put(Column.LESSON_TYPE, lesson.getLessonType());
 			contentValues.put(Column.LESSON_TEACHER, lesson.getLessonTeacher());
 			contentValues.put(Column.LESSON_TIME, lesson.getLessonTime());
 			contentValues.put(Column.LESSON_CLASSROOM, lesson.getLessonClassroom());
 			contentValues.put(Column.LESSON_CREDIT, lesson.getLessonCredit());
-			contentValues.put(Column.SELECTION, selection);
 			db.insert(TABLE_LESSONS, null, contentValues);
 
 			for (LessonTACR tacr : LessonUtils.readTimeAndClassroom(lesson)) {
@@ -174,6 +177,9 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 
 				foreignValue.put(Column.LESSON_CLASSROOM, tacr.getClassroom());
 
+				db.delete(TABLE_LESSON_TIMES, Column.XH + " = ? and " + Column.LESSON_CODE +
+								" = ? and " + Column.SELECTION + " = ?",
+						new String[]{GDUTHelperApp.userXh, lesson.getLessonCode(), selection});
 				db.insert(TABLE_LESSON_TIMES, null, foreignValue);
 			}
 		}
