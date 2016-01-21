@@ -54,6 +54,19 @@
     <string name="change_psw_new">请输入新密码</string>
     <string name="change_psw_ensure">请确认新密码</string>
 
+    <!-- 课程表 -->
+    <string name="schedule_settings">课程表设置</string>
+    <string name="schedule_choose_week">选择当前周</string>
+    <string name="schedule_choose_week_key">schedule_choose_week</string>
+    <string name="schedule_choose_term">选择学期</string>
+    <string name="schedule_choose_term_key">schedule_choose_term</string>
+    <string name="interesting">一些有趣的</string>
+    <string name="schedule_card_colors_key">schedule_card_colors</string>
+    <string name="schedule_card_colors">课程卡片颜色</string>
+    <string name="schedule_card_colors_tips">请至少选择一种卡片颜色，每个课程会被分配到颜色中的某一种</string>
+    <string name="schedule_background_key">schedule_background</string>
+    <string name="schedule_background">课程表背景</string>
+
     <!-- 查询个人信息 -->
     <string name="information_account">学号</string>
     <string name="information_sex">性别</string>

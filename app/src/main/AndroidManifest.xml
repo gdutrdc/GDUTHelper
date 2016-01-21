@@ -53,6 +53,8 @@
         <activity
             android:name=".ui.GetScheduleActivity"
             android:label="@string/get_schedule"/>
+        <activity android:name=".ui.ScheduleSettingsActivity"
+            android:label="@string/schedule_settings"/>
 
         <receiver
             android:name="com.rdc.gduthelper.utils.appwidget.MyAppWidgetProvider"

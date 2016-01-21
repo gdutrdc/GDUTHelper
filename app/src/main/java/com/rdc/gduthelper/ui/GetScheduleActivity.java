@@ -94,14 +94,15 @@ public class GetScheduleActivity extends BaseActivity {
 										intoSchedule();
 										showProgressDialog(R.string.loading);
 									} else {
-										startActivity(new Intent(GetScheduleActivity.this, LoginActivity.class));
+										startActivity(new Intent(GetScheduleActivity.this,
+												LoginActivity.class));
 									}
 								}
 							}).show();
 				} else {
 					mWeekScheduleView.setLessons(lessons);
 				}
-			}else{
+			} else {
 				mWeekScheduleView.requestLayout();
 			}
 	}
@@ -147,6 +148,7 @@ public class GetScheduleActivity extends BaseActivity {
 					public void run() {
 						ArrayList<Lesson> lessons = helper.getLessonList("2015-2016-1");
 						mWeekScheduleView.setLessons(lessons);
+						mWeekScheduleView.requestLayout();
 					}
 				});
 			}
@@ -215,7 +217,7 @@ public class GetScheduleActivity extends BaseActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.schedule_settings) {
-
+			startActivity(new Intent(this, ScheduleSettingsActivity.class));
 		}
 		return super.onOptionsItemSelected(item);
 	}

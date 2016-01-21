@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="课程表选择">
+        <Preference
+            android:id="@+id/schedule_choose_term"
+            android:key="@string/schedule_choose_term_key"/>
+        <Preference
+            android:id="@+id/schedule_choose_week"
+            android:key="@string/schedule_choose_week_key"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/interesting">
+        <Preference
+            android:id="@+id/schedule_card_colors"
+            android:key="@string/schedule_card_colors_key"/>
+        <Preference
+            android:id="@+id/schedule_background"
+            android:key="@string/schedule_background_key"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>
