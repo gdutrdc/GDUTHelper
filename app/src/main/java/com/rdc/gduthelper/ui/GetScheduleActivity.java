@@ -68,8 +68,6 @@ public class GetScheduleActivity extends BaseActivity implements AdapterView.OnI
 		initView();
 
 		mSettings = GDUTHelperApp.getSettings();
-
-		initData();
 	}
 
 	private void initView() {
@@ -119,36 +117,19 @@ public class GetScheduleActivity extends BaseActivity implements AdapterView.OnI
 
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		initData();
+	}
+
 	private void initData() {
-		if (mWeekScheduleView != null) {
-			ScheduleDBHelper helper = new ScheduleDBHelper(this);
-			String term = mSettings.getScheduleChooseTerm();
-			ArrayList<Lesson> lessons = null;
-			if (term != null) {
-				lessons = helper.getLessonList(term);
-				mWeekScheduleView.setLessons(lessons);
-			}
-			if (lessons == null || lessons.size() == 0) {
-				isNull = true;
-				new AlertDialog.Builder(this)
-						.setTitle(R.string.tips)
-						.setMessage(R.string.no_local_schedule)
-						.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								if (GDUTHelperApp.isLogin()) {
-									intoSchedule();
-									showProgressDialog(R.string.loading);
-								} else {
-									startActivity(new Intent(GetScheduleActivity.this,
-											LoginActivity.class));
-								}
-							}
-						}).show();
-			} else {
-				mWeekScheduleView.setLessons(lessons);
-			}
-		}
+		if (mWeekScheduleView != null)
+			if (mWeekScheduleView.getLessons() == null
+					|| mWeekScheduleView.getLessons().size() == 0) {
+				refreshData();
+			} else
+				mWeekScheduleView.requestLayout();
 		if (mSpinnerWeek != null) {
 			String[] s = new String[22];
 			s[0] = "非上课时间";
@@ -165,6 +146,36 @@ public class GetScheduleActivity extends BaseActivity implements AdapterView.OnI
 			if (week >= s.length || week < 0)
 				week = 0;
 			mSpinnerWeek.setSelection(week);
+		}
+	}
+
+	private void refreshData() {
+		ScheduleDBHelper helper = new ScheduleDBHelper(this);
+		String term = mSettings.getScheduleChooseTerm();
+		ArrayList<Lesson> lessons = null;
+		if (term != null) {
+			lessons = helper.getLessonList(term);
+			mWeekScheduleView.setLessons(lessons);
+		}
+		if (lessons == null || lessons.size() == 0) {
+			isNull = true;
+			new AlertDialog.Builder(this)
+					.setTitle(R.string.tips)
+					.setMessage(R.string.no_local_schedule)
+					.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							if (GDUTHelperApp.isLogin()) {
+								intoSchedule();
+								showProgressDialog(R.string.loading);
+							} else {
+								startActivity(new Intent(GetScheduleActivity.this,
+										LoginActivity.class));
+							}
+						}
+					}).show();
+		} else {
+			mWeekScheduleView.setLessons(lessons);
 		}
 	}
 
@@ -201,7 +212,7 @@ public class GetScheduleActivity extends BaseActivity implements AdapterView.OnI
 		if (requestCode == 0) {
 			boolean needRefresh = data.getBooleanExtra("need_refresh", false);
 			if (needRefresh)
-				initData();
+				refreshData();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
