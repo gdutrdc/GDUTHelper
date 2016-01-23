@@ -137,7 +137,8 @@ public class Settings {
 
 	public void setScheduleFirstWeek(Calendar calendar) {
 		SharedPreferences.Editor editor = mSharedPreferences.edit();
-		calendar.set(Calendar.DAY_OF_WEEK, 1);
+		if (calendar.get(Calendar.DAY_OF_WEEK) != 1)
+			calendar.set(Calendar.DAY_OF_WEEK, 1);
 		editor.putString(SCHEDULE_FIRST_WEEK, new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 				.format(calendar.getTime()));
 		editor.apply();
@@ -162,7 +163,7 @@ public class Settings {
 	public void setScheduleCurrentWeek(String currentWeek) {
 		int week = Integer.parseInt(currentWeek);
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.WEEK_OF_YEAR, -week);
+		calendar.add(Calendar.WEEK_OF_YEAR, -week + 1);
 		setScheduleFirstWeek(calendar);
 	}
 
@@ -171,8 +172,10 @@ public class Settings {
 		if (calendar == null)
 			return null;
 		int firstWeek = calendar.get(Calendar.WEEK_OF_YEAR);
-		int currentWeek = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) - firstWeek;
+		int currentWeek = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) - firstWeek + 1;
 		if (currentWeek < 0) {
+			//小于0说明第一周在去年
+			calendar.add(Calendar.YEAR, -1);
 			currentWeek = currentWeek + calendar.getMaximum(Calendar.WEEK_OF_YEAR) - 1;
 		}
 		return currentWeek + "";

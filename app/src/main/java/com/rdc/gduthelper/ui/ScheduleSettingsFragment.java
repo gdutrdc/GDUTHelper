@@ -107,7 +107,6 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 												calendar.set(Calendar.YEAR, year);
 												calendar.set(Calendar.MONTH, monthOfYear);
 												calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-												Log.e("Tag", year + " " + monthOfYear + " " + dayOfMonth);
 												mSettings.setScheduleFirstWeek(calendar);
 
 												mPrefChooseWeek.setSummary(mSettings.getScheduleCurrentWeek());

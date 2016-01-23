@@ -124,7 +124,7 @@ public class GetScheduleActivity extends BaseActivity implements AdapterView.OnI
 		if (calendar.compareTo(Calendar.getInstance()) > 0) {
 			calendar = Calendar.getInstance();
 		} else
-			calendar.add(Calendar.WEEK_OF_YEAR, currentWeek);
+			calendar.add(Calendar.WEEK_OF_YEAR, currentWeek - 1);
 		((TextView) findViewById(R.id.get_schedule_tv_month))
 				.setText(calendar.get(Calendar.MONTH) + 1 + "月");
 
