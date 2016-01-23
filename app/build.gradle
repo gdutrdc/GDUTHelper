@@ -34,5 +34,6 @@ dependencies {
         transitive = true;
     }
     compile 'com.android.support:percent:23.1.1'
+    compile 'com.wdullaer:materialdatetimepicker:2.1.1'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
 }

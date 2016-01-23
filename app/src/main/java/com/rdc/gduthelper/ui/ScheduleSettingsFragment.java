@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.ui.widget.ChooseColorsDialog;
 import com.rdc.gduthelper.utils.Settings;
 import com.rdc.gduthelper.utils.database.ScheduleDBHelper;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
+import java.util.Calendar;
 
 /**
  * Created by seasonyuu on 16/1/21.
@@ -94,7 +98,23 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 						.setNegativeButton(R.string.schedule_choose_first_week, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
+								Calendar c = Calendar.getInstance();
+								DatePickerDialog pickerDialog = DatePickerDialog.newInstance(
+										new DatePickerDialog.OnDateSetListener() {
+											@Override
+											public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+												Calendar calendar = Calendar.getInstance();
+												calendar.set(Calendar.YEAR, year);
+												calendar.set(Calendar.MONTH, monthOfYear);
+												calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+												Log.e("Tag", year + " " + monthOfYear + " " + dayOfMonth);
+												mSettings.setScheduleFirstWeek(calendar);
 
+												mPrefChooseWeek.setSummary(mSettings.getScheduleCurrentWeek());
+											}
+										}, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)
+								);
+								pickerDialog.show(getFragmentManager(), "DatePicker");
 							}
 						})
 						.show();
