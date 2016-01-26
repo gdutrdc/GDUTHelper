@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,12 +22,33 @@ import com.rdc.gduthelper.utils.LessonUtils;
 import com.rdc.gduthelper.utils.UIUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by seasonyuu on 16/1/7.
  */
-public class WeekScheduleView extends ViewGroup {
+public class WeekScheduleView extends ViewGroup implements View.OnClickListener {
 	private static final String TAG = WeekScheduleView.class.getSimpleName();
+
+	@Override
+	public void onClick(View v) {
+		if (onLessonsClickListener != null) {
+			ArrayList<LessonTACR> tacrs = (ArrayList<LessonTACR>) v.getTag();
+			HashMap<Lesson, LessonTACR> map = new HashMap<>();
+			for (LessonTACR tacr : tacrs) {
+				Lesson lesson = LessonUtils.findLesson(mLessons, tacr.getLessonCode());
+				map.put(lesson, tacr);
+			}
+			onLessonsClickListener.onClick(v, map);
+		}
+	}
+
+	public interface OnLessonsClickListener {
+		public void onClick(View lessonView, Map<Lesson, LessonTACR> lessonMap);
+	}
+
+	private OnLessonsClickListener onLessonsClickListener;
 
 	private int week = 0;
 
@@ -48,6 +70,14 @@ public class WeekScheduleView extends ViewGroup {
 		super(context, attrs, defStyleAttr);
 
 		init();
+	}
+
+	public OnLessonsClickListener getOnLessonsClickListener() {
+		return onLessonsClickListener;
+	}
+
+	public void setOnLessonsClickListener(OnLessonsClickListener onLessonsClickListener) {
+		this.onLessonsClickListener = onLessonsClickListener;
 	}
 
 	public int[] getColors() {
@@ -152,6 +182,7 @@ public class WeekScheduleView extends ViewGroup {
 		}
 		view.findViewById(R.id.item_schedule_dog_ear)
 				.setVisibility(lessonTACRs.size() > 1 ? VISIBLE : GONE);
+		view.setOnClickListener(this);
 	}
 
 	private View findViewWithTag(ArrayList<View> views, LessonTACR tacr) {

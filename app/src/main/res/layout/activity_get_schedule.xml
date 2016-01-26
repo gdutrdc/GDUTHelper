@@ -106,77 +106,77 @@
             android:id="@+id/get_schedule_tv_sun_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:layout_below="@+id/get_schedule_tv_mon"
             android:layout_toRightOf="@id/get_schedule_tv_month"
             android:gravity="center"
             android:text="10"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_widthPercent="13%"/>
 
         <TextView
             android:id="@+id/get_schedule_tv_mon_date"
-            android:layout_below="@+id/get_schedule_tv_mon"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/get_schedule_tv_mon"
             android:layout_toRightOf="@id/get_schedule_tv_sun"
             android:gravity="center"
             android:text="11"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_widthPercent="13%"/>
 
         <TextView
             android:id="@+id/get_schedule_tv_tue_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:layout_below="@+id/get_schedule_tv_mon"
             android:layout_toRightOf="@id/get_schedule_tv_mon"
             android:gravity="center"
             android:text="12"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_widthPercent="13%"/>
 
         <TextView
             android:id="@+id/get_schedule_tv_wed_date"
             android:layout_width="0dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:layout_height="wrap_content"
             android:layout_below="@+id/get_schedule_tv_mon"
             android:layout_toRightOf="@id/get_schedule_tv_tue"
             android:gravity="center"
             android:text="13"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_widthPercent="13%"/>
 
         <TextView
             android:id="@+id/get_schedule_tv_thu_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:layout_toRightOf="@+id/get_schedule_tv_wed"
             android:layout_below="@+id/get_schedule_tv_mon"
+            android:layout_toRightOf="@+id/get_schedule_tv_wed"
             android:gravity="center"
             android:text="14"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_widthPercent="13%"/>
 
         <TextView
             android:id="@+id/get_schedule_tv_fri_date"
             android:layout_width="0dp"
-            android:layout_below="@+id/get_schedule_tv_mon"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_below="@+id/get_schedule_tv_mon"
             android:layout_toRightOf="@+id/get_schedule_tv_thu"
             android:gravity="center"
             android:text="15"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_widthPercent="13%"/>
 
         <TextView
             android:id="@+id/get_schedule_tv_sat_date"
             android:layout_width="0dp"
-            android:layout_below="@+id/get_schedule_tv_mon"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/get_schedule_tv_mon"
             android:layout_toRightOf="@+id/get_schedule_tv_fri"
             android:gravity="center"
             android:text="16"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_widthPercent="13%"/>
     </android.support.percent.PercentRelativeLayout>
 
@@ -207,7 +207,33 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:onClick="onClick"
         android:clickable="true"
+        android:onClick="onClick"
         android:src="@drawable/ic_add_white_24dp"/>
+
+
+    <io.codetail.widget.RevealFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/get_schedule_weekday">
+
+        <com.bartoszlipinski.flippablestackview.FlippableStackView
+            android:id="@+id/get_schedule_lessons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#4444"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/get_schedule_btn_close_lesson_details"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="right"
+            android:layout_margin="8dp"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:src="@drawable/ic_close_white_24dp"
+            android:visibility="gone"/>
+    </io.codetail.widget.RevealFrameLayout>
+
 </RelativeLayout>

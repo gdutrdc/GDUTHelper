@@ -4,13 +4,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
@@ -19,23 +22,32 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bartoszlipinski.flippablestackview.FlippableStackView;
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Lesson;
+import com.rdc.gduthelper.bean.LessonTACR;
+import com.rdc.gduthelper.bean.MaterialColors;
 import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetSchedule;
 import com.rdc.gduthelper.net.api.IntoSchedule;
 import com.rdc.gduthelper.ui.widget.WeekScheduleView;
 import com.rdc.gduthelper.utils.Settings;
+import com.rdc.gduthelper.utils.UIUtils;
 import com.rdc.gduthelper.utils.database.ScheduleDBHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
+
+import io.codetail.animation.SupportAnimator;
+import io.codetail.animation.ViewAnimationUtils;
 
 /**
  * Created by seasonyuu on 16/1/4.
  */
-public class GetScheduleActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
+public class GetScheduleActivity extends BaseActivity
+		implements AdapterView.OnItemSelectedListener, WeekScheduleView.OnLessonsClickListener {
 	private AppCompatSpinner mSpinnerYear;
 	private AppCompatSpinner mSpinnerTerm;
 	private AppCompatSpinner mSpinnerWeek;
@@ -76,6 +88,7 @@ public class GetScheduleActivity extends BaseActivity implements AdapterView.OnI
 		mSpinnerWeek.setOnItemSelectedListener(this);
 
 		mWeekScheduleView = (WeekScheduleView) findViewById(R.id.get_schedule_table);
+		mWeekScheduleView.setOnLessonsClickListener(this);
 		mScheduleContainer = (ScrollView) mWeekScheduleView.getParent();
 		mFAB = (FloatingActionButton) findViewById(R.id.get_schedule_fab);
 		mScheduleContainer.getViewTreeObserver()
@@ -121,6 +134,8 @@ public class GetScheduleActivity extends BaseActivity implements AdapterView.OnI
 	private void updateDate() {
 		int currentWeek = mSpinnerWeek.getSelectedItemPosition();
 		Calendar calendar = mSettings.getScheduleFirstWeek();
+		if (calendar == null)
+			return;
 		if (calendar.compareTo(Calendar.getInstance()) > 0) {
 			calendar = Calendar.getInstance();
 		} else
@@ -407,5 +422,60 @@ public class GetScheduleActivity extends BaseActivity implements AdapterView.OnI
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
 
+	}
+
+	@Override
+	public void onClick(View lessonView, final Map<Lesson, LessonTACR> lessonMap) {
+		final FlippableStackView view = (FlippableStackView) findViewById(R.id.get_schedule_lessons);
+		view.initStack(lessonMap.size());
+		findViewById(R.id.get_schedule_btn_close_lesson_details).setVisibility(View.VISIBLE);
+		view.setAdapter(
+				new PagerAdapter() {
+					private ArrayList<View> views = new ArrayList<View>();
+
+					@Override
+					public int getCount() {
+						return lessonMap.size();
+					}
+
+					@Override
+					public Object instantiateItem(ViewGroup container, int position) {
+						if (views.size() == 0) {
+							for (Lesson lesson : lessonMap.keySet()) {
+								View v = new View(GetScheduleActivity.this);
+								v.setBackgroundColor(MaterialColors.getColor((int) (Math.random() * 10)));
+								views.add(v);
+							}
+						}
+						container.addView(views.get(position));
+						return views.get(position);
+					}
+
+					@Override
+					public void destroyItem(ViewGroup container, int position, Object object) {
+						container.removeView(views.get(position));
+					}
+
+					@Override
+					public boolean isViewFromObject(View view, Object object) {
+						return view == object;
+					}
+				}
+		);
+		view.setVisibility(View.VISIBLE);
+
+		SupportAnimator animator = ViewAnimationUtils
+				.createCircularReveal(view, (int) lessonView.getX(),
+						(int) lessonView.getY() -
+								((ScrollView) mWeekScheduleView.getParent()).getScrollY(),
+						0, UIUtils.getScreenWidth(this));
+
+		animator.setInterpolator(new
+
+				AccelerateDecelerateInterpolator()
+
+		);
+		animator.setDuration(300);
+		animator.start();
 	}
 }
