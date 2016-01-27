@@ -4,14 +4,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
@@ -22,16 +21,17 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.bartoszlipinski.flippablestackview.FlippableStackView;
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.bean.LessonTACR;
-import com.rdc.gduthelper.bean.MaterialColors;
 import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetSchedule;
 import com.rdc.gduthelper.net.api.IntoSchedule;
+import com.rdc.gduthelper.ui.adapter.LessonDetailAdapter;
+import com.rdc.gduthelper.ui.widget.StackLayoutManager;
 import com.rdc.gduthelper.ui.widget.WeekScheduleView;
+import com.rdc.gduthelper.utils.LessonUtils;
 import com.rdc.gduthelper.utils.Settings;
 import com.rdc.gduthelper.utils.UIUtils;
 import com.rdc.gduthelper.utils.database.ScheduleDBHelper;
@@ -56,6 +56,10 @@ public class GetScheduleActivity extends BaseActivity
 	private ArrayList<String> mTerms;
 
 	private WeekScheduleView mWeekScheduleView;
+
+	private RecyclerView mLessonDetailsView;
+	private LessonDetailAdapter mLessonDetailAdapter;
+	private View mBtnCloseDetail;
 
 	private boolean isNull;
 	private ScrollView mScheduleContainer;
@@ -426,55 +430,77 @@ public class GetScheduleActivity extends BaseActivity
 
 	@Override
 	public void onClick(View lessonView, final Map<Lesson, LessonTACR> lessonMap) {
-		final FlippableStackView view = (FlippableStackView) findViewById(R.id.get_schedule_lessons);
-		view.initStack(lessonMap.size());
-		findViewById(R.id.get_schedule_btn_close_lesson_details).setVisibility(View.VISIBLE);
-		view.setAdapter(
-				new PagerAdapter() {
-					private ArrayList<View> views = new ArrayList<View>();
+		if (mLessonDetailsView == null) {
+			mLessonDetailsView = (RecyclerView) findViewById(R.id.get_schedule_lessons);
+			mLessonDetailAdapter = new LessonDetailAdapter(this);
+			mLessonDetailsView.setLayoutManager(new StackLayoutManager());
+			mLessonDetailsView.setAdapter(mLessonDetailAdapter);
+		}
+		if (mBtnCloseDetail == null) {
+			mBtnCloseDetail = findViewById(R.id.get_schedule_btn_close_lesson_details);
+			mBtnCloseDetail.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					SupportAnimator animator = ViewAnimationUtils
+							.createCircularReveal(mLessonDetailsView, (int) mBtnCloseDetail.getX(),
+									(int) mBtnCloseDetail.getY(),
+									UIUtils.getScreenWidth(GetScheduleActivity.this), 0);
 
-					@Override
-					public int getCount() {
-						return lessonMap.size();
-					}
+					animator.setInterpolator(new AccelerateDecelerateInterpolator());
+					animator.setDuration(300);
+					animator.addListener(new SupportAnimator.AnimatorListener() {
+						@Override
+						public void onAnimationStart() {
 
-					@Override
-					public Object instantiateItem(ViewGroup container, int position) {
-						if (views.size() == 0) {
-							for (Lesson lesson : lessonMap.keySet()) {
-								View v = new View(GetScheduleActivity.this);
-								v.setBackgroundColor(MaterialColors.getColor((int) (Math.random() * 10)));
-								views.add(v);
-							}
 						}
-						container.addView(views.get(position));
-						return views.get(position);
-					}
 
-					@Override
-					public void destroyItem(ViewGroup container, int position, Object object) {
-						container.removeView(views.get(position));
-					}
+						@Override
+						public void onAnimationEnd() {
+							mBtnCloseDetail.setVisibility(View.GONE);
+							mLessonDetailsView.setVisibility(View.GONE);
+						}
 
-					@Override
-					public boolean isViewFromObject(View view, Object object) {
-						return view == object;
-					}
+						@Override
+						public void onAnimationCancel() {
+
+						}
+
+						@Override
+						public void onAnimationRepeat() {
+
+						}
+					});
+					animator.start();
+
 				}
-		);
-		view.setVisibility(View.VISIBLE);
+			});
+		}
+		ArrayList<Lesson> lessons = new ArrayList<>();
+		for (Lesson lesson : lessonMap.keySet()) {
+			ArrayList<LessonTACR> list = LessonUtils.readTimeAndClassroom(lesson);
+			int mark = 0;
+			for (int i = 0; i < list.size(); i++) {
+				if (list.get(i).equals(lessonMap.get(lesson))) {
+					mark = i;
+					break;
+				}
+			}
+			String[] times = lesson.getLessonTime().split(";");
+			lesson.setLessonTime(times[mark]);
+			lessons.add(lesson);
+		}
+		mLessonDetailAdapter.setLessons(lessons);
+		mLessonDetailAdapter.notifyDataSetChanged();
+		mBtnCloseDetail.setVisibility(View.VISIBLE);
+		mLessonDetailsView.setVisibility(View.VISIBLE);
 
 		SupportAnimator animator = ViewAnimationUtils
-				.createCircularReveal(view, (int) lessonView.getX(),
+				.createCircularReveal(mLessonDetailsView, (int) lessonView.getX(),
 						(int) lessonView.getY() -
 								((ScrollView) mWeekScheduleView.getParent()).getScrollY(),
 						0, UIUtils.getScreenWidth(this));
 
-		animator.setInterpolator(new
-
-				AccelerateDecelerateInterpolator()
-
-		);
+		animator.setInterpolator(new AccelerateDecelerateInterpolator());
 		animator.setDuration(300);
 		animator.start();
 	}
