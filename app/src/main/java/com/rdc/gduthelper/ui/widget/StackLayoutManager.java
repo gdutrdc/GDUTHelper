@@ -51,8 +51,14 @@ public class StackLayoutManager extends RecyclerView.LayoutManager {
 		}
 	}
 
+	private void fill(RecyclerView.Recycler recycler, RecyclerView.State state) {
+
+	}
+
 	@Override
 	public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State state) {
+		if (getChildCount() <= 1 || dy == 0)
+			return 0;
 		return super.scrollVerticallyBy(dy, recycler, state);
 	}
 
