@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -271,15 +270,14 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener 
 					ArrayList<LessonTACR> tacrs = (ArrayList<LessonTACR>) view.getTag();
 					LessonTACR tacr = tacrs.get(0);
 
+					LayoutParams lp1 = view.findViewById(R.id.item_schedule_text).getLayoutParams();
+					lp1.width = (int) (getMeasuredWidth() * 0.13);
+					view.findViewById(R.id.item_schedule_text).setLayoutParams(lp1);
 
 					view.layout((int) (width * (0.09 + 0.13 * tacr.getWeekday() % 7)) + margin,
 							(tacr.getNum()[0] - 1) * lessonItemHeight + margin,
 							(int) (width * (0.09 + 0.13 * (tacr.getWeekday() % 7 + 1))),
 							(tacr.getNum()[0] - 1 + tacr.getNum().length) * lessonItemHeight);
-
-					LayoutParams lp1 = view.findViewById(R.id.item_schedule_text).getLayoutParams();
-					lp1.width = (int) (getMeasuredWidth() * 0.13);
-					view.findViewById(R.id.item_schedule_text).setLayoutParams(lp1);
 				}
 			}
 		}
