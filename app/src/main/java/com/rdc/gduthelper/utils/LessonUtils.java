@@ -124,7 +124,7 @@ public class LessonUtils {
 
 	public static boolean isSameTime(LessonTACR tacr0, LessonTACR tacr1) {
 		if (tacr0.getWeekday() == tacr1.getWeekday()) {
-			for (int j = 0; j < tacr0.getNum().length && j<tacr1.getNum().length; j++) {
+			for (int j = 0; j < tacr0.getNum().length && j < tacr1.getNum().length; j++) {
 				if (tacr0.getNum()[j] != tacr1.getNum()[j]) {
 					return false;
 				}
@@ -174,5 +174,76 @@ public class LessonUtils {
 			}
 		}
 		return false;
+	}
+
+	public static String transformTime(LessonTACR tacr) {
+		String result = "第";
+		int[] weekArr = tacr.getWeek();
+		boolean isShort = true;
+		if (weekArr.length < 2)
+			isShort = false;
+		else
+			for (int i = 0; i < weekArr.length - 1; i++) {
+				if (weekArr[i + 1] - weekArr[i] != 2)
+					isShort = false;
+			}
+		if (isShort) {
+			result += weekArr[0] + "-" + weekArr[weekArr.length - 1] + "周|";
+			if (weekArr[0] % 2 == 0)
+				result += "双周";
+			else
+				result += "单周";
+		} else {
+			boolean flag;
+			for (int i = 0, j = 0; i < weekArr.length - 1; i++) {
+				flag = weekArr[i + 1] - weekArr[i] == 1;
+				if (!flag) {
+					if (i != j)
+						result += weekArr[j] + "-" + weekArr[i] + ",";
+					else
+						result += weekArr[j] + ",";
+					j = i + 1;
+				}
+			}
+			if (result.length() == 1) {
+				if (weekArr.length == 1)
+					result += weekArr[0] + ",";
+				else
+					result += weekArr[0] + "-" + weekArr[weekArr.length - 1] + ",";
+			}
+			result = result.substring(0, result.length() - 1) + "周";
+		}
+		result += "@";
+		switch (tacr.getWeekday()) {
+			case 1:
+				result += "周一";
+				break;
+			case 2:
+				result += "周二";
+				break;
+			case 3:
+				result += "周三";
+				break;
+			case 4:
+				result += "周四";
+				break;
+			case 5:
+				result += "周五";
+				break;
+			case 6:
+				result += "周六";
+				break;
+			case 7:
+				result += "周日";
+				break;
+		}
+		result += "第";
+		for (int i = 0; i < tacr.getNum().length; i++) {
+			result += tacr.getNum()[i];
+			if (i != tacr.getNum().length - 1)
+				result += ",";
+		}
+		result += "节";
+		return result;
 	}
 }

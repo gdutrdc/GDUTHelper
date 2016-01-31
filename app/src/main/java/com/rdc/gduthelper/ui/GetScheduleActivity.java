@@ -485,16 +485,7 @@ public class GetScheduleActivity extends BaseActivity
 	public void onClick(View lessonView, final Map<Lesson, LessonTACR> lessonMap) {
 		ArrayList<Lesson> lessons = new ArrayList<>();
 		for (Lesson lesson : lessonMap.keySet()) {
-			ArrayList<LessonTACR> list = LessonUtils.readTimeAndClassroom(lesson);
-			int mark = 0;
-			for (int i = 0; i < list.size(); i++) {
-				if (list.get(i).equals(lessonMap.get(lesson))) {
-					mark = i;
-					break;
-				}
-			}
-			String[] times = lesson.getLessonTime().split(";");
-			lesson.setLessonTime(times[mark]);
+			lesson.setLessonTime(LessonUtils.transformTime(lessonMap.get(lesson)));
 			lesson.setLessonClassroom(lessonMap.get(lesson).getClassroom());
 			lessons.add(lesson);
 		}
