@@ -67,7 +67,7 @@ public class RecentsList extends FrameLayout implements GestureDetector.OnGestur
 	public void setAdapter(RecentsAdapter adapter) {
 		this.adapter = adapter;
 		scroll = 0;
-		invalidate();
+		initChildren();
 	}
 
 	@Override
@@ -76,8 +76,6 @@ public class RecentsList extends FrameLayout implements GestureDetector.OnGestur
 
 		if (adapter == null)
 			return;
-
-		initChildren();
 
 		childTouchRect = new Rect[getChildCount()];
 		for (int i = 0; i < getChildCount(); i++) {

@@ -505,12 +505,23 @@ public class GetScheduleActivity extends BaseActivity
 			}
 			String[] times = lesson.getLessonTime().split(";");
 			lesson.setLessonTime(times[mark]);
+			lesson.setLessonClassroom(lessonMap.get(lesson).getClassroom());
 			lessons.add(lesson);
 		}
+
 		mLessonDetailAdapter.setLessons(lessons);
 		mLessonDetailsView.setAdapter(mLessonDetailAdapter);
+
 		setLessonsDetailVisible(true, lessonView.getX() + lessonView.getWidth() / 2,
 				lessonView.getY() + lessonView.getHeight() / 2
 						- ((ScrollView) mWeekScheduleView.getParent()).getScaleY());
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (mLessonDetailsView.isShown())
+			setLessonsDetailVisible(false, mLessonDetailsView.getWidth() / 2, mLessonDetailsView.getHeight() / 2);
+		else
+			super.onBackPressed();
 	}
 }
