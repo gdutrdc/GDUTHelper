@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +28,6 @@ import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetSchedule;
 import com.rdc.gduthelper.net.api.IntoSchedule;
 import com.rdc.gduthelper.ui.adapter.LessonDetailAdapter;
-import com.rdc.gduthelper.ui.widget.StackLayoutManager;
 import com.rdc.gduthelper.ui.widget.WeekScheduleView;
 import com.rdc.gduthelper.utils.LessonUtils;
 import com.rdc.gduthelper.utils.Settings;
@@ -42,6 +40,7 @@ import java.util.Map;
 
 import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
+import tk.zielony.materialrecents.RecentsList;
 
 /**
  * Created by seasonyuu on 16/1/4.
@@ -57,7 +56,7 @@ public class GetScheduleActivity extends BaseActivity
 
 	private WeekScheduleView mWeekScheduleView;
 
-	private RecyclerView mLessonDetailsView;
+	private RecentsList mLessonDetailsView;
 	private LessonDetailAdapter mLessonDetailAdapter;
 	private View mBtnCloseDetail;
 
@@ -428,12 +427,33 @@ public class GetScheduleActivity extends BaseActivity
 
 	}
 
+	private void setLessonsDetailVisible(boolean isVisible, float dx, float dy) {
+		if (mLessonDetailsView == null)
+			return;
+		if (isVisible) {
+			mBtnCloseDetail.setVisibility(View.VISIBLE);
+			mLessonDetailsView.setVisibility(View.VISIBLE);
+			findViewById(R.id.get_schedule_lessons_container).setVisibility(View.VISIBLE);
+			SupportAnimator animator = ViewAnimationUtils
+					.createCircularReveal(mLessonDetailsView, (int) dx,
+							(int) dy,
+							0,
+							UIUtils.getScreenWidth(GetScheduleActivity.this));
+
+			animator.setInterpolator(new AccelerateDecelerateInterpolator());
+			animator.setDuration(300);
+			animator.start();
+		}else{
+
+		}
+	}
+
+
 	@Override
 	public void onClick(View lessonView, final Map<Lesson, LessonTACR> lessonMap) {
 		if (mLessonDetailsView == null) {
-			mLessonDetailsView = (RecyclerView) findViewById(R.id.get_schedule_lessons);
+			mLessonDetailsView = (RecentsList) findViewById(R.id.get_schedule_lessons);
 			mLessonDetailAdapter = new LessonDetailAdapter(this);
-			mLessonDetailsView.setLayoutManager(new StackLayoutManager());
 			mLessonDetailsView.setAdapter(mLessonDetailAdapter);
 		}
 		if (mBtnCloseDetail == null) {
@@ -441,36 +461,7 @@ public class GetScheduleActivity extends BaseActivity
 			mBtnCloseDetail.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					SupportAnimator animator = ViewAnimationUtils
-							.createCircularReveal(mLessonDetailsView, (int) mBtnCloseDetail.getX(),
-									(int) mBtnCloseDetail.getY(),
-									UIUtils.getScreenWidth(GetScheduleActivity.this), 0);
-
-					animator.setInterpolator(new AccelerateDecelerateInterpolator());
-					animator.setDuration(300);
-					animator.addListener(new SupportAnimator.AnimatorListener() {
-						@Override
-						public void onAnimationStart() {
-
-						}
-
-						@Override
-						public void onAnimationEnd() {
-							mBtnCloseDetail.setVisibility(View.GONE);
-							mLessonDetailsView.setVisibility(View.GONE);
-						}
-
-						@Override
-						public void onAnimationCancel() {
-
-						}
-
-						@Override
-						public void onAnimationRepeat() {
-
-						}
-					});
-					animator.start();
+					setLessonsDetailVisible(false, v.getX() + v.getWidth() / 2, v.getY() + v.getHeight() / 2);
 
 				}
 			});
@@ -490,9 +481,6 @@ public class GetScheduleActivity extends BaseActivity
 			lessons.add(lesson);
 		}
 		mLessonDetailAdapter.setLessons(lessons);
-		mLessonDetailAdapter.notifyDataSetChanged();
-		mBtnCloseDetail.setVisibility(View.VISIBLE);
-		mLessonDetailsView.setVisibility(View.VISIBLE);
 
 		SupportAnimator animator = ViewAnimationUtils
 				.createCircularReveal(mLessonDetailsView, (int) lessonView.getX(),

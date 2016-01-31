@@ -217,13 +217,19 @@
         android:layout_below="@+id/get_schedule_weekday"
         android:elevation="12dp">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/get_schedule_lessons"
+        <FrameLayout
+            android:id="@+id/get_schedule_lessons_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#4444"
             android:clickable="true"
-            android:visibility="gone"/>
+            android:visibility="gone">
+
+            <tk.zielony.materialrecents.RecentsList
+                android:id="@+id/get_schedule_lessons"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </FrameLayout>
 
         <ImageView
             android:id="@+id/get_schedule_btn_close_lesson_details"
