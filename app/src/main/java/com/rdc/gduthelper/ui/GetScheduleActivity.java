@@ -199,31 +199,22 @@ public class GetScheduleActivity extends BaseActivity
 					choose = 5;
 				else if (themeId == R.style.AppTheme_Pink)
 					choose = 1;
-				temp[0] = allColors[choose];
+				target = new int[]{allColors[choose]};
 			} else {
 				String[] choosedColors = colors.split(",");
 				for (int i = 0; i < choosedColors.length; i++) {
 					int j = Integer.parseInt(choosedColors[i]);
 					temp[i] = allColors[j];
-					temp[i + 1] = -1;
+					if (i < choosedColors.length - 1)
+						temp[i + 1] = -1;
 				}
-			}
-			for (int i = 0; i < temp.length; i++)
-				if (temp[i] == -1)
-					target = new int[i];
-			if (target == null) {
-
-			} else {
+				target = new int[choosedColors.length];
 				for (int i = 0; i < target.length; i++) {
 					target[i] = temp[i];
 				}
-				mWeekScheduleView.setColors(target);
 			}
-			if (mWeekScheduleView.getLessons() == null
-					|| mWeekScheduleView.getLessons().size() == 0) {
-				refreshData();
-			} else
-				mWeekScheduleView.requestLayout();
+			mWeekScheduleView.setColors(target);
+			refreshData();
 		}
 		if (mSpinnerWeek != null) {
 			String[] s = new String[22];
@@ -250,7 +241,6 @@ public class GetScheduleActivity extends BaseActivity
 		ArrayList<Lesson> lessons = null;
 		if (term != null) {
 			lessons = helper.getLessonList(term);
-			mWeekScheduleView.setLessons(lessons);
 		}
 		if (lessons == null || lessons.size() == 0) {
 			isNull = true;
@@ -509,6 +499,7 @@ public class GetScheduleActivity extends BaseActivity
 			lessons.add(lesson);
 		}
 
+		mLessonDetailAdapter.setLessonColors(mWeekScheduleView.getLessonColors());
 		mLessonDetailAdapter.setLessons(lessons);
 		mLessonDetailsView.setAdapter(mLessonDetailAdapter);
 

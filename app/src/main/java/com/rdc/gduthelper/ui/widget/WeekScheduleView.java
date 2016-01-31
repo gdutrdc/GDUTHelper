@@ -53,6 +53,8 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener 
 
 	private int cardColorIndex = 0;
 
+	private HashMap<String, Integer> lessonColors;
+
 	private ArrayList<TextView> lessonNums;
 
 	private ArrayList<View> lessonViews;
@@ -79,13 +81,19 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener 
 		this.onLessonsClickListener = onLessonsClickListener;
 	}
 
+	public HashMap<String, Integer> getLessonColors() {
+		return lessonColors;
+	}
+
 	public int[] getColors() {
 		return colors;
 	}
 
 	public void setColors(int[] colors) {
 		this.colors = colors;
-		invalidate();
+		cardColorIndex = 0;
+		lessonColors = new HashMap<>();
+		setLessons(mLessons);
 	}
 
 	public void setWeek(int week) {
@@ -104,6 +112,7 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener 
 
 		lessonNums = new ArrayList<>();
 		mLessons = new ArrayList<>();
+		lessonColors = new HashMap<>();
 		int lessonItemHeight = UIUtils.getScreenHeight(getContext()) / 12;
 		if (lessonItemHeight < 48)
 			lessonItemHeight = 48;
@@ -125,7 +134,6 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener 
 	}
 
 	public void setLessons(ArrayList<Lesson> lessons) {
-		cardColorIndex = 0;
 		mLessons = lessons;
 		for (View view : lessonViews)
 			removeView(view);
@@ -159,10 +167,15 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener 
 
 		boolean isShown = false;
 		for (LessonTACR tacr1 : lessonTACRs) {
+			int color;
+			if (lessonColors.get(tacr1.getLessonCode()) == null) {
+				color = colors[cardColorIndex % colors.length];
+				lessonColors.put(tacr1.getLessonCode(), color);
+			} else
+				color = lessonColors.get(tacr1.getLessonCode());
+			cardColorIndex++;
 			if (LessonUtils.lessonInThisWeek(tacr1, week)) {
 				isShown = true;
-				int color = colors[cardColorIndex % colors.length];
-				cardColorIndex++;
 				((TextView) view.findViewById(R.id.item_schedule_text)).setText(
 						LessonUtils.findLesson(
 								mLessons, tacr1.getLessonCode()).getLessonName()
