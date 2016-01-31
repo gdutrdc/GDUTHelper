@@ -14,206 +14,215 @@ import android.widget.FrameLayout;
 import android.widget.Scroller;
 
 import com.nineoldandroids.view.ViewHelper;
+import com.rdc.gduthelper.utils.UIUtils;
 
 /**
  * Created by Marcin on 2015-04-13.
  */
 public class RecentsList extends FrameLayout implements GestureDetector.OnGestureListener {
-    Scroller scroller;
-    RecentsAdapter adapter;
-    GestureDetector gestureDetector = new GestureDetector(this);
-    int scroll = 0;
-    OnItemClickListener onItemClickListener;
-    Rect childTouchRect[];
+	Scroller scroller;
+	RecentsAdapter adapter;
+	GestureDetector gestureDetector = new GestureDetector(this);
+	int scroll = 0;
+	OnItemClickListener onItemClickListener;
+	Rect childTouchRect[];
 
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
-    }
+	public interface OnItemClickListener {
+		void onItemClick(View view, int position);
+	}
 
-    public RecentsList(Context context) {
-        super(context);
-        initRecentsList();
-    }
+	public RecentsList(Context context) {
+		super(context);
+		initRecentsList();
+	}
 
-    public RecentsList(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initRecentsList();
-    }
+	public RecentsList(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		initRecentsList();
+	}
 
-    public RecentsList(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        initRecentsList();
-    }
+	public RecentsList(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+		initRecentsList();
+	}
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public RecentsList(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        initRecentsList();
-    }
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public RecentsList(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
+		initRecentsList();
+	}
 
-    private void initRecentsList() {
-        scroller = new Scroller(getContext());
-    }
+	private void initRecentsList() {
+		scroller = new Scroller(getContext());
+	}
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
+	public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+		this.onItemClickListener = onItemClickListener;
+	}
 
-    public RecentsAdapter getAdapter() {
-        return adapter;
-    }
+	public RecentsAdapter getAdapter() {
+		return adapter;
+	}
 
-    public void setAdapter(RecentsAdapter adapter) {
-        this.adapter = adapter;
-        invalidate();
-    }
+	public void setAdapter(RecentsAdapter adapter) {
+		this.adapter = adapter;
+		scroll = 0;
+		invalidate();
+	}
 
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
+	@Override
+	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+		super.onLayout(changed, left, top, right, bottom);
 
-        if (adapter == null)
-            return;
+		if (adapter == null)
+			return;
 
-        childTouchRect = new Rect[getChildCount()];
-        for (int i = 0; i < getChildCount(); i++) {
-            getChildAt(i).layout(0, 0, getWidth() - getPaddingLeft() - getPaddingRight(), getWidth() - getPaddingLeft() - getPaddingRight());
-            childTouchRect[i] = new Rect();
-        }
-    }
+		initChildren();
 
-    private void initChildren() {
-        removeAllViews();
-        for (int i = 0; i < adapter.getCount(); i++) {
-            final View card = adapter.getView(i);
-            addView(card,i,generateDefaultLayoutParams());
-            final int finalI = i;
-            card.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (onItemClickListener != null)
-                        onItemClickListener.onItemClick(card, finalI);
-                }
-            });
-        }
-    }
+		childTouchRect = new Rect[getChildCount()];
+		for (int i = 0; i < getChildCount(); i++) {
+			int width = getWidth() / 4 * 3;
+			getChildAt(i).layout((getWidth() - width) / 2, 0,
+					getWidth() / 2 + width / 2 - getPaddingLeft() - getPaddingRight(),
+					width - getPaddingLeft() - getPaddingRight());
+			childTouchRect[i] = new Rect();
+		}
+	}
 
-    private void layoutChildren() {
-        int width = getWidth() - getPaddingLeft() - getPaddingRight();
-        int height = getHeight() - getPaddingTop() - getPaddingBottom();
-        for (int i = 0; i < getChildCount(); i++) {
-            float topSpace = height - width;
-            int y = (int) (topSpace * Math.pow(2, (i * width - scroll) / (float) width));
-            float scale = (float) (-Math.pow(2, -y / topSpace / 10.0f) + 19.0f / 10);
-            childTouchRect[i].set(getPaddingLeft(), y + getPaddingTop(), (int) (scale * (getPaddingLeft() + getWidth() - getPaddingLeft() - getPaddingRight())), (int) (scale * (y + getPaddingTop() + getWidth() - getPaddingLeft() - getPaddingRight())));
-            ViewHelper.setTranslationX(getChildAt(i), getPaddingLeft());
-            ViewHelper.setTranslationY(getChildAt(i), y + getPaddingTop());
-            ViewHelper.setScaleX(getChildAt(i), scale);
-            ViewHelper.setScaleY(getChildAt(i), scale);
-        }
-    }
+	private void initChildren() {
+		removeAllViews();
+		for (int i = 0; i < adapter.getCount(); i++) {
+			final View card = adapter.getView(i);
+			addView(card, i, generateDefaultLayoutParams());
+			final int finalI = i;
+			if (Build.VERSION.SDK_INT >= 21)
+				card.setElevation(UIUtils.convertDpToPixel(4 * i, getContext()));
+			card.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					if (onItemClickListener != null)
+						onItemClickListener.onItemClick(card, finalI);
+				}
+			});
+		}
+	}
 
-    private int getMaxScroll() {
-        return (getChildCount() - 1) * (getWidth() - getPaddingLeft() - getPaddingRight());
-    }
+	private void layoutChildren() {
+		int width = getWidth() - getPaddingLeft() - getPaddingRight();
+		int height = getHeight() - getPaddingTop() - getPaddingBottom();
+		for (int i = 0; i < getChildCount(); i++) {
+			float topSpace = height - width;
+			int y = (int) (topSpace * Math.pow(2, (i * width - scroll) / (float) width));
+			float scale = (float) (-Math.pow(2, -y / topSpace / 10.0f) + 19.0f / 10);
+			childTouchRect[i].set(getPaddingLeft(), y + getPaddingTop(), (int) (scale * (getPaddingLeft() + getWidth() - getPaddingLeft() - getPaddingRight())), (int) (scale * (y + getPaddingTop() + getWidth() - getPaddingLeft() - getPaddingRight())));
+			ViewHelper.setTranslationX(getChildAt(i), getPaddingLeft());
+			ViewHelper.setTranslationY(getChildAt(i), y + getPaddingTop());
+			ViewHelper.setScaleX(getChildAt(i), scale);
+			ViewHelper.setScaleY(getChildAt(i), scale);
+		}
+	}
 
-    @Override
-    protected void dispatchDraw(@NonNull Canvas canvas) {
-        layoutChildren();
-        super.dispatchDraw(canvas);
-        doScrolling();
-    }
+	private int getMaxScroll() {
+		return (getChildCount() - 1) * (getWidth() - getPaddingLeft() - getPaddingRight());
+	}
 
-    @Override
-    public boolean dispatchTouchEvent(@NonNull MotionEvent event) {
-        if (gestureDetector.onTouchEvent(event)) {
-            for (int i = getChildCount() - 1; i >= 0; i--) {
-                MotionEvent e = MotionEvent.obtain(event);
-                event.setAction(MotionEvent.ACTION_CANCEL);
-                e.offsetLocation(-childTouchRect[i].left, -childTouchRect[i].top);
-                getChildAt(i).dispatchTouchEvent(e);
-            }
-            return true;
-        }
+	@Override
+	protected void dispatchDraw(@NonNull Canvas canvas) {
+		layoutChildren();
+		super.dispatchDraw(canvas);
+		doScrolling();
+	}
 
-        if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE){
-            forceFinished();
-        }
+	@Override
+	public boolean dispatchTouchEvent(@NonNull MotionEvent event) {
+		if (gestureDetector.onTouchEvent(event)) {
+			for (int i = getChildCount() - 1; i >= 0; i--) {
+				MotionEvent e = MotionEvent.obtain(event);
+				event.setAction(MotionEvent.ACTION_CANCEL);
+				e.offsetLocation(-childTouchRect[i].left, -childTouchRect[i].top);
+				getChildAt(i).dispatchTouchEvent(e);
+			}
+			return true;
+		}
 
-        for (int i = getChildCount() - 1;i >= 0; i--){
-            if (childTouchRect[i].contains((int) event.getX(), (int) event.getY())) {
-                MotionEvent e = MotionEvent.obtain(event);
-                e.offsetLocation(-childTouchRect[i].left, -childTouchRect[i].top);
-                if (getChildAt(i).dispatchTouchEvent(e))
-                    break;
-            }
-        }
+		if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+			forceFinished();
+		}
 
-        return true;
-    }
+		for (int i = getChildCount() - 1; i >= 0; i--) {
+			if (childTouchRect[i].contains((int) event.getX(), (int) event.getY())) {
+				MotionEvent e = MotionEvent.obtain(event);
+				e.offsetLocation(-childTouchRect[i].left, -childTouchRect[i].top);
+				if (getChildAt(i).dispatchTouchEvent(e))
+					break;
+			}
+		}
 
-    @Override
-    public boolean onDown(MotionEvent motionEvent) {
-        return false;
-    }
+		return true;
+	}
 
-    @Override
-    public void onShowPress(MotionEvent motionEvent) {
+	@Override
+	public boolean onDown(MotionEvent motionEvent) {
+		return false;
+	}
 
-    }
+	@Override
+	public void onShowPress(MotionEvent motionEvent) {
 
-    @Override
-    public boolean onSingleTapUp(MotionEvent event) {
+	}
 
-        return false;
-    }
+	@Override
+	public boolean onSingleTapUp(MotionEvent event) {
 
-    @Override
-    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
-        scroll = (int) Math.max(0, Math.min(scroll + v2, getMaxScroll()));
-        postInvalidate();
-        return true;
-    }
+		return false;
+	}
 
-    @Override
-    public void onLongPress(MotionEvent motionEvent) {
+	@Override
+	public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
+		scroll = (int) Math.max(0, Math.min(scroll + v2, getMaxScroll()));
+		postInvalidate();
+		return true;
+	}
 
-    }
+	@Override
+	public void onLongPress(MotionEvent motionEvent) {
 
-    void startScrolling(float initialVelocity) {
-        scroller.fling(0, scroll, 0, (int) initialVelocity, 0,
-                0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+	}
 
-        postInvalidate();
-    }
+	void startScrolling(float initialVelocity) {
+		scroller.fling(0, scroll, 0, (int) initialVelocity, 0,
+				0, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-    private void doScrolling() {
-        if (scroller.isFinished())
-            return;
+		postInvalidate();
+	}
 
-        boolean more = scroller.computeScrollOffset();
-        int y = scroller.getCurrY();
+	private void doScrolling() {
+		if (scroller.isFinished())
+			return;
 
-        scroll = Math.max(0, Math.min(y, getMaxScroll()));
+		boolean more = scroller.computeScrollOffset();
+		int y = scroller.getCurrY();
 
-        if (more)
-            postInvalidate();
-    }
+		scroll = Math.max(0, Math.min(y, getMaxScroll()));
 
-    boolean isFlinging() {
-        return !scroller.isFinished();
-    }
+		if (more)
+			postInvalidate();
+	}
 
-    void forceFinished() {
-        if (!scroller.isFinished()) {
-            scroller.forceFinished(true);
-        }
-    }
+	boolean isFlinging() {
+		return !scroller.isFinished();
+	}
 
-    @Override
-    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
-        startScrolling(-v2);
-        return true;
-    }
+	void forceFinished() {
+		if (!scroller.isFinished()) {
+			scroller.forceFinished(true);
+		}
+	}
+
+	@Override
+	public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
+		startScrolling(-v2);
+		return true;
+	}
 
 }

@@ -228,6 +228,7 @@
             <tk.zielony.materialrecents.RecentsList
                 android:id="@+id/get_schedule_lessons"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="match_parent"/>
         </FrameLayout>
 

@@ -44,6 +44,6 @@ public class LessonDetailAdapter implements RecentsAdapter {
 
 	@Override
 	public int getCount() {
-		return 0;
+		return lessons.size();
 	}
 }

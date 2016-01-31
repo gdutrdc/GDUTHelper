@@ -87,6 +87,16 @@ public class GetScheduleActivity extends BaseActivity
 	}
 
 	private void initView() {
+		mLessonDetailsView = (RecentsList) findViewById(R.id.get_schedule_lessons);
+		mLessonDetailAdapter = new LessonDetailAdapter(this);
+		mLessonDetailsView.setAdapter(mLessonDetailAdapter);
+		mBtnCloseDetail = findViewById(R.id.get_schedule_btn_close_lesson_details);
+		mBtnCloseDetail.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setLessonsDetailVisible(false, v.getX() + v.getWidth() / 2, v.getY() + v.getHeight() / 2);
+			}
+		});
 		mSpinnerWeek = (AppCompatSpinner) findViewById(R.id.get_schedule_week_spinner);
 		mSpinnerWeek.setOnItemSelectedListener(this);
 
@@ -435,37 +445,54 @@ public class GetScheduleActivity extends BaseActivity
 			mLessonDetailsView.setVisibility(View.VISIBLE);
 			findViewById(R.id.get_schedule_lessons_container).setVisibility(View.VISIBLE);
 			SupportAnimator animator = ViewAnimationUtils
-					.createCircularReveal(mLessonDetailsView, (int) dx,
+					.createCircularReveal(
+							findViewById(R.id.get_schedule_lessons_container), (int) dx,
 							(int) dy,
 							0,
-							UIUtils.getScreenWidth(GetScheduleActivity.this));
+							UIUtils.getScreenHeight(GetScheduleActivity.this));
 
 			animator.setInterpolator(new AccelerateDecelerateInterpolator());
 			animator.setDuration(300);
 			animator.start();
-		}else{
+		} else {
+			SupportAnimator animator = ViewAnimationUtils
+					.createCircularReveal(
+							findViewById(R.id.get_schedule_lessons_container), (int) dx,
+							(int) dy,
+							UIUtils.getScreenHeight(GetScheduleActivity.this), 0);
 
+			animator.setInterpolator(new AccelerateDecelerateInterpolator());
+			animator.setDuration(300);
+			animator.addListener(new SupportAnimator.AnimatorListener() {
+				@Override
+				public void onAnimationStart() {
+
+				}
+
+				@Override
+				public void onAnimationEnd() {
+					mBtnCloseDetail.setVisibility(View.GONE);
+					mLessonDetailsView.setVisibility(View.GONE);
+					findViewById(R.id.get_schedule_lessons_container).setVisibility(View.GONE);
+				}
+
+				@Override
+				public void onAnimationCancel() {
+
+				}
+
+				@Override
+				public void onAnimationRepeat() {
+
+				}
+			});
+			animator.start();
 		}
 	}
 
 
 	@Override
 	public void onClick(View lessonView, final Map<Lesson, LessonTACR> lessonMap) {
-		if (mLessonDetailsView == null) {
-			mLessonDetailsView = (RecentsList) findViewById(R.id.get_schedule_lessons);
-			mLessonDetailAdapter = new LessonDetailAdapter(this);
-			mLessonDetailsView.setAdapter(mLessonDetailAdapter);
-		}
-		if (mBtnCloseDetail == null) {
-			mBtnCloseDetail = findViewById(R.id.get_schedule_btn_close_lesson_details);
-			mBtnCloseDetail.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					setLessonsDetailVisible(false, v.getX() + v.getWidth() / 2, v.getY() + v.getHeight() / 2);
-
-				}
-			});
-		}
 		ArrayList<Lesson> lessons = new ArrayList<>();
 		for (Lesson lesson : lessonMap.keySet()) {
 			ArrayList<LessonTACR> list = LessonUtils.readTimeAndClassroom(lesson);
@@ -481,15 +508,9 @@ public class GetScheduleActivity extends BaseActivity
 			lessons.add(lesson);
 		}
 		mLessonDetailAdapter.setLessons(lessons);
-
-		SupportAnimator animator = ViewAnimationUtils
-				.createCircularReveal(mLessonDetailsView, (int) lessonView.getX(),
-						(int) lessonView.getY() -
-								((ScrollView) mWeekScheduleView.getParent()).getScrollY(),
-						0, UIUtils.getScreenWidth(this));
-
-		animator.setInterpolator(new AccelerateDecelerateInterpolator());
-		animator.setDuration(300);
-		animator.start();
+		mLessonDetailsView.setAdapter(mLessonDetailAdapter);
+		setLessonsDetailVisible(true, lessonView.getX() + lessonView.getWidth() / 2,
+				lessonView.getY() + lessonView.getHeight() / 2
+						- ((ScrollView) mWeekScheduleView.getParent()).getScaleY());
 	}
 }
