@@ -246,4 +246,29 @@ public class LessonUtils {
 		result += "节";
 		return result;
 	}
+
+
+	public static String getEvaluationLine(String[] array) {
+		for (String s : array) {
+			if (s.contains("教学质量评价")) {
+				return s;
+			}
+		}
+		return null;
+	}
+
+	public static ArrayList<Lesson> getLessonList(String s) {
+		ArrayList<Lesson> lessonList = new ArrayList<>();
+		String[] split = s.split("<li>");
+		for (String string : split) {
+			if (!string.contains("xsjxpj.aspx?xkkh"))
+				continue;
+			Lesson lesson = new Lesson();
+			int indexXk = string.indexOf("xkkh=") + 5;
+			lesson.setLessonCode(string.substring(indexXk, indexXk + 33));
+			lesson.setLessonName(string.substring(string.indexOf("GetMc('") + 7, string.indexOf("');\"")));
+			lessonList.add(lesson);
+		}
+		return lessonList;
+	}
 }

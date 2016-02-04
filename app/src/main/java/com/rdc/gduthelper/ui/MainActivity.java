@@ -14,6 +14,7 @@ import android.view.animation.Animation;
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Lesson;
+import com.rdc.gduthelper.utils.Settings;
 
 import java.util.ArrayList;
 
@@ -52,6 +53,18 @@ public class MainActivity extends BaseActivity {
 			ViewGroup evaluation = (ViewGroup) findViewById(R.id.main_evaluation);
 			View textView = evaluation.getChildAt(0);
 			textView.clearAnimation();
+		}
+		if (GDUTHelperApp.cookie == null) {
+			Settings settings = GDUTHelperApp.getSettings();
+			String cookie = settings.getCookie();
+			String reUP = settings.getRememberUser();
+			if (cookie == null || reUP == null) {
+
+			} else {
+				GDUTHelperApp.cookie = cookie;
+				String[] data = reUP.split(";", 2);
+				GDUTHelperApp.userXh = data[0];
+			}
 		}
 		super.onResume();
 	}

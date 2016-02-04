@@ -27,6 +27,7 @@ public class Settings {
 	public static final String SCHEDULE_FIRST_WEEK = "schedule_first_week";
 	public static final String SCHEDULE_CURRENT_WEEK = "schedule_current_week";
 	public static final String SCHEDULE_CARD_COLORS = "schedule_card_colors";
+	public static final String COOKIE = "cookie";
 
 	private SharedPreferences mSharedPreferences;
 
@@ -189,5 +190,15 @@ public class Settings {
 
 	public String getScheduleCardColors() {
 		return mSharedPreferences.getString(SCHEDULE_CARD_COLORS, null);
+	}
+
+	public String getCookie() {
+		return mSharedPreferences.getString(COOKIE, null);
+	}
+
+	public void setCookie(String cookie) {
+		SharedPreferences.Editor editor = mSharedPreferences.edit();
+		editor.putString(COOKIE, cookie);
+		editor.apply();
 	}
 }

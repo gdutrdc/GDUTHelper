@@ -1,7 +1,5 @@
 package com.rdc.gduthelper.net.api;
 
-import android.util.Log;
-
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.net.ApiHelper;
@@ -10,72 +8,43 @@ import com.rdc.gduthelper.utils.LessonUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
- * Created by seasonyuu on 15/8/28.
+ * Created by seasonyuu on 16/2/4.
  */
-public class Login extends BaseRunnable {
-	private final String TAG = Login.class.getSimpleName();
-	private String viewState;
-	private String secretCode;
-	private String userName;
-	private String password;
-	private GGCallback callback;
+public class GetMain extends BaseRunnable {
+	private static final String TAG = GetMain.class.getSimpleName();
 
-	public Login(String userName, String password, String secretCode, String viewState, GGCallback callback) {
-		this.userName = userName;
-		this.password = password;
-		this.secretCode = secretCode;
-		this.viewState = viewState;
+	private String xh;
+	private int responseCode;
+	private String responseURL;
+	private String viewState;
+
+	public GetMain(String xh, GGCallback callback) {
 		this.callback = callback;
+		this.xh = xh;
 	}
 
 	@Override
 	public void run() {
+		requestUrl = ApiHelper.getURl() + "xs_main.aspx?xh=" + xh;
 		try {
-			HttpURLConnection httpURLConnection
-					= (HttpURLConnection) new URL(ApiHelper.getURl() + "default2.aspx").openConnection();
-			httpURLConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
-			httpURLConnection.addRequestProperty("Referer", ApiHelper.getURl() + "default2.aspx");
-			httpURLConnection.addRequestProperty("Upgrade-Insecure-Requests", "1");
-			httpURLConnection.setRequestMethod("POST");
-			httpURLConnection.setDoOutput(true);
-			httpURLConnection.setDoInput(true);
-			httpURLConnection.setUseCaches(false);
-			String data = "__VIEWSTATE="
-					+ URLEncoder.encode(viewState, "iso-8859-1")
-					+ "&txtUserName=" + userName
-					+ "&TextBox2=" + password
-					+ "&txtSecretCode=" + secretCode
-					+ "&RadioButtonList1=%D1%A7%C9%FA"
-					+ "&Button1="
-					+ "&lbLanguage="
-					+ "&hidPdrs="
-					+ "&hidsc=";
-
-			httpURLConnection.connect();
-
-			DataOutputStream out = new DataOutputStream(httpURLConnection.getOutputStream());// 获得一个输出流,向服务器写数据
-			out.writeBytes(data);
-			out.flush();
-			out.close();
-
-			int responseCode = httpURLConnection.getResponseCode();// 调用此方法就不必再使用conn.connect()方法
-			String responseURL = httpURLConnection.getURL().toString();
-			Log.d(TAG, "The response URL = " + responseURL);
+			URL url = new URL(requestUrl);
+			URLConnection urlConnection = url.openConnection();
+			urlConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
+			urlConnection.addRequestProperty("Referer", ApiHelper.getURl());
+			urlConnection.setConnectTimeout(5 * 1000);
 			if (responseCode == 200) {
-				if (responseURL.equals(ApiHelper.getURl() + "xs_main.aspx?xh=" + userName)) {
+				if (responseURL.equals(ApiHelper.getURl() + "xs_main.aspx?xh=" + xh)) {
 					//登录成功
-					Log.d(TAG, "login success");
 					InputStreamReader reader = new InputStreamReader(
-							new BufferedInputStream(httpURLConnection.getInputStream()), "gbk");
+							new BufferedInputStream(urlConnection.getInputStream()), "gbk");
 					BufferedReader in = new BufferedReader(reader);
 					String s;
 					StringBuffer sb = new StringBuffer();
@@ -100,7 +69,7 @@ public class Login extends BaseRunnable {
 
 				} else if (responseURL.equals(ApiHelper.getURl() + "default2.aspx")) {
 					InputStreamReader reader = new InputStreamReader(
-							new BufferedInputStream(httpURLConnection.getInputStream()), "gbk");
+							new BufferedInputStream(urlConnection.getInputStream()), "gbk");
 					BufferedReader in = new BufferedReader(reader);
 					String s;
 					StringBuffer sb = new StringBuffer();
@@ -114,19 +83,15 @@ public class Login extends BaseRunnable {
 					String failedTips = sb.substring(indexStart, indexEnd);
 					if (callback != null)
 						callback.onCall(failedTips);
-				} else if (responseURL.equals(ApiHelper.getURl()
-						+ "zdy.htm?aspxerrorpath=/default2.aspx")) {
-					if (callback != null)
-						callback.onCall("教务系统大姨妈了 = =");
 				}
 			} else if (callback != null) {
 				callback.onCall(new Exception("Request Failed : code " + responseCode));
 			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			if (callback != null)
 				callback.onCall(e);
 		}
 	}
-
 }
