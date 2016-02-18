@@ -10,6 +10,7 @@
         <item name="colorPrimary">@color/blue_500</item>
         <item name="colorPrimaryDark">@color/blue_700</item>
         <item name="colorAccent">@color/pink_a200</item>
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
     <style name="TranslucentTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -21,6 +22,7 @@
     <style name="AppTheme.Pink">
         <item name="colorPrimary">@color/pink_500</item>
         <item name="colorPrimaryDark">@color/pink_700</item>
+        <item name="android:windowBackground">@drawable/splash</item>
         <item name="colorAccent">#FF9800</item>
     </style>
 

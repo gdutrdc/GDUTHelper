@@ -28,7 +28,9 @@ public class MainActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 
 		View view = View.inflate(this, R.layout.activity_main, null);
+		view.setAlpha(0);
 		setContentView(view);
+		view.animate().alpha(1).setStartDelay(300).start();
 
 		if (getSupportActionBar() != null) {
 			getSupportActionBar().setDisplayHomeAsUpEnabled(false);

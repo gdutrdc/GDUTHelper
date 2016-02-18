@@ -24,7 +24,8 @@
         <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/settings"/>
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
