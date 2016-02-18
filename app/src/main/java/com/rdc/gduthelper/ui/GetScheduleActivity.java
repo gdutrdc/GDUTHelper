@@ -2,6 +2,7 @@ package com.rdc.gduthelper.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -29,6 +30,7 @@ import com.rdc.gduthelper.net.api.GetSchedule;
 import com.rdc.gduthelper.net.api.IntoSchedule;
 import com.rdc.gduthelper.ui.adapter.LessonDetailAdapter;
 import com.rdc.gduthelper.ui.widget.WeekScheduleView;
+import com.rdc.gduthelper.utils.BitmapUtils;
 import com.rdc.gduthelper.utils.LessonUtils;
 import com.rdc.gduthelper.utils.Settings;
 import com.rdc.gduthelper.utils.UIUtils;
@@ -215,6 +217,9 @@ public class GetScheduleActivity extends BaseActivity
 			}
 			mWeekScheduleView.setColors(target);
 			refreshData();
+
+			Bitmap bitmap = BitmapUtils.getBitmap(this);
+			mWeekScheduleView.setScheduleBackground(bitmap);
 		}
 		if (mSpinnerWeek != null) {
 			String[] s = new String[22];

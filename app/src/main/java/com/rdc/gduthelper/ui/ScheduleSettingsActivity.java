@@ -56,4 +56,5 @@ public class ScheduleSettingsActivity extends BaseActivity {
 		setResult(0, intent);
 		super.onBackPressed();
 	}
+
 }

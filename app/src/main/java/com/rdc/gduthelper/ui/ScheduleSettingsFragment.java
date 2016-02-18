@@ -1,19 +1,32 @@
 package com.rdc.gduthelper.ui;
 
+import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.ui.widget.ChooseColorsDialog;
+import com.rdc.gduthelper.utils.BitmapUtils;
 import com.rdc.gduthelper.utils.Settings;
+import com.rdc.gduthelper.utils.UIUtils;
 import com.rdc.gduthelper.utils.database.ScheduleDBHelper;
+import com.soundcloud.android.crop.Crop;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Calendar;
 
 /**
@@ -59,6 +72,9 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 		mPrefScheCardColors.setTitle(R.string.schedule_card_colors);
 		mPrefScheCardColors.setSummary(R.string.schedule_card_colors_tips);
 		mPrefScheCardColors.setOnPreferenceClickListener(this);
+
+		mPrefScheBackgroud = findPreference(Settings.SCHEDULE_BACKGROUND);
+		mPrefScheBackgroud.setOnPreferenceClickListener(this);
 	}
 
 	@Override
@@ -154,9 +170,83 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 				});
 				chooseColorsDialog.show();
 				break;
+			case Settings.SCHEDULE_BACKGROUND:
+				int hasWriteContactsPermission = ContextCompat.
+						checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+				if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+					ActivityCompat.requestPermissions(getActivity(),
+							new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+					break;
+				}
+				BitmapDrawable drawable = new BitmapDrawable(BitmapUtils.getBitmap(getActivity()));
+
+				new AlertDialog.Builder(getActivity())
+						.setIcon(drawable)
+						.setTitle(R.string.schedule_background)
+						.setMessage(R.string.choose_schedule_background_tips)
+						.setNegativeButton(R.string.reset, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								BitmapUtils.deleteBitmap(getActivity());
+							}
+						})
+						.setPositiveButton(R.string.choose_from_gallery, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+
+								Intent intent = new Intent(Intent.ACTION_PICK,
+										android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+								startActivityForResult(intent, 1);
+							}
+						})
+						.show();
+				break;
 		}
 		return false;
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+			case 1:
+				if (data == null)
+					break;
+				if (data.getData() == null)
+					break;
+				Uri uri = data.getData();
 
+				Uri output;
+				File file = new File(BitmapUtils.getImgPath(getActivity()) + BitmapUtils.IMG_NAME);
+				try {
+					if (!file.exists())
+						file.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				output = Uri.fromFile(file);
+
+				int outputX = (int) (UIUtils.getScreenWidth(getActivity()) * 0.91);
+				int outputY = UIUtils.getScreenHeight(getActivity());
+
+				int gcd = BigInteger.valueOf(outputY).gcd(BigInteger.valueOf(outputX)).intValue();
+				Crop.of(uri, output).withAspect(outputX / gcd, outputY / gcd)
+						.start(getActivity());
+				break;
+			case 2:
+				if (data == null) {
+					break;
+				}
+				Bundle bundle = data.getExtras();
+				if (bundle != null) {
+					try {
+						Bitmap bitmap = bundle.getParcelable("data");
+						BitmapUtils.saveBitmap(getActivity(), bitmap);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				break;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 }

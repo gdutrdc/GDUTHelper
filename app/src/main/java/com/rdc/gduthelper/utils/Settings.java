@@ -27,6 +27,7 @@ public class Settings {
 	public static final String SCHEDULE_FIRST_WEEK = "schedule_first_week";
 	public static final String SCHEDULE_CURRENT_WEEK = "schedule_current_week";
 	public static final String SCHEDULE_CARD_COLORS = "schedule_card_colors";
+	public static final String SCHEDULE_BACKGROUND = "schedule_background";
 	public static final String COOKIE = "cookie";
 
 	private SharedPreferences mSharedPreferences;

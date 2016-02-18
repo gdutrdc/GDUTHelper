@@ -1,9 +1,11 @@
 package com.rdc.gduthelper.ui.widget;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
@@ -29,6 +31,7 @@ import java.util.Map;
  */
 public class WeekScheduleView extends ViewGroup implements View.OnClickListener {
 	private static final String TAG = WeekScheduleView.class.getSimpleName();
+	private Bitmap background;
 
 	@Override
 	public void onClick(View v) {
@@ -129,6 +132,11 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener 
 		lessonViews = new ArrayList<>();
 	}
 
+	public void setScheduleBackground(Bitmap bitmap) {
+		background = bitmap;
+		invalidate();
+	}
+
 	public ArrayList<Lesson> getLessons() {
 		return mLessons;
 	}
@@ -215,17 +223,22 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener 
 		int height = getMeasuredHeight();
 
 		Paint paint = new Paint();
-		paint.setColor(Color.parseColor("#22888888"));
 		paint.setStrokeWidth(1);
-		int lineY = 0;
-		int lineX = 0;
-		for (int i = 0; i < 12; i++) {
-			TextView tv = lessonNums.get(i);
-			if (i != 0)
-				canvas.drawLine(0, lineY, width, lineY, paint);
-			lineY += tv.getMeasuredHeight();
+		if (background == null) {
+			paint.setColor(Color.parseColor("#22888888"));
+			int lineY = 0;
+			int lineX = 0;
+			for (int i = 0; i < 12; i++) {
+				TextView tv = lessonNums.get(i);
+				if (i != 0)
+					canvas.drawLine(0, lineY, width, lineY, paint);
+				lineY += tv.getMeasuredHeight();
+			}
+		} else {
+			Rect rect = new Rect();
+			rect.set((int) (width * 0.09), 0, width, height);
+			canvas.drawBitmap(background, null, rect, paint);
 		}
-		canvas.drawLine((int) (width * 0.09), 0, (int) (width * .09), height, paint);
 
 		super.onDraw(canvas);
 	}
