@@ -190,6 +190,9 @@ public class GetScheduleActivity extends BaseActivity
 
 	private void initData() {
 		if (mWeekScheduleView != null) {
+			Bitmap bitmap = BitmapUtils.getBitmap(this);
+			mWeekScheduleView.setScheduleBackground(bitmap);
+
 			String colors = mSettings.getScheduleCardColors();
 			int[] allColors = getResources().getIntArray(R.array.colors);
 			int[] temp = new int[allColors.length];
@@ -217,9 +220,6 @@ public class GetScheduleActivity extends BaseActivity
 			}
 			mWeekScheduleView.setColors(target);
 			refreshData();
-
-			Bitmap bitmap = BitmapUtils.getBitmap(this);
-			mWeekScheduleView.setScheduleBackground(bitmap);
 		}
 		if (mSpinnerWeek != null) {
 			String[] s = new String[22];

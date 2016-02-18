@@ -182,12 +182,17 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener 
 			} else
 				color = lessonColors.get(tacr1.getLessonCode());
 			cardColorIndex++;
+			LayoutParams lp1 = view.findViewById(R.id.item_schedule_text).getLayoutParams();
+			lp1.width = (int) (getMeasuredWidth() * 0.13);
+			view.findViewById(R.id.item_schedule_text).setLayoutParams(lp1);
 			if (LessonUtils.lessonInThisWeek(tacr1, week)) {
 				isShown = true;
+
 				((TextView) view.findViewById(R.id.item_schedule_text)).setText(
 						LessonUtils.findLesson(
 								mLessons, tacr1.getLessonCode()).getLessonName()
 								+ "@" + tacr1.getClassroom());
+
 				view.findViewById(R.id.item_schedule_dog_ear).setVisibility(GONE);
 				((CardView) view).setCardBackgroundColor(color);
 			}
@@ -295,10 +300,6 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener 
 				if (view != null && view.getParent() == this) {
 					ArrayList<LessonTACR> tacrs = (ArrayList<LessonTACR>) view.getTag();
 					LessonTACR tacr = tacrs.get(0);
-
-					LayoutParams lp1 = view.findViewById(R.id.item_schedule_text).getLayoutParams();
-					lp1.width = (int) (getMeasuredWidth() * 0.13);
-					view.findViewById(R.id.item_schedule_text).setLayoutParams(lp1);
 
 					view.layout((int) (width * (0.09 + 0.13 * tacr.getWeekday() % 7)) + margin,
 							(tacr.getNum()[0] - 1) * lessonItemHeight + margin,
