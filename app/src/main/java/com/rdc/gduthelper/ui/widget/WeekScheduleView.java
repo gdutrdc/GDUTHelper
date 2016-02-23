@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -182,9 +181,12 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener 
 			} else
 				color = lessonColors.get(tacr1.getLessonCode());
 			cardColorIndex++;
+
 			LayoutParams lp1 = view.findViewById(R.id.item_schedule_text).getLayoutParams();
-			lp1.width = (int) (getMeasuredWidth() * 0.13);
+			lp1.width = (int) ((getWidth() * 0.13) -  (((CardView) view).getMaxCardElevation()
+					+ (1 - Math.cos(45)) * ((CardView) view).getRadius()));
 			view.findViewById(R.id.item_schedule_text).setLayoutParams(lp1);
+
 			if (LessonUtils.lessonInThisWeek(tacr1, week)) {
 				isShown = true;
 
@@ -293,16 +295,13 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener 
 		}
 
 		if (mLessons.size() > 0) {
-			int margin = getResources().getDimensionPixelOffset(R.dimen.lesson_item_margin);
-			if (Build.VERSION.SDK_INT < 21)
-				margin = 0;
 			for (View view : lessonViews) {
 				if (view != null && view.getParent() == this) {
 					ArrayList<LessonTACR> tacrs = (ArrayList<LessonTACR>) view.getTag();
 					LessonTACR tacr = tacrs.get(0);
 
-					view.layout((int) (width * (0.09 + 0.13 * tacr.getWeekday() % 7)) + margin,
-							(tacr.getNum()[0] - 1) * lessonItemHeight + margin,
+					view.layout((int) (width * (0.09 + 0.13 * tacr.getWeekday() % 7)),
+							(tacr.getNum()[0] - 1) * lessonItemHeight,
 							(int) (width * (0.09 + 0.13 * (tacr.getWeekday() % 7 + 1))),
 							(tacr.getNum()[0] - 1 + tacr.getNum().length) * lessonItemHeight);
 				}

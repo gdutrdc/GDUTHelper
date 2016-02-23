@@ -5,9 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    app:cardPreventCornerOverlap="true"
     android:foreground="?selectableItemBackground"
-    app:cardBackgroundColor="@color/teal_500">
+    app:cardBackgroundColor="@color/teal_500"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="2dp"
+    app:cardPreventCornerOverlap="false">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -17,8 +19,8 @@
             android:id="@+id/item_schedule_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_gravity="center"
+            android:gravity="center"
             android:padding="@dimen/lesson_item_text_padding"
             android:text="高等数学@教5-106"
             android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
