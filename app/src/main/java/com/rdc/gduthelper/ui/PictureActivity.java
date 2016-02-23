@@ -32,8 +32,13 @@ public class PictureActivity extends BaseActivity implements View.OnClickListene
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setTheme(android.support.v7.appcompat.R.style.Theme_AppCompat_NoActionBar);
 		super.onCreate(savedInstanceState);
+		int themeId = GDUTHelperApp.getSettings().getThemeId();
+		if (themeId == R.style.AppTheme_Blue)
+			themeId = R.style.AppTheme_Blue_NoActionBar;
+		else
+			themeId = R.style.AppTheme_Pink_NoActionBar;
+		setTheme(themeId);
 		setContentView(R.layout.activity_picture);
 
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
