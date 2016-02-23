@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -66,14 +67,16 @@ public class BaseActivity extends AppCompatActivity {
 	}
 
 	public void showProgressDialog(String message) {
+		if (progressDialog != null && progressDialog.isShowing())
+			progressDialog.dismiss();
 		progressDialog = new ProgressDialog(this);
-//  		progressDialog.setCancelable(false);
-		progressDialog.show();
 		progressDialog.setMessage(message);
 		progressDialog.show();
 	}
 
 	public void showWarning(String message, DialogInterface.OnClickListener onClickListener) {
+		if (warningDialog != null && warningDialog.isShowing())
+			warningDialog.dismiss();
 		warningDialog = new AlertDialog.Builder(this)
 				.setMessage(message)
 				.setTitle("警告")
@@ -83,9 +86,11 @@ public class BaseActivity extends AppCompatActivity {
 	}
 
 	public void cancelDialog() {
-		if (progressDialog != null && progressDialog.isShowing())
-			progressDialog.cancel();
-		if (warningDialog != null && warningDialog.isShowing())
-			warningDialog.cancel();
+		if (progressDialog != null) {
+			progressDialog.dismiss();
+			Log.d("BaseActivity", "dismiss progress dialog");
+		}
+		if (warningDialog != null)
+			warningDialog.dismiss();
 	}
 }

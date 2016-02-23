@@ -141,7 +141,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 	private void login() {
 		if (GDUTHelperApp.cookie != null && GDUTHelperApp.viewState != null) {
-			showProgressDialog("正在登陆");
 			new Thread(new Login(
 					mEtUserXh.getText().toString(),
 					mEtPassword.getText().toString(),
