@@ -94,6 +94,7 @@ public class Login extends BaseRunnable {
 							GDUTHelperApp.setEvaluationList(lessonList);
 						}
 					}
+					GDUTHelperApp.getSettings().setCookie(GDUTHelperApp.cookie);
 					if (callback != null) {
 						callback.onCall(null);
 					}

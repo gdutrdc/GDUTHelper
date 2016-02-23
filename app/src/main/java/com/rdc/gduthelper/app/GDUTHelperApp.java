@@ -46,6 +46,6 @@ public class GDUTHelperApp extends Application {
 	}
 
 	public static boolean isLogin() {
-		return userXh != null && cookie != null && userXm != null;
+		return userXh != null && cookie != null;
 	}
 }

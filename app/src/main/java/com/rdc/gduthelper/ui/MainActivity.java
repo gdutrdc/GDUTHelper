@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.view.animation.Animation;
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Lesson;
+import com.rdc.gduthelper.net.BaseRunnable;
+import com.rdc.gduthelper.net.api.IntoMain;
 import com.rdc.gduthelper.utils.Settings;
 
 import java.util.ArrayList;
@@ -39,9 +42,7 @@ public class MainActivity extends BaseActivity {
 
 	}
 
-	@Override
-	protected void onResume() {
-		invalidateOptionsMenu();
+	private void invalidateData() {
 		ArrayList<Lesson> evaluationList = GDUTHelperApp.getEvaluationList();
 		if (evaluationList != null && evaluationList.size() > 0) {
 			ViewGroup evaluation = (ViewGroup) findViewById(R.id.main_evaluation);
@@ -56,19 +57,29 @@ public class MainActivity extends BaseActivity {
 			View textView = evaluation.getChildAt(0);
 			textView.clearAnimation();
 		}
+		supportInvalidateOptionsMenu();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
 		if (GDUTHelperApp.cookie == null) {
 			Settings settings = GDUTHelperApp.getSettings();
 			String cookie = settings.getCookie();
 			String reUP = settings.getRememberUser();
-			if (cookie == null || reUP == null) {
-
-			} else {
+			if (cookie != null && reUP != null) {
 				GDUTHelperApp.cookie = cookie;
 				String[] data = reUP.split(";", 2);
 				GDUTHelperApp.userXh = data[0];
 			}
 		}
-		super.onResume();
+		Log.e("MainActivity", "Cookie = " + GDUTHelperApp.cookie);
+		new Thread(new IntoMain(new BaseRunnable.GGCallback() {
+			@Override
+			public void onCall(Object obj) {
+				invalidateData();
+			}
+		})).start();
 	}
 
 	@Override
