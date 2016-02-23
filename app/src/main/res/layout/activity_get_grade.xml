@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@color/grey_50"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -94,7 +95,6 @@
         android:layout_height="match_parent"
         android:layout_above="@id/grade_bottom"
         android:layout_below="@id/grade_point"
-        android:background="?android:attr/windowBackground"
         android:choiceMode="none"/>
 
     <android.support.design.widget.FloatingActionButton

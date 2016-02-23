@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:padding="16dp"
+    android:background="@color/grey_300"
     android:minHeight="?android:listPreferredItemHeight"
     android:orientation="horizontal">
 
