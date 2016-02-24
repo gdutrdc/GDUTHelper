@@ -157,7 +157,7 @@ public class GetScheduleActivity extends BaseActivity
 		Calendar calendar = mSettings.getScheduleFirstWeek();
 		if (calendar == null)
 			return;
-		if (calendar.compareTo(Calendar.getInstance()) > 0) {
+		if (calendar.compareTo(Calendar.getInstance()) < 0) {
 			calendar = Calendar.getInstance();
 		} else
 			calendar.add(Calendar.WEEK_OF_YEAR, currentWeek - 1);
