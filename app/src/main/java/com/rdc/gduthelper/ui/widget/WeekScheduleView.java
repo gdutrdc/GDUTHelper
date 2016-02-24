@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * Created by seasonyuu on 16/1/7.
  */
-public class WeekScheduleView extends ViewGroup implements View.OnClickListener {
+public class WeekScheduleView extends ViewGroup implements View.OnClickListener, View.OnLongClickListener {
 	private static final String TAG = WeekScheduleView.class.getSimpleName();
 	private Bitmap background;
 
@@ -45,8 +45,25 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener 
 		}
 	}
 
+	@Override
+	public boolean onLongClick(View v) {
+		if (onLessonsClickListener != null) {
+			ArrayList<LessonTACR> tacrs = (ArrayList<LessonTACR>) v.getTag();
+			HashMap<Lesson, LessonTACR> map = new HashMap<>();
+			for (LessonTACR tacr : tacrs) {
+				Lesson lesson = LessonUtils.findLesson(mLessons, tacr.getLessonCode());
+				map.put(lesson, tacr);
+			}
+			onLessonsClickListener.onLongClick(v, map);
+			return true;
+		}
+		return false;
+	}
+
 	public interface OnLessonsClickListener {
 		public void onClick(View lessonView, Map<Lesson, LessonTACR> lessonMap);
+
+		public void onLongClick(View lessonView, Map<Lesson, LessonTACR> lessonMap);
 	}
 
 	private OnLessonsClickListener onLessonsClickListener;
@@ -183,7 +200,7 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener 
 			cardColorIndex++;
 
 			LayoutParams lp1 = view.findViewById(R.id.item_schedule_text).getLayoutParams();
-			lp1.width = (int) ((getWidth() * 0.13) -  (((CardView) view).getMaxCardElevation()
+			lp1.width = (int) ((getWidth() * 0.13) - (((CardView) view).getMaxCardElevation()
 					+ (1 - Math.cos(45)) * ((CardView) view).getRadius()));
 			view.findViewById(R.id.item_schedule_text).setLayoutParams(lp1);
 
@@ -210,6 +227,7 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener 
 		view.findViewById(R.id.item_schedule_dog_ear)
 				.setVisibility(lessonTACRs.size() > 1 ? VISIBLE : GONE);
 		view.setOnClickListener(this);
+		view.setOnLongClickListener(this);
 	}
 
 	private View findViewWithTag(ArrayList<View> views, LessonTACR tacr) {

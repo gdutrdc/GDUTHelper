@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
@@ -39,6 +40,7 @@ import com.rdc.gduthelper.utils.database.ScheduleDBHelper;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Map;
+import java.util.Set;
 
 import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
@@ -502,6 +504,31 @@ public class GetScheduleActivity extends BaseActivity
 		setLessonsDetailVisible(true, lessonView.getX() + lessonView.getWidth() / 2,
 				lessonView.getY() + lessonView.getHeight() / 2
 						- ((ScrollView) mWeekScheduleView.getParent()).getScaleY());
+	}
+
+	@Override
+	public void onLongClick(View lessonView, final Map<Lesson, LessonTACR> lessonMap) {
+		new AlertDialog.Builder(this)
+				.setTitle(R.string.delete_lesson)
+				.setMessage(R.string.delete_lesson_tips)
+				.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Set<Lesson> lessons = lessonMap.keySet();
+						if (lessons.size() > 1) {
+							Toast.makeText(GetScheduleActivity.this,
+									R.string.more_than_one_lesson, Toast.LENGTH_SHORT).show();
+						} else {
+							ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
+							for (Lesson lesson : lessons)
+								helper.deleteLesson(lesson);
+						}
+						initData();
+					}
+				})
+				.setNegativeButton(R.string.cancel, null)
+				.show();
+
 	}
 
 	@Override

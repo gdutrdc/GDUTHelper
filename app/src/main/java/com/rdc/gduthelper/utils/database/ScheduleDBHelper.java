@@ -186,6 +186,13 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 		db.close();
 	}
 
+	public void deleteLesson(Lesson lesson) {
+		SQLiteDatabase db = getWritableDatabase();
+		db.delete(TABLE_LESSON_TIMES, Column.LESSON_CODE + " = ?", new String[]{lesson.getLessonCode()});
+		db.delete(TABLE_LESSONS, Column.LESSON_CODE + " = ?", new String[]{lesson.getLessonCode()});
+		db.close();
+	}
+
 	public String[] getOptionalTerms() {
 		SQLiteDatabase db = getReadableDatabase();
 		String[] result = null;

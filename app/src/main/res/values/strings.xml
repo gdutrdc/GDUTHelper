@@ -68,6 +68,9 @@
     <string name="schedule_background">课程表背景</string>
     <string name="add">新增</string>
     <string name="reset">重置</string>
+    <string name="more_than_one_lesson">超过一个课程，请进入课程页删除</string>
+    <string name="delete_lesson">删除课程</string>
+    <string name="delete_lesson_tips">删除课程后，需重新同步课程表才能恢复</string>
     <string name="choose_schedule_background_tips">选择的图片将会由你裁剪成适合的大小作为课程表的背景</string>
     <string name="choose_from_gallery">从图库选择</string>
     <string name="new_term">新的学期</string>
