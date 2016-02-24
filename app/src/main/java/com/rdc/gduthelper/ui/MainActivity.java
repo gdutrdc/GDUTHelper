@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,7 +72,6 @@ public class MainActivity extends BaseActivity {
 				GDUTHelperApp.userXh = data[0];
 			}
 		}
-		Log.e("MainActivity", "Cookie = " + GDUTHelperApp.cookie);
 		new Thread(new IntoMain(new BaseRunnable.GGCallback() {
 			@Override
 			public void onCall(Object obj) {

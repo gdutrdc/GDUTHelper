@@ -72,22 +72,8 @@ public class IntoMain extends BaseRunnable {
 					callback.onCall(null);
 				}
 
-			} else if (responseURL.equals(ApiHelper.getURl() + "default2.aspx")) {
-				InputStreamReader reader = new InputStreamReader(
-						new BufferedInputStream(urlConnection.getInputStream()), "gbk");
-				BufferedReader in = new BufferedReader(reader);
-				String s;
-				StringBuffer sb = new StringBuffer();
-				while ((s = in.readLine()) != null) {
-					sb.append(s);
-					sb.append("\n");
-				}
-				int indexStart = sb.indexOf("<script language='javascript' defer>alert('")
-						+ "<script language='javascript' defer>alert('".length();
-				int indexEnd = sb.indexOf("');document.getElementById(");
-				String failedTips = sb.substring(indexStart, indexEnd);
-				if (callback != null)
-					callback.onCall(failedTips);
+			} else {
+				GDUTHelperApp.cookie = null;
 			}
 
 		} catch (Exception e) {
