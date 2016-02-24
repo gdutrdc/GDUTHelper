@@ -6,6 +6,6 @@
     <dimen name="main_box_text_size">14sp</dimen>
 
     <dimen name="lesson_item_text_size">12sp</dimen>
-    <dimen name="lesson_item_text_padding">6dp</dimen>
+    <dimen name="lesson_item_text_padding">4dp</dimen>
     <dimen name="lesson_item_dog_ear">8dp</dimen>
 </resources>

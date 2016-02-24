@@ -200,9 +200,13 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener,
 			cardColorIndex++;
 
 			LayoutParams lp1 = view.findViewById(R.id.item_schedule_text).getLayoutParams();
-			lp1.width = (int) ((getWidth() * 0.13) - (((CardView) view).getMaxCardElevation()
-					+ (1 - Math.cos(45)) * ((CardView) view).getRadius()));
-			view.findViewById(R.id.item_schedule_text).setLayoutParams(lp1);
+			CardView cardView = (CardView) view;
+			lp1.width = (int) ((getWidth() * 0.13) - (cardView.getMaxCardElevation()
+					+ (1 - Math.cos(45)) * cardView.getRadius()));
+			lp1.height = (int) (tacr1.getNum().length * UIUtils.getScreenHeight(getContext()) / 12
+					- cardView.getMaxCardElevation() * 1.5
+					- (1 - Math.cos(45)) * cardView.getRadius());
+			cardView.findViewById(R.id.item_schedule_text).setLayoutParams(lp1);
 
 			if (LessonUtils.lessonInThisWeek(tacr1, week)) {
 				isShown = true;
@@ -213,7 +217,7 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener,
 								+ "@" + tacr1.getClassroom());
 
 				view.findViewById(R.id.item_schedule_dog_ear).setVisibility(GONE);
-				((CardView) view).setCardBackgroundColor(color);
+				cardView.setCardBackgroundColor(color);
 			}
 		}
 		if (!isShown) {
