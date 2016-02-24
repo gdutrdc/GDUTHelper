@@ -177,43 +177,7 @@ public class LessonUtils {
 	}
 
 	public static String transformTime(LessonTACR tacr) {
-		String result = "第";
-		int[] weekArr = tacr.getWeek();
-		boolean isShort = true;
-		if (weekArr.length < 2)
-			isShort = false;
-		else
-			for (int i = 0; i < weekArr.length - 1; i++) {
-				if (weekArr[i + 1] - weekArr[i] != 2)
-					isShort = false;
-			}
-		if (isShort) {
-			result += weekArr[0] + "-" + weekArr[weekArr.length - 1] + "周|";
-			if (weekArr[0] % 2 == 0)
-				result += "双周";
-			else
-				result += "单周";
-		} else {
-			boolean flag;
-			for (int i = 0, j = 0; i < weekArr.length - 1; i++) {
-				flag = weekArr[i + 1] - weekArr[i] == 1;
-				if (!flag) {
-					if (i != j)
-						result += weekArr[j] + "-" + weekArr[i] + ",";
-					else
-						result += weekArr[j] + ",";
-					j = i + 1;
-				}
-			}
-			if (result.length() == 1) {
-				if (weekArr.length == 1)
-					result += weekArr[0] + ",";
-				else
-					result += weekArr[0] + "-" + weekArr[weekArr.length - 1] + ",";
-			}
-			result = result.substring(0, result.length() - 1) + "周";
-		}
-		result += "@";
+		String result = "";
 		switch (tacr.getWeekday()) {
 			case 1:
 				result += "周一";
@@ -243,7 +207,43 @@ public class LessonUtils {
 			if (i != tacr.getNum().length - 1)
 				result += ",";
 		}
-		result += "节";
+		result += "节@第";
+		int[] weekArr = tacr.getWeek();
+		boolean isShort = true;
+		if (weekArr.length < 2)
+			isShort = false;
+		else
+			for (int i = 0; i < weekArr.length - 1; i++) {
+				if (weekArr[i + 1] - weekArr[i] != 2)
+					isShort = false;
+			}
+		if (isShort) {
+			result += weekArr[0] + "-" + weekArr[weekArr.length - 1] + "周|";
+			if (weekArr[0] % 2 == 0)
+				result += "双周";
+			else
+				result += "单周";
+		} else {
+			boolean flag;
+			String temp = "";
+			for (int i = 0, j = 0; i < weekArr.length - 1; i++) {
+				flag = weekArr[i + 1] - weekArr[i] == 1;
+				if (!flag) {
+					if (i != j)
+						temp += weekArr[j] + "-" + weekArr[i] + ",";
+					else
+						temp += weekArr[j] + ",";
+					j = i + 1;
+				}
+			}
+			if (temp.length() == 0) {
+				if (weekArr.length == 1)
+					temp += weekArr[0] + ",";
+				else
+					temp += weekArr[0] + "-" + weekArr[weekArr.length - 1] + ",";
+			}
+			result += temp.substring(0, temp.length() - 1) + "周";
+		}
 		return result;
 	}
 

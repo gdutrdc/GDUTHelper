@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,13 +46,13 @@ import java.util.Set;
 
 import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
-import tk.zielony.materialrecents.RecentsList;
+
 
 /**
  * Created by seasonyuu on 16/1/4.
  */
 public class GetScheduleActivity extends BaseActivity
-		implements AdapterView.OnItemSelectedListener, WeekScheduleView.OnLessonsClickListener {
+		implements AdapterView.OnItemSelectedListener, WeekScheduleView.OnLessonsClickListener, LessonDetailAdapter.OnButtonClickListener {
 	private AppCompatSpinner mSpinnerYear;
 	private AppCompatSpinner mSpinnerTerm;
 	private AppCompatSpinner mSpinnerWeek;
@@ -60,7 +62,7 @@ public class GetScheduleActivity extends BaseActivity
 
 	private WeekScheduleView mWeekScheduleView;
 
-	private RecentsList mLessonDetailsView;
+	private RecyclerView mLessonDetailsView;
 	private LessonDetailAdapter mLessonDetailAdapter;
 	private View mBtnCloseDetail;
 
@@ -91,8 +93,10 @@ public class GetScheduleActivity extends BaseActivity
 	}
 
 	private void initView() {
-		mLessonDetailsView = (RecentsList) findViewById(R.id.get_schedule_lessons);
+		mLessonDetailsView = (RecyclerView) findViewById(R.id.get_schedule_lessons);
 		mLessonDetailAdapter = new LessonDetailAdapter(this);
+		mLessonDetailAdapter.setOnButtonClickListener(this);
+		mLessonDetailsView.setLayoutManager(new LinearLayoutManager(this));
 		mLessonDetailsView.setAdapter(mLessonDetailAdapter);
 		mBtnCloseDetail = findViewById(R.id.get_schedule_btn_close_lesson_details);
 		mBtnCloseDetail.setOnClickListener(new View.OnClickListener() {
@@ -499,7 +503,7 @@ public class GetScheduleActivity extends BaseActivity
 
 		mLessonDetailAdapter.setLessonColors(mWeekScheduleView.getLessonColors());
 		mLessonDetailAdapter.setLessons(lessons);
-		mLessonDetailsView.setAdapter(mLessonDetailAdapter);
+		mLessonDetailAdapter.notifyDataSetChanged();
 
 		setLessonsDetailVisible(true, lessonView.getX() + lessonView.getWidth() / 2,
 				lessonView.getY() + lessonView.getHeight() / 2
@@ -534,8 +538,41 @@ public class GetScheduleActivity extends BaseActivity
 	@Override
 	public void onBackPressed() {
 		if (mLessonDetailsView.isShown())
-			setLessonsDetailVisible(false, mLessonDetailsView.getWidth() / 2, mLessonDetailsView.getHeight() / 2);
+			setLessonsDetailVisible(false, mLessonDetailsView.getWidth() / 2,
+					mLessonDetailsView.getHeight() / 2);
 		else
 			super.onBackPressed();
+	}
+
+	@Override
+	public void onEditClick(View itemView, int position) {
+
+	}
+
+	@Override
+	public void onDeleteClick(View itemView, final int position) {
+		new AlertDialog.Builder(this)
+				.setTitle(R.string.delete_lesson)
+				.setMessage(R.string.delete_lesson_tips)
+				.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						ArrayList<Lesson> lessons = mLessonDetailAdapter.getLessons();
+						Lesson lesson = lessons.get(position);
+						ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
+						helper.deleteLesson(lesson);
+						initData();
+						lessons.remove(lesson);
+
+						mLessonDetailAdapter.notifyItemRemoved(position);
+
+						if (lessons.size() == 0) {
+							setLessonsDetailVisible(false, mLessonDetailsView.getWidth() / 2,
+									mLessonDetailsView.getHeight() / 2);
+						}
+					}
+				})
+				.setNegativeButton(R.string.cancel, null)
+				.show();
 	}
 }

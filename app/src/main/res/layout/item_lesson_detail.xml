@@ -16,20 +16,24 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/lesson_detail_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:theme="@style/Theme.AppCompat"
         app:cardBackgroundColor="@color/blue_500"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -42,12 +46,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{lesson.lessonName}"/>
+                    android:layout_weight="1"
+                    android:text="@{lesson.lessonName}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -60,12 +69,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{lesson.lessonClassroom}"/>
+                    android:text="@{lesson.lessonClassroom}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -78,13 +91,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{lesson.lessonTeacher}"/>
+                    android:text="@{lesson.lessonTeacher}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -97,8 +113,32 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{lesson.lessonTime}"/>
+                    android:text="@{lesson.lessonTime}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical|right"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/item_lesson_detail_edit"
+                    style="@style/Widget.AppCompat.ActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="修改"/>
+
+                <Button
+                    android:id="@+id/item_lesson_detail_delete"
+                    style="@style/Widget.AppCompat.ActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="删除"/>
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/grey_50"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/grey_50">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -226,11 +226,12 @@
             android:clickable="true"
             android:visibility="gone">
 
-            <tk.zielony.materialrecents.RecentsList
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/get_schedule_lessons"
                 android:layout_width="match_parent"
-                android:visibility="gone"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="40dp"/>
         </FrameLayout>
 
         <ImageView
