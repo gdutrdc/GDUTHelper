@@ -37,7 +37,9 @@ public class ChooseColorsDialog extends AlertDialog implements DialogInterface.O
 
 		contentView = View.inflate(context, R.layout.dialog_choose_card_colors, null);
 		recyclerView = (RecyclerView) contentView.findViewById(R.id.choose_colors);
-		recyclerView.setLayoutManager(new GridLayoutManager(context, 5));
+		GridLayoutManager layoutManager = new GridLayoutManager(context,5);
+		layoutManager.setAutoMeasureEnabled(false);
+		recyclerView.setLayoutManager(layoutManager);
 		adapter = new ThemeAdapter();
 		recyclerView.setAdapter(adapter);
 
