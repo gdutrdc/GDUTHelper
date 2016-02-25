@@ -3,7 +3,9 @@ package com.rdc.gduthelper.app;
 import android.app.Application;
 
 import com.rdc.gduthelper.bean.Lesson;
+import com.rdc.gduthelper.utils.Key;
 import com.rdc.gduthelper.utils.Settings;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,7 @@ public class GDUTHelperApp extends Application {
 		super.onCreate();
 		mApplication = this;
 		mSettings = new Settings(this);
+		CrashReport.initCrashReport(getApplicationContext(), Key.bugly, false);
 	}
 
 	public static ArrayList<Lesson> getEvaluationList() {

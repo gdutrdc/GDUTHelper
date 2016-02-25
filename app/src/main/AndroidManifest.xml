@@ -6,6 +6,10 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_LOGS"/>
 
     <uses-sdk tools:overrideLibrary="com.github.fafaldo.fabtoolbar"/>
 
@@ -55,9 +59,11 @@
         <activity
             android:name=".ui.GetScheduleActivity"
             android:label="@string/get_schedule"/>
-        <activity android:name=".ui.ScheduleSettingsActivity"
+        <activity
+            android:name=".ui.ScheduleSettingsActivity"
             android:label="@string/schedule_settings"/>
-        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity"/>
+
         <receiver
             android:name="com.rdc.gduthelper.utils.appwidget.MyAppWidgetProvider"
             android:enabled="true">
