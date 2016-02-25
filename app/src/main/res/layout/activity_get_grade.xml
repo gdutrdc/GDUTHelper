@@ -105,5 +105,5 @@
         android:layout_above="@id/grade_bottom"
         android:layout_alignParentRight="true"
         android:onClick="onClick"
-        android:src="@drawable/ic_search_white_24dp"/>
+        app:srcCompat="@drawable/ic_search_white_24dp"/>
 </RelativeLayout>

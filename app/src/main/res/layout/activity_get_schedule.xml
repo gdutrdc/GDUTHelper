@@ -209,7 +209,7 @@
         android:layout_alignParentRight="true"
         android:clickable="true"
         android:onClick="onClick"
-        android:src="@drawable/ic_add_white_24dp"/>
+        app:srcCompat="@drawable/ic_add_white_24dp"/>
 
 
     <io.codetail.widget.RevealFrameLayout
