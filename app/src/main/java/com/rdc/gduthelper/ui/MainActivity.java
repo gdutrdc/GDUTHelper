@@ -170,7 +170,8 @@ public class MainActivity extends BaseActivity {
 				startActivity(new Intent(this, ChangePswActivity.class));
 				break;
 			case R.id.main_evaluation:
-				if (GDUTHelperApp.getEvaluationList().size() > 0)
+				if (GDUTHelperApp.getEvaluationList() != null
+						&& GDUTHelperApp.getEvaluationList().size() > 0)
 					startActivity(new Intent(this, EvaluationActivity.class));
 				else
 					new AlertDialog.Builder(this)

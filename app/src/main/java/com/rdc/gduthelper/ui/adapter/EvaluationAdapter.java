@@ -37,6 +37,8 @@ public class EvaluationAdapter extends RecyclerView.Adapter<EvaluationAdapter.Ev
 		mContext = context;
 		mEvaluationList = new ArrayList<>();
 		ArrayList<Lesson> lessons = GDUTHelperApp.getEvaluationList();
+		if(lessons == null)
+			lessons = new ArrayList<>();
 		for (Lesson lesson : lessons) {
 			Evaluation evaluation = new Evaluation();
 			evaluation.setLessonCode(lesson.getLessonCode());
