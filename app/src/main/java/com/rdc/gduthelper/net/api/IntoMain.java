@@ -47,7 +47,6 @@ public class IntoMain extends BaseRunnable {
 			Log.d(TAG, "The response URL = " + responseURL);
 			if (responseURL.equals(ApiHelper.getURl() + "xs_main.aspx?xh=" + GDUTHelperApp.userXh)) {
 				//登录成功
-				Log.d(TAG, "login success");
 				InputStreamReader reader = new InputStreamReader(
 						new BufferedInputStream(urlConnection.getInputStream()), "gbk");
 				BufferedReader in = new BufferedReader(reader);
@@ -71,13 +70,19 @@ public class IntoMain extends BaseRunnable {
 				if (callback != null) {
 					callback.onCall(null);
 				}
-
 			} else {
 				GDUTHelperApp.cookie = null;
+				if (callback != null) {
+					callback.onCall(null);
+				}
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			GDUTHelperApp.cookie = null;
+			if (callback != null) {
+				callback.onCall(null);
+			}
 		}
 
 	}

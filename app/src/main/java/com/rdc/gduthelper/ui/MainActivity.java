@@ -45,16 +45,26 @@ public class MainActivity extends BaseActivity {
 		ArrayList<Lesson> evaluationList = GDUTHelperApp.getEvaluationList();
 		if (evaluationList != null && evaluationList.size() > 0) {
 			ViewGroup evaluation = (ViewGroup) findViewById(R.id.main_evaluation);
-			View textView = evaluation.getChildAt(0);
-			AlphaAnimation animation = new AlphaAnimation(0, 1f);
-			animation.setRepeatMode(Animation.REVERSE);
-			animation.setRepeatCount(-1);
-			animation.setDuration(500);
-			textView.startAnimation(animation);
+			final View textView = evaluation.getChildAt(0);
+			textView.post(new Runnable() {
+				@Override
+				public void run() {
+					AlphaAnimation animation = new AlphaAnimation(0, 1f);
+					animation.setRepeatMode(Animation.REVERSE);
+					animation.setRepeatCount(-1);
+					animation.setDuration(500);
+					textView.startAnimation(animation);
+				}
+			});
 		} else {
 			ViewGroup evaluation = (ViewGroup) findViewById(R.id.main_evaluation);
-			View textView = evaluation.getChildAt(0);
-			textView.clearAnimation();
+			final View textView = evaluation.getChildAt(0);
+			textView.post(new Runnable() {
+				@Override
+				public void run() {
+					textView.clearAnimation();
+				}
+			});
 		}
 		supportInvalidateOptionsMenu();
 	}
