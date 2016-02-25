@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/grey_50"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/grey_50">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,17 +40,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/change_psw_ensure"
-            app:met_helperTextAlwaysShown="true"
             android:inputType="textPassword"
-            app:met_floatingLabel="highlight"/>
+            app:met_floatingLabel="highlight"
+            app:met_helperTextAlwaysShown="true"/>
 
-        <Button
-            style="@style/Widget.AppCompat.Button.Colored"
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/change_psw_commit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/change_psw_commit"
             android:layout_margin="16dp"
-            android:text="@android:string/ok"/>
+            android:text="@android:string/ok"
+            android:textColor="@color/white"
+            app:backgroundTint="?colorAccent"/>
 
         <TextView
             android:id="@+id/change_psw_tips"
