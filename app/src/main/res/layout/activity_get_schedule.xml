@@ -243,7 +243,7 @@
             android:background="?selectableItemBackground"
             android:clickable="true"
             android:padding="8dp"
-            android:src="@drawable/ic_close_white_24dp"
+            app:srcCompat="@drawable/ic_close_white_24dp"
             android:visibility="gone"/>
     </io.codetail.widget.RevealFrameLayout>
 
