@@ -28,12 +28,7 @@ public class GetCheckCode extends BaseRunnable {
 			URL url = new URL(checkCode);
 			URLConnection urlConnection = url.openConnection();
 			urlConnection.addRequestProperty("Cookie", GDUTHelperApp.cookie);
-//			urlConnection.addRequestProperty("Accept", "image/webp,*/*;q=0.8");
-//			urlConnection.addRequestProperty("Accept-Encoding", "gzip, deflate, sdch");
-//			urlConnection.addRequestProperty("Connection", "keep-alive");
-//			urlConnection.addRequestProperty("Upgrade-Insecure-Requests", "1");
 			urlConnection.addRequestProperty("Referer", ApiHelper.getURl() + "default2.aspx");
-//			urlConnection.addRequestProperty("Host", ApiHelper.getHost());
 			InputStream inputStream = urlConnection.getInputStream();
 			Bitmap checkCodeBitmap = BitmapFactory.decodeStream(inputStream);
 			if (callback != null)

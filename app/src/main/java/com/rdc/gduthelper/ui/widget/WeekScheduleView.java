@@ -195,9 +195,9 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener,
 			if (lessonColors.get(tacr1.getLessonCode()) == null) {
 				color = colors[cardColorIndex % colors.length];
 				lessonColors.put(tacr1.getLessonCode(), color);
+				cardColorIndex++;
 			} else
 				color = lessonColors.get(tacr1.getLessonCode());
-			cardColorIndex++;
 
 			LayoutParams lp1 = view.findViewById(R.id.item_schedule_text).getLayoutParams();
 			CardView cardView = (CardView) view;

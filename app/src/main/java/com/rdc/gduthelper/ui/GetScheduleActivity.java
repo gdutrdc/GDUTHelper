@@ -200,29 +200,21 @@ public class GetScheduleActivity extends BaseActivity
 			mWeekScheduleView.setScheduleBackground(bitmap);
 
 			String colors = mSettings.getScheduleCardColors();
+			if (colors == null) {
+				colors = getResources().getString(R.string.default_colors);
+				GDUTHelperApp.getSettings().setScheduleCardColors(colors);
+			}
 			int[] allColors = getResources().getIntArray(R.array.colors);
 			int[] temp = new int[allColors.length];
 			int[] target = null;
-			if (colors == null) {
-				int themeId = mSettings.getThemeId();
-				int choose = 0;
-				if (themeId == R.style.AppTheme_Blue)
-					choose = 5;
-				else if (themeId == R.style.AppTheme_Pink)
-					choose = 1;
-				target = new int[]{allColors[choose]};
-			} else {
-				String[] choosedColors = colors.split(",");
-				for (int i = 0; i < choosedColors.length; i++) {
-					int j = Integer.parseInt(choosedColors[i]);
-					temp[i] = allColors[j];
-					if (i < choosedColors.length - 1)
-						temp[i + 1] = -1;
-				}
-				target = new int[choosedColors.length];
-				for (int i = 0; i < target.length; i++) {
-					target[i] = temp[i];
-				}
+			String[] choosedColors = colors.split(",");
+			for (int i = 0; i < choosedColors.length; i++) {
+				int j = Integer.parseInt(choosedColors[i]);
+				temp[i] = allColors[j];
+			}
+			target = new int[choosedColors.length];
+			for (int i = 0; i < target.length; i++) {
+				target[i] = temp[i];
 			}
 			mWeekScheduleView.setColors(target);
 			refreshData();

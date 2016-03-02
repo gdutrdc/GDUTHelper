@@ -77,6 +77,7 @@
     <string name="other_lesson">额外的课程</string>
     <string name="choose_terms">选择学期(学年度-学期)</string>
     <string name="schedule_choose_first_week">选择第一周(开学)日期</string>
+    <string name="default_colors">1,3,5,10,14</string>
     <string-array name="color_names">
         <item>姨妈红</item>
         <item>脑残粉</item>
@@ -97,13 +98,13 @@
         <item>咖啡棕</item>
     </string-array>
     <integer-array name="colors">
-        <item>@color/red_500</item>
-        <item>@color/pink_500</item>
-        <item>@color/purple_500</item>
-        <item>@color/deep_purple_500</item>
-        <item>@color/indigo_500</item>
-        <item>@color/blue_500</item>
-        <item>@color/light_blue_500</item>
+        <item>@color/red_a200</item>
+        <item>@color/pink_a200</item>
+        <item>@color/purple_a200</item>
+        <item>@color/deep_purple_a200</item>
+        <item>@color/indigo_a200</item>
+        <item>@color/blue_a200</item>
+        <item>@color/light_blue_a200</item>
         <item>@color/cyan_500</item>
         <item>@color/teal_500</item>
         <item>@color/green_500</item>
@@ -112,8 +113,8 @@
         <item>@color/yellow_500</item>
         <item>@color/amber_500</item>
         <item>@color/orange_500</item>
-        <item>@color/deep_orange_500</item>
-        <item>@color/brown_500</item>
+        <item>@color/deep_orange_a200</item>
+        <item>@color/brown_300</item>
     </integer-array>
     <string name="lesson_name">课程名称</string>
     <string name="lesson_classroom">课程教室</string>
