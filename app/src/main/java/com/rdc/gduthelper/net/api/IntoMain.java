@@ -11,8 +11,8 @@ import com.rdc.gduthelper.utils.LessonUtils;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
@@ -37,18 +37,19 @@ public class IntoMain extends BaseRunnable {
 		try {
 			url = new URL(requestUrl);
 
-			URLConnection urlConnection = url.openConnection();
-			urlConnection.addRequestProperty("Cookie", GDUTHelperApp
+			HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+			httpURLConnection.addRequestProperty("Cookie", GDUTHelperApp
 					.cookie);
-			urlConnection.addRequestProperty("Referer",
+			httpURLConnection.addRequestProperty("Referer",
 					ApiHelper.getURl() + "xs_main.aspx?xh=" + GDUTHelperApp.userXh);
-			urlConnection.connect();
-			String responseURL = urlConnection.getURL().toString();
+			httpURLConnection.setAllowUserInteraction(false);
+			httpURLConnection.connect();
+			InputStreamReader reader = new InputStreamReader(
+					new BufferedInputStream(httpURLConnection.getInputStream()), "gbk");
+			String responseURL = httpURLConnection.getURL().toString();
 			Log.d(TAG, "The response URL = " + responseURL);
 			if (responseURL.equals(ApiHelper.getURl() + "xs_main.aspx?xh=" + GDUTHelperApp.userXh)) {
 				//登录成功
-				InputStreamReader reader = new InputStreamReader(
-						new BufferedInputStream(urlConnection.getInputStream()), "gbk");
 				BufferedReader in = new BufferedReader(reader);
 				String s;
 				StringBuffer sb = new StringBuffer();
@@ -60,6 +61,7 @@ public class IntoMain extends BaseRunnable {
 						String text = temps[1].split("<")[0];
 						GDUTHelperApp.userXm = URLEncoder.encode(
 								text.substring(0, text.length() - 2), "gbk");
+						Log.e("XM", GDUTHelperApp.userXm + GDUTHelperApp.userXh);
 					}
 					if (s.contains("<span class='down'> 教学质量评价</span>")) {
 						String evaluationLine = LessonUtils.getEvaluationLine(s.split("<li class='top'>"));
@@ -67,6 +69,7 @@ public class IntoMain extends BaseRunnable {
 						GDUTHelperApp.setEvaluationList(lessonList);
 					}
 				}
+				System.out.print(sb.toString());
 				if (callback != null) {
 					callback.onCall(null);
 				}
