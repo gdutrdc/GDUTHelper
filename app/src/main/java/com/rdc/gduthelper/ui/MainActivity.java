@@ -2,7 +2,9 @@ package com.rdc.gduthelper.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +19,7 @@ import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.IntoMain;
 import com.rdc.gduthelper.utils.Settings;
+import com.rdc.gduthelper.utils.UIUtils;
 
 import java.util.ArrayList;
 
@@ -28,17 +31,46 @@ public class MainActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		View view = View.inflate(this, R.layout.activity_main, null);
-		view.setAlpha(0);
-		setContentView(view);
-		view.animate().alpha(1).setStartDelay(300).start();
+		setContentView(R.layout.activity_main);
 
 		if (getSupportActionBar() != null) {
 			getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 			getSupportActionBar().setHomeButtonEnabled(false);
 		}
 
+		startSplashAnimation();
+	}
+
+	private void startSplashAnimation() {
+		final int duration = 300;
+		final int startDelay = 400;
+		findViewById(R.id.main_title).animate()
+				.alpha(0)
+				.translationY(-getResources().getDimension(R.dimen.main_box_size))
+				.setDuration(duration)
+				.setStartDelay(startDelay)
+				.start();
+
+		findViewById(R.id.main_background).animate()
+				.translationY(-UIUtils.getScreenHeight(this))
+				.setDuration(duration)
+				.setStartDelay(startDelay)
+				.start();
+
+		int delay = 0;
+		ViewGroup mainLayout = (ViewGroup) findViewById(R.id.main_layout);
+		int y = getResources().getDimensionPixelOffset(R.dimen.main_box_size);
+		for (int i = 1; i < mainLayout.getChildCount(); i++) {
+			View child = mainLayout.getChildAt(i);
+			child.setTranslationY(y);
+			child.animate()
+					.alpha(1)
+					.translationY(0)
+					.setStartDelay(delay + duration + startDelay)
+					.setDuration(200)
+					.start();
+			delay += 100;
+		}
 	}
 
 	private void invalidateData() {

@@ -21,7 +21,6 @@ public class Settings {
 	public static final String REMEMBER_USER = "remember_user";
 	public static final String ZB_TEXT = "ZBText";
 	public static final String REMEMBER_USER_DATA = "remember_user_data";
-	public static final String THEME = "theme";
 	public static final String WIDGET_CONFIGS = "widget_configs";
 	public static final String SCHEDULE_CHOOSE_TERM = "schedule_choose_term";
 	public static final String SCHEDULE_FIRST_WEEK = "schedule_first_week";
@@ -71,22 +70,6 @@ public class Settings {
 
 	public String getRememberUser() {
 		return mSharedPreferences.getString(REMEMBER_USER_DATA, null);
-	}
-
-	public int getThemeId() {
-		int themeId = mSharedPreferences.getInt(THEME, -1);
-		switch (themeId) {
-			case 0:
-				themeId = R.style.AppTheme_Blue;
-				break;
-			case 1:
-				themeId = R.style.AppTheme_Pink;
-				break;
-			default:
-				themeId = R.style.AppTheme_Blue;
-				break;
-		}
-		return themeId;
 	}
 
 	public WidgetConfigs getAppWidgetConfigs() {

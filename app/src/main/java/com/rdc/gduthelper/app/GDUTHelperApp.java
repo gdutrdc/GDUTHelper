@@ -13,42 +13,42 @@ import java.util.ArrayList;
  * Created by seasonyuu on 15/8/28.
  */
 public class GDUTHelperApp extends Application {
-	public static String cookie;
-	public static String userXh;
-	public static String viewState;
-	public static String userXm;
+    public static String cookie;
+    public static String userXh;
+    public static String viewState;
+    public static String userXm;
 
-	private static GDUTHelperApp mApplication;
+    private static GDUTHelperApp mApplication;
 
-	private static ArrayList<Lesson> evaluationList;
+    private static ArrayList<Lesson> evaluationList;
 
-	private static Settings mSettings;
+    private static Settings mSettings;
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		mApplication = this;
-		mSettings = new Settings(this);
-		CrashReport.initCrashReport(getApplicationContext(), Key.bugly, false);
-	}
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mApplication = this;
+        mSettings = new Settings(this);
+        CrashReport.initCrashReport(getApplicationContext(), Key.bugly, false);
+    }
 
-	public static ArrayList<Lesson> getEvaluationList() {
-		return evaluationList;
-	}
+    public static ArrayList<Lesson> getEvaluationList() {
+        return evaluationList;
+    }
 
-	public static void setEvaluationList(ArrayList<Lesson> list) {
-		evaluationList = list;
-	}
+    public static void setEvaluationList(ArrayList<Lesson> list) {
+        evaluationList = list;
+    }
 
-	public static GDUTHelperApp getInstance() {
-		return mApplication;
-	}
+    public static GDUTHelperApp getInstance() {
+        return mApplication;
+    }
 
-	public static Settings getSettings() {
-		return mSettings;
-	}
+    public static Settings getSettings() {
+        return mSettings;
+    }
 
-	public static boolean isLogin() {
-		return userXh != null && cookie != null;
-	}
+    public static boolean isLogin() {
+        return userXh != null && cookie != null;
+    }
 }

@@ -61,7 +61,6 @@ public class IntoMain extends BaseRunnable {
 						String text = temps[1].split("<")[0];
 						GDUTHelperApp.userXm = URLEncoder.encode(
 								text.substring(0, text.length() - 2), "gbk");
-						Log.e("XM", GDUTHelperApp.userXm + GDUTHelperApp.userXh);
 					}
 					if (s.contains("<span class='down'> 教学质量评价</span>")) {
 						String evaluationLine = LessonUtils.getEvaluationLine(s.split("<li class='top'>"));
@@ -69,7 +68,6 @@ public class IntoMain extends BaseRunnable {
 						GDUTHelperApp.setEvaluationList(lessonList);
 					}
 				}
-				System.out.print(sb.toString());
 				if (callback != null) {
 					callback.onCall(null);
 				}

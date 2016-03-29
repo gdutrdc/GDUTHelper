@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/grey_50"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_50"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
 
     <include
         layout="@layout/widget_exam_time"
@@ -14,7 +16,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="24dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
     <TextView
         android:layout_width="match_parent"
@@ -23,7 +25,7 @@
         android:gravity="center"
         android:padding="8dp"
         android:text="@string/get_exam_time_widget_preview"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,27 +40,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:popupTheme="@style/Theme.AppCompat.Light"
-            app:theme="@style/Theme.AppCompat"/>
+            app:theme="@style/Theme.AppCompat" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:text="@string/get_exam_time_xnd"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse" />
 
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/get_exam_time_widget_spinner_terms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:popupTheme="@style/Theme.AppCompat.Light"
-            app:theme="@style/Theme.AppCompat"/>
+            app:theme="@style/Theme.AppCompat" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:text="@string/get_exam_time_xqd"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse" />
     </LinearLayout>
 </LinearLayout>

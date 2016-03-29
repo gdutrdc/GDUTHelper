@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/grey_50"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/grey_50">
+
+    <include layout="@layout/toolbar" />
 
     <com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
         android:id="@+id/evaluation_fab_toolbar"
@@ -12,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
+        android:layout_below="@+id/toolbar"
         app:containerId="@+id/evaluation_fab_container"
         app:fabId="@+id/evaluation_fab"
         app:fabToolbarAuto="false"
@@ -24,7 +26,7 @@
             android:id="@+id/evaluation_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="72dp"/>
+            android:paddingBottom="72dp" />
 
         <RelativeLayout
             android:id="@+id/evaluation_fab_container"
@@ -38,8 +40,8 @@
                 android:id="@+id/evaluation_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_done_white_24dp"
-                app:fabSize="normal"/>
+                app:fabSize="normal"
+                app:srcCompat="@drawable/ic_done_white_24dp" />
         </RelativeLayout>
 
         <LinearLayout
@@ -61,7 +63,7 @@
                 android:onClick="onClick"
                 android:text="@string/evaluation_score_1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:theme="@style/Theme.AppCompat"/>
+                android:theme="@style/Theme.AppCompat" />
 
             <TextView
                 android:id="@+id/evaluation_score_2"
@@ -73,7 +75,7 @@
                 android:onClick="onClick"
                 android:text="@string/evaluation_score_2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:theme="@style/Theme.AppCompat"/>
+                android:theme="@style/Theme.AppCompat" />
 
             <TextView
                 android:id="@+id/evaluation_score_3"
@@ -85,7 +87,7 @@
                 android:onClick="onClick"
                 android:text="@string/evaluation_score_3"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:theme="@style/Theme.AppCompat"/>
+                android:theme="@style/Theme.AppCompat" />
 
             <TextView
                 android:id="@+id/evaluation_score_4"
@@ -97,7 +99,7 @@
                 android:onClick="onClick"
                 android:text="@string/evaluation_score_4"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:theme="@style/Theme.AppCompat"/>
+                android:theme="@style/Theme.AppCompat" />
 
             <TextView
                 android:id="@+id/evaluation_score_5"
@@ -109,7 +111,7 @@
                 android:onClick="onClick"
                 android:text="@string/evaluation_score_5"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:theme="@style/Theme.AppCompat"/>
+                android:theme="@style/Theme.AppCompat" />
 
         </LinearLayout>
 

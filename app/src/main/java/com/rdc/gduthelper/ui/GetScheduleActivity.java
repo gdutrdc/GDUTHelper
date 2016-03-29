@@ -79,12 +79,6 @@ public class GetScheduleActivity extends BaseActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		themeId = GDUTHelperApp.getSettings().getThemeId();
-		if (themeId == R.style.AppTheme_Blue)
-			themeId = R.style.AppTheme_Blue_NoActionBar;
-		else
-			themeId = R.style.AppTheme_Pink_NoActionBar;
-		setTheme(themeId);
 		setContentView(R.layout.activity_get_schedule);
 
 		initView();

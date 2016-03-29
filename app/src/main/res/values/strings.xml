@@ -138,6 +138,7 @@
     <string name="information_avatar">头像</string>
     <string name="save_picture">保存图片</string>
     <string name="share">分享</string>
+    <string name="save_picture_failed">保存图片失败</string>
 
     <!-- 设置中相关文本 -->
     <string name="theme">主题</string>

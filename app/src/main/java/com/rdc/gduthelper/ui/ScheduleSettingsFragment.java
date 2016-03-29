@@ -139,13 +139,7 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 				String colors = mSettings.getScheduleCardColors();
 				boolean[] choosed = new boolean[chooseColorsDialog.getChoosedColors().length];
 				if (colors == null) {
-					int themeId = mSettings.getThemeId();
-					int choose = 0;
-					if (themeId == R.style.AppTheme_Blue)
-						choose = 5;
-					else if (themeId == R.style.AppTheme_Pink)
-						choose = 1;
-					choosed[choose] = true;
+					break;
 				} else {
 					String[] choosedColors = colors.split(",");
 					for (int i = 0; i < choosedColors.length; i++) {

@@ -12,7 +12,6 @@ import com.rdc.gduthelper.app.GDUTHelperApp;
  */
 public class SettingsActivity extends BaseActivity {
 	private boolean needRefresh = false;
-	private int themeId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +27,6 @@ public class SettingsActivity extends BaseActivity {
 		}
 
 		needRefresh = GDUTHelperApp.getSettings().isUseDx();
-		themeId = GDUTHelperApp.getSettings().getThemeId();
 	}
 
 
@@ -46,8 +44,6 @@ public class SettingsActivity extends BaseActivity {
 		Intent intent = new Intent();
 		if (needRefresh != GDUTHelperApp.getSettings().isUseDx())
 			intent.putExtra("need_refresh", true);
-		if (themeId != GDUTHelperApp.getSettings().getThemeId())
-			intent.putExtra("need_change_theme", true);
 		setResult(0, intent);
 		super.onBackPressed();
 	}
