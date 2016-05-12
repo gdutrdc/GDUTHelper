@@ -42,7 +42,7 @@ public class MainActivity extends BaseActivity {
 	}
 
 	private void startSplashAnimation() {
-		final int duration = 300;
+		final int duration = 400;
 		final int startDelay = 400;
 		findViewById(R.id.main_title).animate()
 				.alpha(0)
@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity {
 					.setStartDelay(delay + duration + startDelay)
 					.setDuration(200)
 					.start();
-			delay += 100;
+			delay += 50;
 		}
 	}
 
