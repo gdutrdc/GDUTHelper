@@ -1,11 +1,15 @@
 package com.rdc.gduthelper.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.WidgetConfigs;
+import com.rdc.gduthelper.utils.appwidget.WidgetConfigProvider;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -72,28 +76,30 @@ public class Settings {
 		return mSharedPreferences.getString(REMEMBER_USER_DATA, null);
 	}
 
-	public WidgetConfigs getAppWidgetConfigs() {
-		String data = mSharedPreferences.getString(WIDGET_CONFIGS, null);
-		if (data == null)
+	public WidgetConfigs getAppWidgetConfigs(Context context) {
+		Uri uri = Uri.parse(WidgetConfigProvider.CONFIG_CONTENT_URI);
+		Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+		WidgetConfigs configs = new WidgetConfigs();
+		if (cursor == null)
 			return null;
-		else {
-			try {
-				return (WidgetConfigs) SerializeUtil.deSerialization(data);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return null;
+		while (cursor.moveToNext()) {
+			configs.putConfig(cursor.getInt(0), cursor.getString(1));
 		}
+		cursor.close();
+		return configs;
 	}
 
-	public void saveAppWidgetConfigs(WidgetConfigs configs) {
-		SharedPreferences.Editor editor = mSharedPreferences.edit();
-		try {
-			editor.putString(WIDGET_CONFIGS, SerializeUtil.serialize(configs));
-		} catch (IOException e) {
-			e.printStackTrace();
+	public void saveAppWidgetConfigs(Context context, WidgetConfigs configs) {
+		Uri uri = Uri.parse(WidgetConfigProvider.CONFIG_CONTENT_URI);
+
+		for (Integer key : configs.keySet()) {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put("widget_id", key);
+			contentValues.put("selection", configs.get(key));
+
+			context.getContentResolver().insert(uri, contentValues);
 		}
-		editor.apply();
+
 	}
 
 	public String getString(String key, String defaultValue) {

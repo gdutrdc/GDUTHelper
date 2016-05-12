@@ -168,16 +168,16 @@ public class AppWidgetConfig extends BaseActivity implements AdapterView.OnItemS
 			adapter.setData(Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME)));
 			adapter.putExtra("selection", mYearsSpinner.getSelectedItem().toString() + "-"
 					+ mTermsSpinner.getSelectedItem().toString());
-			WidgetConfigs widgetConfigs = GDUTHelperApp.getSettings().getAppWidgetConfigs();
+			WidgetConfigs widgetConfigs = GDUTHelperApp.getSettings().getAppWidgetConfigs(this);
 			if (widgetConfigs == null)
 				widgetConfigs = new WidgetConfigs();
 			widgetConfigs.putConfig(mAppWidgetId, mYearsSpinner.getSelectedItem().toString() + "-"
 					+ mTermsSpinner.getSelectedItem().toString());
-			GDUTHelperApp.getSettings().saveAppWidgetConfigs(widgetConfigs);
+			GDUTHelperApp.getSettings().saveAppWidgetConfigs(this,widgetConfigs);
 			views.setRemoteAdapter(R.id.widget_exam_times, adapter);
 
 			appWidgetManager.updateAppWidget(mAppWidgetId, views);
-			Log.e("app widget", mAppWidgetId + "");
+			Log.d("app widget", mAppWidgetId + "");
 			Intent resultValue = new Intent();
 			resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 			setResult(RESULT_OK, resultValue);

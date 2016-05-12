@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.RemoteViews;
@@ -32,19 +33,16 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
-		SharedPreferences sp = context.getSharedPreferences(
-				context.getPackageName() + "_preferences", Context.MODE_MULTI_PROCESS);
-		String data = sp.getString(Settings.WIDGET_CONFIGS, null);
-		WidgetConfigs configs = null;
-		if (data == null) {
+		Uri uri = Uri.parse(WidgetConfigProvider.CONFIG_CONTENT_URI);
+		Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+		WidgetConfigs configs = new WidgetConfigs();
+		if (cursor == null)
 			return;
-		} else
-			try {
-				configs = (WidgetConfigs) SerializeUtil.deSerialization(data);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		if (configs == null)
+		while (cursor.moveToNext()) {
+			configs.putConfig(cursor.getInt(0), cursor.getString(1));
+		}
+		cursor.close();
+		if (configs.size() == 0)
 			return;
 		for (int id : appWidgetIds) {
 			String selection = configs.getConfig(id);
@@ -74,11 +72,11 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
 		Settings settings = new Settings(context);
-		WidgetConfigs configs = settings.getAppWidgetConfigs();
+		WidgetConfigs configs = settings.getAppWidgetConfigs(context);
 		if (configs == null)
 			return;
 		configs.remove(appWidgetIds[0]);
-		settings.saveAppWidgetConfigs(configs);
+		settings.saveAppWidgetConfigs(context, configs);
 	}
 
 	@Override

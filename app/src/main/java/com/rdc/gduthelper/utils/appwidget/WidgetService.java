@@ -11,7 +11,6 @@ public class WidgetService extends RemoteViewsService {
 	@Override
 	public RemoteViewsFactory onGetViewFactory(Intent intent) {
 		ListRemoteViewsFactory factory = new ListRemoteViewsFactory(this, intent);
-		Log.e("widget service","onGetView");
 		return factory;
 	}
 }
