@@ -6,12 +6,16 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,16 +27,22 @@ import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetCheckCode;
 import com.rdc.gduthelper.net.api.GetPage;
 import com.rdc.gduthelper.net.api.Login;
+import com.rdc.gduthelper.utils.Settings;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 	private final String TAG = LoginActivity.class.getSimpleName();
 
 	private MaterialEditText mEtUserXh;
 	private MaterialEditText mEtPassword;
 	private MaterialEditText mEtSecretCode;
 
+	private SwitchCompat mSwUseDx;
+	private AppCompatCheckBox mCbRememberUser;
+
 	private Bitmap checkCodeBitmap;
+
+	private Settings mSettings;
 
 	private Handler handler = new Handler() {
 		@Override
@@ -88,6 +98,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				showProgressDialog("正在登录");
 				login();
 				break;
+			case R.id.login_switch_use_dx:
+				new AlertDialog.Builder(this)
+						.setTitle(R.string.tips)
+						.setMessage(R.string.use_dx_tips)
+						.setCancelable(false)
+						.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								mSettings.setUseDx(!mSwUseDx.isChecked());
+								mSwUseDx.setChecked(!mSwUseDx.isChecked());
+							}
+						})
+						.setNegativeButton(R.string.cancel, null).show();
+				break;
 		}
 	}
 
@@ -99,11 +123,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 		findViewById(R.id.login).setOnClickListener(this);
 		findViewById(R.id.check_code).setOnClickListener(this);
 
+		initPreferences();
+
 		initEditText();
 
 		showProgressDialog("正在加载");
 
 		initConnection();
+	}
+
+	private void initPreferences() {
+		mCbRememberUser = (AppCompatCheckBox) findViewById(R.id.login_remember_user);
+		mSwUseDx = (SwitchCompat) findViewById(R.id.login_switch_use_dx);
+
+		mSettings = GDUTHelperApp.getSettings();
+		mCbRememberUser.setChecked(mSettings.needRememberUser());
+		mSwUseDx.setChecked(mSettings.isUseDx());
+
+		mCbRememberUser.setOnCheckedChangeListener(this);
+		mSwUseDx.setOnClickListener(this);
 	}
 
 	private void initEditText() {
@@ -232,5 +270,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 				break;
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
+		switch (buttonView.getId()) {
+			case R.id.login_remember_user:
+				mSettings.setNeedRememberUser(isChecked);
+				break;
+		}
 	}
 }

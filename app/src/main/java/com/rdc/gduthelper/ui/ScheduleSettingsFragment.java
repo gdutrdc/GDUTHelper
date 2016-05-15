@@ -73,14 +73,14 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 		mPrefScheCardColors.setSummary(R.string.schedule_card_colors_tips);
 		mPrefScheCardColors.setOnPreferenceClickListener(this);
 
-		mPrefScheBackgroud = findPreference(Settings.SCHEDULE_BACKGROUND);
+		mPrefScheBackgroud = findPreference(Settings.SCHEDULE_BACKGROUND_KEY);
 		mPrefScheBackgroud.setOnPreferenceClickListener(this);
 	}
 
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
 		switch (preference.getKey()) {
-			case Settings.SCHEDULE_CHOOSE_TERM:
+			case "schedule_choose_term":
 				ScheduleDBHelper helper = new ScheduleDBHelper(getActivity());
 				final String[] terms = helper.getOptionalTerms();
 				new AlertDialog.Builder(getActivity())
@@ -95,7 +95,7 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 						.setPositiveButton(R.string.cancel, null)
 						.show();
 				break;
-			case Settings.SCHEDULE_CURRENT_WEEK:
+			case "schedule_current_week":
 				final String[] weeks = new String[22];
 				weeks[0] = "0(若还未进入学期则当前周为0)";
 				for (int i = 1; i < weeks.length; i++) {
@@ -134,7 +134,7 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 						})
 						.show();
 				break;
-			case Settings.SCHEDULE_CARD_COLORS:
+			case "schedule_card_colors":
 				final ChooseColorsDialog chooseColorsDialog = new ChooseColorsDialog(getActivity());
 				String colors = mSettings.getScheduleCardColors();
 				boolean[] choosed = new boolean[chooseColorsDialog.getChoosedColors().length];
@@ -164,7 +164,7 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 				});
 				chooseColorsDialog.show();
 				break;
-			case Settings.SCHEDULE_BACKGROUND:
+			case "schedule_background":
 				int hasWriteContactsPermission = ContextCompat.
 						checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
 				if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {

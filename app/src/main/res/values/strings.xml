@@ -58,6 +58,7 @@
     <string name="schedule_settings">课程表设置</string>
     <string name="schedule_current_week">选择当前周</string>
     <string name="schedule_current_week_key">schedule_current_week</string>
+    <string name="schedule_first_week_key">schedule_current_week</string>
     <string name="schedule_choose_term">选择学期</string>
     <string name="schedule_choose_term_key">schedule_choose_term</string>
     <string name="interesting">一些有趣的</string>
@@ -155,10 +156,10 @@
     <string name="remember_user_off">关闭(不再记住账号密码)</string>
     <string name="remember_user">记住账号密码</string>
     <string name="remember_user_key">remember_user</string>
+    <string name="remember_user_data_key">remember_user_data</string>
     <string name="use_dx">使用外网URL访问教务系统</string>
     <string name="use_dx_key">use_dx</string>
-    <string name="use_dx_on">(需重新登录)http://jwgldx.gdut.edu.cn</string>
-    <string name="use_dx_off">(需重新登录)http://jwgl.gdut.edu.cn</string>
+    <string name="use_dx_tips">修改访问ip需注销当前账号(若已登陆)，并点击点击右上角按钮刷新</string>
     <string name="licenses">开源协议</string>
     <string name="about">关于</string>
 
@@ -177,4 +178,5 @@
     <string name="test_password"></string>
 
     <string name="default_zb_text">我特么这次考试$name才得了$grade！</string>
+    <string name="zb_text_key">ZBText</string>
 </resources>

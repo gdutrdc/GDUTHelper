@@ -6,12 +6,6 @@
         android:summaryOff="@string/remember_user_on"
         android:summaryOn="@string/remember_user_off"
         android:title="@string/remember_user"/>
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="@string/use_dx_key"
-        android:summaryOff="@string/use_dx_off"
-        android:summaryOn="@string/use_dx_on"
-        android:title="@string/use_dx"/>
     <Preference android:title="@string/licenses"/>
     <Preference android:title="@string/about"/>
 </PreferenceScreen>

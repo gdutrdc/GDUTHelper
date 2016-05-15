@@ -135,9 +135,6 @@ public class MainActivity extends BaseActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.main_settings:
-				startActivityForResult(new Intent(this, SettingsActivity.class), 0);
-				break;
 			case R.id.main_help:
 				break;
 			case R.id.main_logout:

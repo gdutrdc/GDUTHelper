@@ -22,16 +22,16 @@ import java.util.Locale;
  * Created by seasonyuu on 15/12/28.
  */
 public class Settings {
-	public static final String REMEMBER_USER = "remember_user";
-	public static final String ZB_TEXT = "ZBText";
-	public static final String REMEMBER_USER_DATA = "remember_user_data";
-	public static final String WIDGET_CONFIGS = "widget_configs";
-	public static final String SCHEDULE_CHOOSE_TERM = "schedule_choose_term";
-	public static final String SCHEDULE_FIRST_WEEK = "schedule_first_week";
-	public static final String SCHEDULE_CURRENT_WEEK = "schedule_current_week";
-	public static final String SCHEDULE_CARD_COLORS = "schedule_card_colors";
-	public static final String SCHEDULE_BACKGROUND = "schedule_background";
+	public static final String REMEMBER_USER_KEY = GDUTHelperApp.getInstance().getString(R.string.remember_user_key);
+	public static final String ZB_TEXT_KEY = GDUTHelperApp.getInstance().getString(R.string.zb_text_key);
+	public static final String REMEMBER_USER_DATA_KEY = GDUTHelperApp.getInstance().getString(R.string.remember_user_data_key);
+	public static final String SCHEDULE_CHOOSE_TERM_KEY = GDUTHelperApp.getInstance().getString(R.string.schedule_choose_term_key);
+	public static final String SCHEDULE_FIRST_WEEK_KEY = GDUTHelperApp.getInstance().getString(R.string.schedule_first_week_key);
+	public static final String SCHEDULE_CURRENT_WEEK_KEY = GDUTHelperApp.getInstance().getString(R.string.schedule_current_week_key);
+	public static final String SCHEDULE_CARD_COLORS_KEY = GDUTHelperApp.getInstance().getString(R.string.schedule_card_colors_key);
+	public static final String SCHEDULE_BACKGROUND_KEY = GDUTHelperApp.getInstance().getString(R.string.schedule_background_key);
 	public static final String COOKIE = "cookie";
+	public static final String USE_DX_KEY = GDUTHelperApp.getInstance().getString(R.string.use_dx_key);
 
 	private SharedPreferences mSharedPreferences;
 
@@ -42,38 +42,53 @@ public class Settings {
 
 
 	public boolean isUseDx() {
-		return mSharedPreferences.getBoolean(GDUTHelperApp.getInstance().getString(R.string.use_dx_key), false);
+		return mSharedPreferences.getBoolean(USE_DX_KEY, false);
+	}
+
+	public void setUseDx(boolean enable) {
+		SharedPreferences.Editor editor = mSharedPreferences.edit();
+		editor.putBoolean(USE_DX_KEY, enable);
+		GDUTHelperApp.cookie = null;
+		editor.apply();
 	}
 
 	public void setZBText(String text) {
 		SharedPreferences.Editor editor = mSharedPreferences.edit();
 		if (text != null && text.length() > 0)
-			editor.putString(ZB_TEXT, text);
+			editor.putString(ZB_TEXT_KEY, text);
 		else
-			editor.putString(ZB_TEXT, GDUTHelperApp.getInstance().getString(R.string.default_zb_text));
+			editor.putString(ZB_TEXT_KEY, GDUTHelperApp.getInstance().getString(R.string.default_zb_text));
 		editor.apply();
 	}
 
 	public String getZBText() {
 		String result;
-		result = mSharedPreferences.getString(ZB_TEXT, null);
+		result = mSharedPreferences.getString(ZB_TEXT_KEY, null);
 		if (result != null)
 			return result;
 		return GDUTHelperApp.getInstance().getString(R.string.default_zb_text);
 	}
 
 	public boolean needRememberUser() {
-		return mSharedPreferences.getBoolean(REMEMBER_USER, true);
+		return mSharedPreferences.getBoolean(REMEMBER_USER_KEY, true);
+	}
+
+	public void setNeedRememberUser(boolean isNeed) {
+		SharedPreferences.Editor editor = mSharedPreferences.edit();
+		editor.putBoolean(REMEMBER_USER_KEY, isNeed);
+		if (!isNeed)
+			rememberUser("", "");
+		editor.apply();
 	}
 
 	public void rememberUser(String userName, String password) {
 		SharedPreferences.Editor editor = mSharedPreferences.edit();
-		editor.putString(REMEMBER_USER_DATA, userName + ";" + password);
+		editor.putString(REMEMBER_USER_DATA_KEY, userName + ";" + password);
 		editor.apply();
 	}
 
 	public String getRememberUser() {
-		return mSharedPreferences.getString(REMEMBER_USER_DATA, null);
+		return mSharedPreferences.getString(REMEMBER_USER_DATA_KEY, null);
 	}
 
 	public WidgetConfigs getAppWidgetConfigs(Context context) {
@@ -117,12 +132,12 @@ public class Settings {
 	}
 
 	public String getScheduleChooseTerm() {
-		return mSharedPreferences.getString(SCHEDULE_CHOOSE_TERM, null);
+		return mSharedPreferences.getString(SCHEDULE_CHOOSE_TERM_KEY, null);
 	}
 
 	public void setScheduleChooseTerm(String term) {
 		SharedPreferences.Editor editor = mSharedPreferences.edit();
-		editor.putString(SCHEDULE_CHOOSE_TERM, term);
+		editor.putString(SCHEDULE_CHOOSE_TERM_KEY, term);
 		editor.apply();
 	}
 
@@ -130,14 +145,14 @@ public class Settings {
 		SharedPreferences.Editor editor = mSharedPreferences.edit();
 		if (calendar.get(Calendar.DAY_OF_WEEK) != 1)
 			calendar.set(Calendar.DAY_OF_WEEK, 1);
-		editor.putString(SCHEDULE_FIRST_WEEK, new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+		editor.putString(SCHEDULE_FIRST_WEEK_KEY, new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 				.format(calendar.getTime()));
 		editor.apply();
 	}
 
 	public Calendar getScheduleFirstWeek() {
 		Calendar calendar = Calendar.getInstance();
-		String firstWeekDate = mSharedPreferences.getString(SCHEDULE_FIRST_WEEK, null);
+		String firstWeekDate = mSharedPreferences.getString(SCHEDULE_FIRST_WEEK_KEY, null);
 		if (firstWeekDate == null)
 			return null;
 		else {
@@ -174,12 +189,12 @@ public class Settings {
 
 	public void setScheduleCardColors(String colors) {
 		SharedPreferences.Editor editor = mSharedPreferences.edit();
-		editor.putString(SCHEDULE_CARD_COLORS, colors);
+		editor.putString(SCHEDULE_CARD_COLORS_KEY, colors);
 		editor.apply();
 	}
 
 	public String getScheduleCardColors() {
-		return mSharedPreferences.getString(SCHEDULE_CARD_COLORS, null);
+		return mSharedPreferences.getString(SCHEDULE_CARD_COLORS_KEY, null);
 	}
 
 	public String getCookie() {
