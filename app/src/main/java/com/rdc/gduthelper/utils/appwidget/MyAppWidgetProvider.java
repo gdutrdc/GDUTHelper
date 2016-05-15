@@ -71,12 +71,8 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
-		Settings settings = new Settings(context);
-		WidgetConfigs configs = settings.getAppWidgetConfigs(context);
-		if (configs == null)
-			return;
-		configs.remove(appWidgetIds[0]);
-		settings.saveAppWidgetConfigs(context, configs);
+		Uri uri = Uri.parse(WidgetConfigProvider.CONFIG_CONTENT_URI);
+		context.getContentResolver().delete(uri, "widget_id = ?", new String[]{appWidgetIds[0] + ""});
 	}
 
 	@Override
