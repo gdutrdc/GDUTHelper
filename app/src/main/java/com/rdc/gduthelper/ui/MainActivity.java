@@ -136,6 +136,7 @@ public class MainActivity extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.main_help:
+				startActivity(new Intent(this, HelpActivity.class));
 				break;
 			case R.id.main_logout:
 				startActivity(new Intent(this, LoginActivity.class));

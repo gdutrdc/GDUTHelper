@@ -152,7 +152,7 @@
         <item>0</item>
         <item>1</item>
     </integer-array>
-    <string name="remember_user_on">开启(下一次启动时记住账号密码)</string>
+	<string name="remember_user_on">开启(下一次启动时记住账号密码)</string>
     <string name="remember_user_off">关闭(不再记住账号密码)</string>
     <string name="remember_user">记住账号密码</string>
     <string name="remember_user_key">remember_user</string>
@@ -179,4 +179,11 @@
 
     <string name="default_zb_text">我特么这次考试$name才得了$grade！</string>
     <string name="zb_text_key">ZBText</string>
+
+    <string-array name="help_list">
+	    <item>FAQ</item>
+	    <item>开源协议</item>
+	    <item>反馈</item>
+	    <item>关于</item>
+    </string-array>
 </resources>
