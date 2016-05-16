@@ -1,5 +1,6 @@
 package com.rdc.gduthelper.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,6 +38,10 @@ public class HelpActivity extends BaseActivity implements AdapterView.OnItemClic
 			case 0:
 				break;
 			case 1:
+				Intent licenses = new Intent(this,WebViewActivity.class);
+				licenses.putExtra("title",getResources().getString(R.string.licenses));
+				licenses.putExtra("url","file:///android_asset/licenses.html");
+				startActivity(licenses);
 				break;
 			case 2:
 				break;
@@ -60,6 +65,7 @@ public class HelpActivity extends BaseActivity implements AdapterView.OnItemClic
 		@Override
 		public void onBindViewHolder(HelpViewHolder holder, int position) {
 			holder.setText(helps[position]);
+			holder.setPosition(position);
 		}
 
 		@Override

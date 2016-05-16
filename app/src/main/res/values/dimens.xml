@@ -1,15 +1,15 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+	<!-- Default screen margins, per the Android Design guidelines. -->
+	<dimen name="activity_horizontal_margin">16dp</dimen>
+	<dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="main_box_size">96dp</dimen>
-    <dimen name="main_box_margin">2dp</dimen>
-    <dimen name="main_box_text_padding">10dp</dimen>
-    <dimen name="main_box_text_size">14sp</dimen>
+	<dimen name="main_box_size">96dp</dimen>
+	<dimen name="main_box_margin">2dp</dimen>
+	<dimen name="main_box_text_padding">10dp</dimen>
+	<dimen name="main_box_text_size">14sp</dimen>
 
-    <dimen name="lesson_item_text_size">10sp</dimen>
-    <dimen name="lesson_item_margin">1.5dp</dimen>
-    <dimen name="lesson_item_text_padding">2dp</dimen>
-    <dimen name="lesson_item_dog_ear">6dp</dimen>
+	<dimen name="lesson_item_text_size">10sp</dimen>
+	<dimen name="lesson_item_margin">1.5dp</dimen>
+	<dimen name="lesson_item_text_padding">2dp</dimen>
+	<dimen name="lesson_item_dog_ear">6dp</dimen>
 </resources>

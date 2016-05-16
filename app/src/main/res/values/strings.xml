@@ -1,189 +1,189 @@
 <resources>
-    <string name="app_name">GDUT 助手</string>
+	<string name="app_name">GDUT 助手</string>
 
-    <string name="user_xh">学号</string>
-    <string name="password">密码</string>
-    <string name="check_code">验证码</string>
-    <string name="loading">加载中</string>
+	<string name="user_xh">学号</string>
+	<string name="password">密码</string>
+	<string name="check_code">验证码</string>
+	<string name="loading">加载中</string>
 
-    <string name="dialog_zb_tips">请注意，文本中的$name都会被替换成课程名称，$grade会被替换成课程成绩，在成绩界面长按成绩则复制该文本</string>
+	<string name="dialog_zb_tips">请注意，文本中的$name都会被替换成课程名称，$grade会被替换成课程成绩，在成绩界面长按成绩则复制该文本</string>
 
-    <string name="refresh">刷新</string>
-    <string name="settings">设置</string>
-    <string name="menu">菜单</string>
-    <string name="help">帮助</string>
-    <string name="login">登录</string>
-    <string name="cancel">取消</string>
-    <string name="logout">注销</string>
-    <string name="ensure">确定</string>
-    <string name="tips">提示</string>
+	<string name="refresh">刷新</string>
+	<string name="settings">设置</string>
+	<string name="menu">菜单</string>
+	<string name="help">帮助</string>
+	<string name="login">登录</string>
+	<string name="cancel">取消</string>
+	<string name="logout">注销</string>
+	<string name="ensure">确定</string>
+	<string name="tips">提示</string>
 
-    <!-- 主界面 -->
-    <string name="information_manage">信息维护</string>
-    <string name="information_query">信息查询</string>
-    <string name="get_grade">查询成绩</string>
-    <string name="get_information">查询个人信息</string>
-    <string name="change_password">修改密码</string>
-    <string name="url_changed">您当前修改了要访问的URL，请重新登录</string>
-    <string name="evaluation">教学质量评价</string>
-    <string name="get_exam_time">查询考试时间</string>
-    <string name="get_schedule">课程表</string>
-    <string name="done">完成</string>
-    <string name="get_level_exam_grade">查询等级考试成绩</string>
+	<!-- 主界面 -->
+	<string name="information_manage">信息维护</string>
+	<string name="information_query">信息查询</string>
+	<string name="get_grade">查询成绩</string>
+	<string name="get_information">查询个人信息</string>
+	<string name="change_password">修改密码</string>
+	<string name="url_changed">您当前修改了要访问的URL，请重新登录</string>
+	<string name="evaluation">教学质量评价</string>
+	<string name="get_exam_time">查询考试时间</string>
+	<string name="get_schedule">课程表</string>
+	<string name="done">完成</string>
+	<string name="get_level_exam_grade">查询等级考试成绩</string>
 
-    <!-- 查询考试时间 -->
-    <string name="get_exam_time_space"> </string>
-    <string name="get_exam_time_day">天</string>
-    <string name="get_exam_time_past">此考试已结束</string>
-    <string name="get_exam_time_seat">&#160;&#160;座位:</string>
-    <string name="get_exam_time_leave">剩余</string>
-    <string name="get_exam_time_no_data">教务系统不包含此时间</string>
-    <string name="get_exam_time_no_local">本地无数据或未登录同步数据</string>
-    <string name="get_exam_time_widget_preview">预览如上(桌面控件可自定义大小)</string>
-    <string name="get_exam_time_xnd">学年第</string>
-    <string name="get_exam_time_xqd">学期</string>
+	<!-- 查询考试时间 -->
+	<string name="get_exam_time_space"> </string>
+	<string name="get_exam_time_day">天</string>
+	<string name="get_exam_time_past">此考试已结束</string>
+	<string name="get_exam_time_seat">&#160;&#160;座位:</string>
+	<string name="get_exam_time_leave">剩余</string>
+	<string name="get_exam_time_no_data">教务系统不包含此时间</string>
+	<string name="get_exam_time_no_local">本地无数据或未登录同步数据</string>
+	<string name="get_exam_time_widget_preview">预览如上(桌面控件可自定义大小)</string>
+	<string name="get_exam_time_xnd">学年第</string>
+	<string name="get_exam_time_xqd">学期</string>
 
-    <!-- 查询课程表 -->
-    <string name="no_local_schedule">本地无课程数据，请先同步数据</string>
-    <string name="get_schedule_time_xnd">学年第</string>
-    <string name="get_schedule_time_xqd">学期</string>
-    <string name="add_schedule">新增课程表</string>
+	<!-- 查询课程表 -->
+	<string name="no_local_schedule">本地无课程数据，请先同步数据</string>
+	<string name="get_schedule_time_xnd">学年第</string>
+	<string name="get_schedule_time_xqd">学期</string>
+	<string name="add_schedule">新增课程表</string>
 
-    <!-- 修改密码 -->
-    <string name="change_psw_old">请输入原密码</string>
-    <string name="change_psw_new">请输入新密码</string>
-    <string name="change_psw_ensure">请确认新密码</string>
+	<!-- 修改密码 -->
+	<string name="change_psw_old">请输入原密码</string>
+	<string name="change_psw_new">请输入新密码</string>
+	<string name="change_psw_ensure">请确认新密码</string>
 
-    <!-- 课程表 -->
-    <string name="schedule_settings">课程表设置</string>
-    <string name="schedule_current_week">选择当前周</string>
-    <string name="schedule_current_week_key">schedule_current_week</string>
-    <string name="schedule_first_week_key">schedule_current_week</string>
-    <string name="schedule_choose_term">选择学期</string>
-    <string name="schedule_choose_term_key">schedule_choose_term</string>
-    <string name="interesting">一些有趣的</string>
-    <string name="schedule_card_colors_key">schedule_card_colors</string>
-    <string name="schedule_card_colors">课程卡片颜色</string>
-    <string name="schedule_card_colors_tips">请至少选择一种卡片颜色，每个课程会被分配到颜色中的某一种</string>
-    <string name="schedule_background_key">schedule_background</string>
-    <string name="schedule_background">课程表背景</string>
-    <string name="add">新增</string>
-    <string name="reset">重置</string>
-    <string name="more_than_one_lesson">超过一个课程，请进入课程页删除</string>
-    <string name="delete_lesson">删除课程</string>
-    <string name="delete_lesson_tips">删除课程后，需重新同步课程表才能恢复</string>
-    <string name="choose_schedule_background_tips">选择的图片将会由你裁剪成适合的大小作为课程表的背景</string>
-    <string name="choose_from_gallery">从图库选择</string>
-    <string name="new_term">新的学期</string>
-    <string name="other_lesson">额外的课程</string>
-    <string name="choose_terms">选择学期(学年度-学期)</string>
-    <string name="schedule_choose_first_week">选择第一周(开学)日期</string>
-    <string name="default_colors">1,3,5,10,14</string>
-    <string-array name="color_names">
-        <item>姨妈红</item>
-        <item>脑残粉</item>
-        <item>基佬紫</item>
-        <item>酱紫</item>
-        <item>青花蓝</item>
-        <item>天空蓝</item>
-        <item>百合蓝</item>
-        <item>脸色青</item>
-        <item>武藤绿</item>
-        <item>茶婊绿</item>
-        <item>帽子绿</item>
-        <item>石灰绿</item>
-        <item>卫生金</item>
-        <item>琥珀黄</item>
-        <item>果粒橙</item>
-        <item>伊藤橙</item>
-        <item>咖啡棕</item>
-    </string-array>
-    <integer-array name="colors">
-        <item>@color/red_a200</item>
-        <item>@color/pink_a200</item>
-        <item>@color/purple_a200</item>
-        <item>@color/deep_purple_a200</item>
-        <item>@color/indigo_a200</item>
-        <item>@color/blue_a200</item>
-        <item>@color/light_blue_a200</item>
-        <item>@color/cyan_500</item>
-        <item>@color/teal_500</item>
-        <item>@color/green_500</item>
-        <item>@color/light_green_500</item>
-        <item>@color/lime_500</item>
-        <item>@color/yellow_500</item>
-        <item>@color/amber_500</item>
-        <item>@color/orange_500</item>
-        <item>@color/deep_orange_a200</item>
-        <item>@color/brown_300</item>
-    </integer-array>
-    <string name="lesson_name">课程名称</string>
-    <string name="lesson_classroom">课程教室</string>
-    <string name="lesson_time">上课时间</string>
-    <string name="lesson_weeks">上课周</string>
-    <string name="lesson_teacher">课程教师</string>
+	<!-- 课程表 -->
+	<string name="schedule_settings">课程表设置</string>
+	<string name="schedule_current_week">选择当前周</string>
+	<string name="schedule_current_week_key">schedule_current_week</string>
+	<string name="schedule_first_week_key">schedule_current_week</string>
+	<string name="schedule_choose_term">选择学期</string>
+	<string name="schedule_choose_term_key">schedule_choose_term</string>
+	<string name="interesting">一些有趣的</string>
+	<string name="schedule_card_colors_key">schedule_card_colors</string>
+	<string name="schedule_card_colors">课程卡片颜色</string>
+	<string name="schedule_card_colors_tips">请至少选择一种卡片颜色，每个课程会被分配到颜色中的某一种</string>
+	<string name="schedule_background_key">schedule_background</string>
+	<string name="schedule_background">课程表背景</string>
+	<string name="add">新增</string>
+	<string name="reset">重置</string>
+	<string name="more_than_one_lesson">超过一个课程，请进入课程页删除</string>
+	<string name="delete_lesson">删除课程</string>
+	<string name="delete_lesson_tips">删除课程后，需重新同步课程表才能恢复</string>
+	<string name="choose_schedule_background_tips">选择的图片将会由你裁剪成适合的大小作为课程表的背景</string>
+	<string name="choose_from_gallery">从图库选择</string>
+	<string name="new_term">新的学期</string>
+	<string name="other_lesson">额外的课程</string>
+	<string name="choose_terms">选择学期(学年度-学期)</string>
+	<string name="schedule_choose_first_week">选择第一周(开学)日期</string>
+	<string name="default_colors">1,3,5,10,14</string>
+	<string-array name="color_names">
+		<item>姨妈红</item>
+		<item>脑残粉</item>
+		<item>基佬紫</item>
+		<item>酱紫</item>
+		<item>青花蓝</item>
+		<item>天空蓝</item>
+		<item>百合蓝</item>
+		<item>脸色青</item>
+		<item>武藤绿</item>
+		<item>茶婊绿</item>
+		<item>帽子绿</item>
+		<item>石灰绿</item>
+		<item>卫生金</item>
+		<item>琥珀黄</item>
+		<item>果粒橙</item>
+		<item>伊藤橙</item>
+		<item>咖啡棕</item>
+	</string-array>
+	<integer-array name="colors">
+		<item>@color/red_a200</item>
+		<item>@color/pink_a200</item>
+		<item>@color/purple_a200</item>
+		<item>@color/deep_purple_a200</item>
+		<item>@color/indigo_a200</item>
+		<item>@color/blue_a200</item>
+		<item>@color/light_blue_a200</item>
+		<item>@color/cyan_500</item>
+		<item>@color/teal_500</item>
+		<item>@color/green_500</item>
+		<item>@color/light_green_500</item>
+		<item>@color/lime_500</item>
+		<item>@color/yellow_500</item>
+		<item>@color/amber_500</item>
+		<item>@color/orange_500</item>
+		<item>@color/deep_orange_a200</item>
+		<item>@color/brown_300</item>
+	</integer-array>
+	<string name="lesson_name">课程名称</string>
+	<string name="lesson_classroom">课程教室</string>
+	<string name="lesson_time">上课时间</string>
+	<string name="lesson_weeks">上课周</string>
+	<string name="lesson_teacher">课程教师</string>
 
-    <!-- 查询个人信息 -->
-    <string name="information_account">学号</string>
-    <string name="information_sex">性别</string>
-    <string name="information_enrollment_date">入学日期</string>
-    <string name="information_birthday">出生日期</string>
-    <string name="information_middle_school">毕业中学</string>
-    <string name="information_nation">民族</string>
-    <string name="information_dormitory">宿舍</string>
-    <string name="information_degree">学历层次</string>
-    <string name="information_college">学院</string>
-    <string name="information_department">系别</string>
-    <string name="information_clazz">行政班级</string>
-    <string name="information_grade">当前所在级</string>
-    <string name="information_avatar">头像</string>
-    <string name="save_picture">保存图片</string>
-    <string name="share">分享</string>
-    <string name="save_picture_failed">保存图片失败</string>
+	<!-- 查询个人信息 -->
+	<string name="information_account">学号</string>
+	<string name="information_sex">性别</string>
+	<string name="information_enrollment_date">入学日期</string>
+	<string name="information_birthday">出生日期</string>
+	<string name="information_middle_school">毕业中学</string>
+	<string name="information_nation">民族</string>
+	<string name="information_dormitory">宿舍</string>
+	<string name="information_degree">学历层次</string>
+	<string name="information_college">学院</string>
+	<string name="information_department">系别</string>
+	<string name="information_clazz">行政班级</string>
+	<string name="information_grade">当前所在级</string>
+	<string name="information_avatar">头像</string>
+	<string name="save_picture">保存图片</string>
+	<string name="share">分享</string>
+	<string name="save_picture_failed">保存图片失败</string>
 
-    <!-- 设置中相关文本 -->
-    <string name="theme">主题</string>
-    <string name="theme_key">theme</string>
-    <string-array name="theme_array">
-        <item>活力蓝</item>
-        <item>可爱粉</item>
-    </string-array>
-    <integer-array name="theme_values">
-        <item>0</item>
-        <item>1</item>
-    </integer-array>
+	<!-- 设置中相关文本 -->
+	<string name="theme">主题</string>
+	<string name="theme_key">theme</string>
+	<string-array name="theme_array">
+		<item>活力蓝</item>
+		<item>可爱粉</item>
+	</string-array>
+	<integer-array name="theme_values">
+		<item>0</item>
+		<item>1</item>
+	</integer-array>
 	<string name="remember_user_on">开启(下一次启动时记住账号密码)</string>
-    <string name="remember_user_off">关闭(不再记住账号密码)</string>
-    <string name="remember_user">记住账号密码</string>
-    <string name="remember_user_key">remember_user</string>
-    <string name="remember_user_data_key">remember_user_data</string>
-    <string name="use_dx">使用外网URL访问教务系统</string>
-    <string name="use_dx_key">use_dx</string>
-    <string name="use_dx_tips">修改访问ip需注销当前账号(若已登陆)，并点击点击右上角按钮刷新</string>
-    <string name="licenses">开源协议</string>
-    <string name="about">关于</string>
+	<string name="remember_user_off">关闭(不再记住账号密码)</string>
+	<string name="remember_user">记住账号密码</string>
+	<string name="remember_user_key">remember_user</string>
+	<string name="remember_user_data_key">remember_user_data</string>
+	<string name="use_dx">使用外网URL访问教务系统</string>
+	<string name="use_dx_key">use_dx</string>
+	<string name="use_dx_tips">修改访问ip需注销当前账号(若已登陆)，并点击点击右上角按钮刷新</string>
+	<string name="licenses">开源协议</string>
+	<string name="about">关于</string>
 
-    <!-- 教学质量评价 -->
-    <string name="select_all_or_not">全选/反选</string>
-    <string name="please_select">请选择一个评价的课程</string>
-    <string name="all_eval_done">所有评价已提交</string>
-    <string name="no_need_evaluation">当前无需要评价的课程</string>
-    <string name="evaluation_score_1">1(不及格)</string>
-    <string name="evaluation_score_2">2(及格)</string>
-    <string name="evaluation_score_3">3(中等)</string>
-    <string name="evaluation_score_4">4(良好)</string>
-    <string name="evaluation_score_5">5(优秀)</string>
+	<!-- 教学质量评价 -->
+	<string name="select_all_or_not">全选/反选</string>
+	<string name="please_select">请选择一个评价的课程</string>
+	<string name="all_eval_done">所有评价已提交</string>
+	<string name="no_need_evaluation">当前无需要评价的课程</string>
+	<string name="evaluation_score_1">1(不及格)</string>
+	<string name="evaluation_score_2">2(及格)</string>
+	<string name="evaluation_score_3">3(中等)</string>
+	<string name="evaluation_score_4">4(良好)</string>
+	<string name="evaluation_score_5">5(优秀)</string>
 
-    <string name="test_username"></string>
-    <string name="test_password"></string>
+	<string name="test_username"></string>
+	<string name="test_password"></string>
 
-    <string name="default_zb_text">我特么这次考试$name才得了$grade！</string>
-    <string name="zb_text_key">ZBText</string>
+	<string name="default_zb_text">我特么这次考试$name才得了$grade！</string>
+	<string name="zb_text_key">ZBText</string>
 
-    <string-array name="help_list">
-	    <item>FAQ</item>
-	    <item>开源协议</item>
-	    <item>反馈</item>
-	    <item>关于</item>
-    </string-array>
+	<string-array name="help_list">
+		<item>FAQ</item>
+		<item>开源协议</item>
+		<item>反馈</item>
+		<item>关于</item>
+	</string-array>
 </resources>

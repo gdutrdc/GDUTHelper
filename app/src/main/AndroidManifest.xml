@@ -3,14 +3,15 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.rdc.gduthelper">
 
+	<uses-sdk tools:overrideLibrary="com.github.fafaldo.fabtoolbar"/>
+
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<!-- Bugly所需权限 -->
 	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 	<uses-permission android:name="android.permission.READ_LOGS"/>
-
-	<uses-sdk tools:overrideLibrary="com.github.fafaldo.fabtoolbar"/>
 
 	<application
 		android:name=".app.GDUTHelperApp"
@@ -29,6 +30,7 @@
 			android:theme="@style/AppTheme.Main">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
+
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
@@ -60,26 +62,35 @@
 			android:name=".ui.ScheduleSettingsActivity"
 			android:label="@string/schedule_settings"/>
 		<activity android:name="com.soundcloud.android.crop.CropImageActivity"/>
+		<activity
+			android:name=".ui.HelpActivity"
+			android:label="@string/help"/>
+		<activity android:name=".ui.WebViewActivity"/>
 
 		<receiver
-			android:name="com.rdc.gduthelper.utils.appwidget.MyAppWidgetProvider"
+			android:name=".utils.appwidget.MyAppWidgetProvider"
 			android:enabled="true">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
 			</intent-filter>
+
 			<meta-data
 				android:name="android.appwidget.provider"
-				android:resource="@xml/widget_exam_time"></meta-data>
+				android:resource="@xml/widget_exam_time"/>
 		</receiver>
+
 		<service
 			android:name=".utils.appwidget.WidgetService"
 			android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
 		<provider
 			android:name=".utils.appwidget.WidgetConfigProvider"
 			android:authorities="com.rdc.gduthelper.appwidget.provider"/>
+
 		<meta-data
 			android:name="com.google.android.gms.version"
 			android:value="@integer/google_play_services_version"/>
+
 	</application>
 
 </manifest>

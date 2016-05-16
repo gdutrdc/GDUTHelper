@@ -279,7 +279,7 @@ public class AppWidgetConfig extends BaseActivity implements AdapterView.OnItemS
 			return convertView;
 		}
 
-		class ViewHolder {
+		private class ViewHolder {
 			TextView tvFirst, tvFirstBack, tvSecond, tvThird;
 			TextView tvLeave, tvCount;
 
