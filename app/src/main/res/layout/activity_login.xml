@@ -22,7 +22,7 @@
 				android:layout_height="144dp"
 				android:src="@drawable/large_logo"/>
 
-			<android.support.v7.widget.SwitchCompat
+			<Switch
 				android:id="@+id/login_switch_use_dx"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -32,9 +32,10 @@
 				android:layout_marginLeft="16dp"
 				android:layout_marginRight="16dp"
 				android:layout_marginTop="8dp"
+				android:switchPadding="8dp"
 				android:text="@string/use_dx"
 				android:textColor="?android:attr/textColorTertiary"
-				app:switchPadding="8dp"/>
+				/>
 
 			<com.rengwuxian.materialedittext.MaterialEditText
 				android:id="@+id/login_user_xh"
@@ -122,8 +123,8 @@
 				android:layout_alignParentRight="true"
 				android:layout_below="@id/login_check_code_container"
 				android:layout_marginLeft="32dp"
-				android:layout_marginTop="8dp"
 				android:layout_marginRight="32dp"
+				android:layout_marginTop="8dp"
 				android:text="@string/remember_user"
 				android:textColor="?android:attr/textColorTertiary"/>
 

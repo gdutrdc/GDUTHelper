@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 	private MaterialEditText mEtPassword;
 	private MaterialEditText mEtSecretCode;
 
-	private SwitchCompat mSwUseDx;
+	private Switch mSwUseDx;
 	private AppCompatCheckBox mCbRememberUser;
 
 	private Bitmap checkCodeBitmap;
@@ -98,20 +99,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 				showProgressDialog("正在登录");
 				login();
 				break;
-			case R.id.login_switch_use_dx:
-				new AlertDialog.Builder(this)
-						.setTitle(R.string.tips)
-						.setMessage(R.string.use_dx_tips)
-						.setCancelable(false)
-						.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								mSettings.setUseDx(!mSwUseDx.isChecked());
-								mSwUseDx.setChecked(!mSwUseDx.isChecked());
-							}
-						})
-						.setNegativeButton(R.string.cancel, null).show();
-				break;
+
 		}
 	}
 
@@ -134,14 +122,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
 	private void initPreferences() {
 		mCbRememberUser = (AppCompatCheckBox) findViewById(R.id.login_remember_user);
-		mSwUseDx = (SwitchCompat) findViewById(R.id.login_switch_use_dx);
+		mSwUseDx = (Switch) findViewById(R.id.login_switch_use_dx);
 
 		mSettings = GDUTHelperApp.getSettings();
 		mCbRememberUser.setChecked(mSettings.needRememberUser());
 		mSwUseDx.setChecked(mSettings.isUseDx());
 
 		mCbRememberUser.setOnCheckedChangeListener(this);
-		mSwUseDx.setOnClickListener(this);
+		mSwUseDx.setOnCheckedChangeListener(this);
 	}
 
 	private void initEditText() {
@@ -277,6 +265,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 		switch (buttonView.getId()) {
 			case R.id.login_remember_user:
 				mSettings.setNeedRememberUser(isChecked);
+				break;
+			case R.id.login_switch_use_dx:
+				new AlertDialog.Builder(this)
+						.setTitle(R.string.tips)
+						.setMessage(R.string.use_dx_tips)
+						.setCancelable(false)
+						.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								showProgressDialog("正在刷新");
+								initConnection();
+							}
+						}).show();
+				mSettings.setUseDx(mSwUseDx.isChecked());
 				break;
 		}
 	}
