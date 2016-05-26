@@ -197,7 +197,7 @@
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:layout_below="@id/get_schedule_weekday"
-        android:background="@drawable/shadow"/>
+        android:background="@drawable/shadow_down"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/get_schedule_fab"

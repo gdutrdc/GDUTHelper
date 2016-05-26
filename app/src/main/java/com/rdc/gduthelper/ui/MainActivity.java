@@ -17,6 +17,7 @@ import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.net.BaseRunnable;
+import com.rdc.gduthelper.net.api.GetLevelExamGrade;
 import com.rdc.gduthelper.net.api.IntoMain;
 import com.rdc.gduthelper.utils.Settings;
 import com.rdc.gduthelper.utils.UIUtils;
@@ -209,6 +210,9 @@ public class MainActivity extends BaseActivity {
 							.setMessage(R.string.no_need_evaluation)
 							.setPositiveButton(R.string.ensure, null)
 							.show();
+				break;
+			case R.id.main_get_level_exam_grade:
+				startActivity(new Intent(this, LevelExamActivity.class));
 				break;
 		}
 	}

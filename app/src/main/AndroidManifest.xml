@@ -66,6 +66,8 @@
 			android:name=".ui.HelpActivity"
 			android:label="@string/help"/>
 		<activity android:name=".ui.WebViewActivity"/>
+		<activity android:name=".ui.LevelExamActivity"
+		          android:label="@string/get_level_exam_grade"/>
 
 		<receiver
 			android:name=".utils.appwidget.MyAppWidgetProvider"
