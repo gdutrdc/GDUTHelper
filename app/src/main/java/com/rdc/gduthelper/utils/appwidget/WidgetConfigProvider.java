@@ -83,11 +83,11 @@ public class WidgetConfigProvider extends ContentProvider {
 		private static final String DATABASE_TABLE = "configs";
 		private static final int VERSION = 1;
 		static final String DATABASE_CREATE =
-				"create table " + DATABASE_TABLE +
-						" (widget_id integer primary key, "
+				"create table " + DATABASE_TABLE
+						+ " (widget_id integer primary key, "
 						+ "selection text not null);";
 
-		public ConfigHelper(Context context) {
+		ConfigHelper(Context context) {
 			super(context, DATABASE_NAME, null, VERSION);
 		}
 

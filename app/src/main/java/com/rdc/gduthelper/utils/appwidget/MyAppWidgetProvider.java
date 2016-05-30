@@ -52,6 +52,7 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 
 			Intent adapter = new Intent(context, WidgetService.class);
 			adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
+			adapter.putExtra("selection", selection);
 			adapter.setData(Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME)));
 
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_exam_time);
