@@ -143,6 +143,7 @@ public class MainActivity extends BaseActivity {
 				startActivity(new Intent(this, LoginActivity.class));
 				GDUTHelperApp.userXh = null;
 				GDUTHelperApp.userXm = null;
+				GDUTHelperApp.setEvaluationList(new ArrayList<Lesson>());
 				break;
 		}
 		return super.onOptionsItemSelected(item);
