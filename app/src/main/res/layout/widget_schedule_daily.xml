@@ -5,12 +5,13 @@
 	android:layout_height="match_parent"
 	android:background="@drawable/bg_app_widget"
 	android:orientation="vertical"
-	android:paddingLeft="8dp"
-	android:paddingRight="8dp">
+	android:theme="@style/AppTheme">
 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_marginLeft="8dp"
+		android:layout_marginRight="8dp"
 		android:gravity="center_vertical"
 		android:orientation="horizontal"
 		android:padding="8dp">
@@ -20,6 +21,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
+			android:maxLines="1"
 			android:text="第几周"
 			android:textAppearance="@style/TextAppearance.AppCompat.Medium"
 			android:textColor="@color/pink_a200"/>
@@ -28,21 +30,22 @@
 			android:id="@+id/widget_schedule_last"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:background="?selectableItemBackground"
 			android:clickable="true"
 			android:padding="4dp"
 			android:src="@drawable/ic_chevron_left_blue_24dp"/>
 
 		<TextView
+			android:id="@+id/widget_schedule_weekday"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="星期几"/>
+			android:maxLines="1"
+			android:text="星期几"
+			android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
 		<ImageView
 			android:id="@+id/widget_schedule_next"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:background="?selectableItemBackground"
 			android:clickable="true"
 			android:padding="4dp"
 			android:src="@drawable/ic_chevron_right_blue_24dp"/>
@@ -51,7 +54,6 @@
 			android:id="@+id/widget_schedule_restore"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:background="?selectableItemBackground"
 			android:clickable="true"
 			android:padding="4dp"
 			android:src="@drawable/ic_autorenew_orange_24dp"/>
@@ -61,6 +63,8 @@
 	<ListView
 		android:id="@+id/widget_schedule_daily_list"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"/>
-
+		android:layout_height="match_parent"
+		android:background="@color/grey_300"
+		android:divider="@null"
+		android:dividerHeight="0dp"/>
 </LinearLayout>

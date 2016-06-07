@@ -73,26 +73,10 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 
 	}
 
-	/**
-	 * 获取指定要求的课程列表
-	 *
-	 * @param selection 形如 2014-2015-1 为null则返回所有课程
-	 * @return 指定的课程列表
-	 */
-	public ArrayList<Lesson> getLessonList(String selection) {
+	public ArrayList<Lesson> getLessonList(String selection, String xh) {
 		ArrayList<Lesson> result = new ArrayList<>();
 		SQLiteDatabase db = getReadableDatabase();
 		Cursor cursor = null;
-		String xh = GDUTHelperApp.userXh;
-		if (xh == null) {
-			String up = GDUTHelperApp.getSettings().getRememberUser();
-			if (up == null) {
-				return result;
-			}
-			String[] data = up.split(";", 2);
-			xh = data[0];
-		}
-
 		if (selection == null)
 			return result;
 		cursor = db.query(TABLE_LESSONS, null,
@@ -138,6 +122,26 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 		cursor.close();
 		db.close();
 		return result;
+	}
+
+	/**
+	 * 获取当前登录账号下的课程列表
+	 *
+	 * @param selection 形如 2014-2015-1 为null则返回所有课程
+	 * @return 指定的课程列表
+	 */
+	public ArrayList<Lesson> getLessonList(String selection) {
+		String xh = GDUTHelperApp.userXh;
+		if (xh == null) {
+			String up = GDUTHelperApp.getSettings().getRememberUser();
+			if (up == null) {
+				return new ArrayList<>();
+			}
+			String[] data = up.split(";", 2);
+			xh = data[0];
+		}
+		return getLessonList(selection, xh);
+
 	}
 
 	public void addLessonList(ArrayList<Lesson> lessons, String selection) {

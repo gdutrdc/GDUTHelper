@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:minHeight="72dp">
+
+	<TextView
+		android:id="@+id/item_schedule_daily_num"
+		android:layout_width="40dp"
+		android:layout_height="40dp"
+		android:layout_margin="16dp"
+		android:gravity="center"
+		android:maxLines="1"
+		android:text="1-2"
+		android:typeface="monospace"/>
+
+	<TextView
+		android:id="@+id/item_schedule_daily_lesson"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="16dp"
+		android:layout_toRightOf="@id/item_schedule_daily_num"
+		android:drawableLeft="@drawable/ic_book_black_24dp"
+		android:gravity="center"
+		android:maxLines="1"
+		android:text="计算机网络"
+		android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+	<TextView
+		android:id="@+id/item_schedule_daily_classroom"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/item_schedule_daily_lesson"
+		android:layout_marginBottom="16dp"
+		android:layout_marginTop="4dp"
+		android:layout_toRightOf="@id/item_schedule_daily_num"
+		android:drawableLeft="@drawable/ic_place_black_24dp"
+		android:drawableTint="@color/blue_500"
+		android:gravity="center"
+		android:maxLines="1"
+		android:text="教3-303"
+		android:textColor="@color/blue_500"/>
+</RelativeLayout>

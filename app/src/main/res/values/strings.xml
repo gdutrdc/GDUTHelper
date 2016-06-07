@@ -27,6 +27,7 @@
 	<string name="url_changed">您当前修改了要访问的URL，请重新登录</string>
 	<string name="evaluation">教学质量评价</string>
 	<string name="get_exam_time">查询考试时间</string>
+	<string name="exam_time">考试倒计时</string>
 	<string name="get_schedule">课程表</string>
 	<string name="done">完成</string>
 	<string name="get_level_exam_grade">查询等级考试成绩</string>
@@ -48,6 +49,15 @@
 	<string name="get_schedule_time_xnd">学年第</string>
 	<string name="get_schedule_time_xqd">学期</string>
 	<string name="add_schedule">新增课程表</string>
+	<string-array name="weekdays">
+		<item>星期天</item>
+		<item>星期一</item>
+		<item>星期二</item>
+		<item>星期三</item>
+		<item>星期四</item>
+		<item>星期五</item>
+		<item>星期六</item>
+	</string-array>
 
 	<!-- 修改密码 -->
 	<string name="change_psw_old">请输入原密码</string>
@@ -67,6 +77,8 @@
 	<string name="schedule_card_colors_tips">请至少选择一种卡片颜色，每个课程会被分配到颜色中的某一种</string>
 	<string name="schedule_background_key">schedule_background</string>
 	<string name="schedule_background">课程表背景</string>
+	<string name="schedule_daily">课程表 - 每日</string>
+	<string name="schedule_weekly">课程表 - 每周</string>
 	<string name="add">新增</string>
 	<string name="reset">重置</string>
 	<string name="more_than_one_lesson">超过一个课程，请进入课程页删除</string>

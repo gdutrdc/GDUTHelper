@@ -177,7 +177,6 @@ public class ExamWidgetConfigActivity extends BaseActivity implements AdapterVie
 			views.setRemoteAdapter(R.id.widget_exam_times, adapter);
 
 			appWidgetManager.updateAppWidget(mAppWidgetId, views);
-			Log.d("app widget", mAppWidgetId + "");
 			Intent resultValue = new Intent();
 			resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 			setResult(RESULT_OK, resultValue);

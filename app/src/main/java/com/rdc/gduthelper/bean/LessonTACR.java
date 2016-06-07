@@ -1,11 +1,17 @@
 package com.rdc.gduthelper.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+import java.util.Arrays;
+
 /**
  * means lesson time and classroom
  * <p/>
  * Created by seasonyuu on 15/8/28.
  */
-public class LessonTACR {
+public class LessonTACR implements Serializable, Parcelable {
 	private String lessonCode;
 	private int[] week;
 	private int weekday;
@@ -82,4 +88,50 @@ public class LessonTACR {
 		} else
 			return super.equals(o);
 	}
+
+	@Override
+	public String toString() {
+		return "LessonTACR{" +
+				"lessonCode='" + lessonCode + '\'' +
+				", week=" + Arrays.toString(week) +
+				", weekday=" + weekday +
+				", num=" + Arrays.toString(num) +
+				", classroom='" + classroom + '\'' +
+				'}';
+	}
+
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(this.lessonCode);
+		dest.writeIntArray(this.week);
+		dest.writeInt(this.weekday);
+		dest.writeIntArray(this.num);
+		dest.writeString(this.classroom);
+	}
+
+	public LessonTACR(Parcel in) {
+		this.lessonCode = in.readString();
+		this.week = in.createIntArray();
+		this.weekday = in.readInt();
+		this.num = in.createIntArray();
+		this.classroom = in.readString();
+	}
+
+	public static final Parcelable.Creator<LessonTACR> CREATOR = new Parcelable.Creator<LessonTACR>() {
+		@Override
+		public LessonTACR createFromParcel(Parcel source) {
+			return new LessonTACR(source);
+		}
+
+		@Override
+		public LessonTACR[] newArray(int size) {
+			return new LessonTACR[size];
+		}
+	};
 }

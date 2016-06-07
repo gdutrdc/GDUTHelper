@@ -71,6 +71,7 @@
 
 		<receiver
 			android:name=".utils.appwidget.exam.ExamWidgetProvider"
+			android:label="@string/exam_time"
 			android:enabled="true">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -80,9 +81,23 @@
 				android:name="android.appwidget.provider"
 				android:resource="@xml/widget_exam_time"/>
 		</receiver>
+		<receiver
+			android:name=".utils.appwidget.schedule.DailyScheduleWidgetProvider"
+			android:label="@string/schedule_daily"
+			android:enabled="true">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+			</intent-filter>
 
+			<meta-data
+				android:name="android.appwidget.provider"
+				android:resource="@xml/widget_schedule_daily"/>
+		</receiver>
 		<service
 			android:name=".utils.appwidget.exam.ExamWidgetService"
+			android:permission="android.permission.BIND_REMOTEVIEWS"/>
+		<service
+			android:name=".utils.appwidget.schedule.DailyScheduleWidgetService"
 			android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
 		<provider

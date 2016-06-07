@@ -1,9 +1,19 @@
 package com.rdc.gduthelper.utils;
 
+import android.util.Log;
+
 import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.bean.LessonTACR;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.TreeMap;
 
 /**
  * Created by seasonyuu on 16/1/8.
@@ -18,6 +28,7 @@ public class LessonUtils {
 		String[] classrooms = lesson.getLessonClassroom().split(";");
 		for (int i = 0; i < times.length; i++) {
 			LessonTACR tacr = new LessonTACR();
+			tacr.setLessonCode(lesson.getLessonCode());
 			String time = times[i];
 			String[] data = time.split("\\{");
 			String weekday = data[0].substring(0, 2);
@@ -132,6 +143,67 @@ public class LessonUtils {
 			return true;
 		}
 		return false;
+	}
+
+	public static String calculateCurrentWeek(String firstWeekDate) {
+		Calendar calendar = Calendar.getInstance();
+		Date date = null;
+		try {
+			date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(firstWeekDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		calendar.setTime(date);
+		int firstWeek = calendar.get(Calendar.WEEK_OF_YEAR);
+		int currentWeek = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) - firstWeek + 1;
+		if (currentWeek < 0) {
+			//小于0说明第一周在去年
+			calendar.add(Calendar.YEAR, -1);
+			currentWeek = currentWeek + calendar.getMaximum(Calendar.WEEK_OF_YEAR) - 1;
+		}
+		return currentWeek + "";
+	}
+
+	/**
+	 * 由于一天中可能同一门课要上数次，故课程对象不能作为key，而时间是唯一的
+	 *
+	 * @param firstWeek
+	 * @param today
+	 * @param lessons
+	 * @return
+	 */
+	public static TreeMap<LessonTACR, Lesson> calculateTodaysLesson(
+			Calendar firstWeek, Calendar today, ArrayList<Lesson> lessons) {
+		TreeMap<LessonTACR, Lesson> result = new TreeMap<>(new Comparator<LessonTACR>() {
+			@Override
+			public int compare(LessonTACR lhs, LessonTACR rhs) {
+				return 0;
+			}
+		});
+
+		int currentWeek = (int) ((today.getTimeInMillis() - firstWeek.getTimeInMillis())
+				/ 1000 / 60 / 60 / 24 / 7 + 1);
+		if (currentWeek < 0)
+			return result;
+		for (Lesson lesson : lessons) {
+			ArrayList<LessonTACR> lessonTACRs = readTimeAndClassroom(lesson);
+			boolean flag = false;
+			for (LessonTACR lessonTACR : lessonTACRs) {
+				for (int week : lessonTACR.getWeek())
+					if (week == currentWeek) {
+						flag = true;
+						break;
+					}
+				if (!flag)
+					continue;
+				flag = lessonTACR.getWeekday() == today.get(Calendar.DAY_OF_WEEK) - 1;
+				if (flag) {
+					result.put(lessonTACR, lesson);
+				}
+			}
+		}
+		return result;
+
 	}
 
 	public static double calculatePoint(Lesson lesson) {
