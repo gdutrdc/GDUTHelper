@@ -310,20 +310,31 @@ public class GetScheduleActivity extends BaseActivity
 				final ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
 				helper.addLessonList(lessons, year + "-" + term);
 				cancelDialog();
-				ScheduleConfig config = new ScheduleConfig();
-				config.setId(GDUTHelperApp.userXh);
-				config.setTerm(year + "-" + term);
-				config.setFirstWeek(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-						.format(Calendar.getInstance().getTime()));
-				config.setCardColors(mSettings.getScheduleCardColors(GetScheduleActivity.this));
 
-				mSettings.saveScheduleConfig(GetScheduleActivity.this, config);
+				ScheduleConfig config = mSettings.getScheduleConfig(GetScheduleActivity.this, GDUTHelperApp.userXh);
+				if (config != null) {
+					config.setId(GDUTHelperApp.userXh);
+					config.setTerm(year + "-" + term);
+					config.setFirstWeek(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+							.format(Calendar.getInstance().getTime()));
+					config.setCardColors(mSettings.getScheduleCardColors(GetScheduleActivity.this));
+					mSettings.updateScheduleConfig(GetScheduleActivity.this, config);
 
+				} else {
+					config = new ScheduleConfig();
+					config.setId(GDUTHelperApp.userXh);
+					config.setTerm(year + "-" + term);
+					config.setFirstWeek(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+							.format(Calendar.getInstance().getTime()));
+					config.setCardColors(mSettings.getScheduleCardColors(GetScheduleActivity.this));
+					mSettings.saveScheduleConfig(GetScheduleActivity.this, config);
+				}
 				mWeekScheduleView.post(new Runnable() {
 					@Override
 					public void run() {
-						ArrayList<Lesson> lessons = helper.getLessonList(year + "-" + term);
-						mWeekScheduleView.setLessons(lessons);
+						initData();
+//						ArrayList<Lesson> lessons = helper.getLessonList(year + "-" + term);
+//						mWeekScheduleView.setLessons(lessons);
 					}
 				});
 			}
