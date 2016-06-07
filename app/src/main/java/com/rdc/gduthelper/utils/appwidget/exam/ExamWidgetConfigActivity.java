@@ -1,4 +1,4 @@
-package com.rdc.gduthelper.ui;
+package com.rdc.gduthelper.utils.appwidget.exam;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
@@ -25,7 +25,7 @@ import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Exam;
 import com.rdc.gduthelper.bean.MaterialColors;
 import com.rdc.gduthelper.bean.WidgetConfigs;
-import com.rdc.gduthelper.utils.appwidget.WidgetService;
+import com.rdc.gduthelper.ui.BaseActivity;
 import com.rdc.gduthelper.utils.database.ExamTimeDBHelper;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ import java.util.Map;
 /**
  * Created by seasonyuu on 15/12/1.
  */
-public class AppWidgetConfig extends BaseActivity implements AdapterView.OnItemSelectedListener {
+public class ExamWidgetConfigActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
 	private int mAppWidgetId;
 	private AppCompatSpinner mYearsSpinner;
 	private AppCompatSpinner mTermsSpinner;
@@ -163,17 +163,17 @@ public class AppWidgetConfig extends BaseActivity implements AdapterView.OnItemS
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 			RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_exam_time);
 
-			Intent adapter = new Intent(this, WidgetService.class);
+			Intent adapter = new Intent(this, ExamWidgetService.class);
 			adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 			adapter.setData(Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME)));
 			adapter.putExtra("selection", mYearsSpinner.getSelectedItem().toString() + "-"
 					+ mTermsSpinner.getSelectedItem().toString());
-			WidgetConfigs widgetConfigs = GDUTHelperApp.getSettings().getAppWidgetConfigs(this);
+			WidgetConfigs widgetConfigs = GDUTHelperApp.getSettings().getExamWidgetConfigs(this);
 			if (widgetConfigs == null)
 				widgetConfigs = new WidgetConfigs();
 			widgetConfigs.putConfig(mAppWidgetId, mYearsSpinner.getSelectedItem().toString() + "-"
 					+ mTermsSpinner.getSelectedItem().toString());
-			GDUTHelperApp.getSettings().saveAppWidgetConfigs(this,widgetConfigs);
+			GDUTHelperApp.getSettings().saveExamWidgetConfigs(this, widgetConfigs);
 			views.setRemoteAdapter(R.id.widget_exam_times, adapter);
 
 			appWidgetManager.updateAppWidget(mAppWidgetId, views);
@@ -243,7 +243,7 @@ public class AppWidgetConfig extends BaseActivity implements AdapterView.OnItemS
 			ViewHolder holder = null;
 			if (convertView == null) {
 				holder = new ViewHolder(
-						convertView = LayoutInflater.from(AppWidgetConfig.this)
+						convertView = LayoutInflater.from(ExamWidgetConfigActivity.this)
 								.inflate(R.layout.item_widget_exam_time, parent, false));
 				convertView.setTag(holder);
 			} else

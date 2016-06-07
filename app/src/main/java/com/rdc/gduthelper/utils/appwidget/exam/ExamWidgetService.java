@@ -1,16 +1,15 @@
-package com.rdc.gduthelper.utils.appwidget;
+package com.rdc.gduthelper.utils.appwidget.exam;
 
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViewsService;
 
 /**
  * Created by seasonyuu on 15/12/1.
  */
-public class WidgetService extends RemoteViewsService {
+public class ExamWidgetService extends RemoteViewsService {
 	@Override
 	public RemoteViewsFactory onGetViewFactory(Intent intent) {
-		ListRemoteViewsFactory factory = new ListRemoteViewsFactory(this, intent);
+		ExamListRemoteViewsFactory factory = new ExamListRemoteViewsFactory(this, intent);
 		return factory;
 	}
 }

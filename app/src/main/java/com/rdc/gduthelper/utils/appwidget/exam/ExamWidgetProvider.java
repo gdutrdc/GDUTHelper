@@ -1,4 +1,4 @@
-package com.rdc.gduthelper.utils.appwidget;
+package com.rdc.gduthelper.utils.appwidget.exam;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,16 +13,15 @@ import android.widget.RemoteViews;
 
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.bean.WidgetConfigs;
-import com.rdc.gduthelper.utils.SerializeUtil;
-import com.rdc.gduthelper.utils.Settings;
+import com.rdc.gduthelper.utils.appwidget.WidgetConfigProvider;
 
 import java.util.Calendar;
 
 /**
  * Created by seasonyuu on 15/12/1.
  */
-public class MyAppWidgetProvider extends AppWidgetProvider {
-	private static final String TAG = MyAppWidgetProvider.class.getSimpleName();
+public class ExamWidgetProvider extends AppWidgetProvider {
+	private static final String TAG = ExamWidgetProvider.class.getSimpleName();
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -33,7 +31,7 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
-		Uri uri = Uri.parse(WidgetConfigProvider.CONFIG_CONTENT_URI);
+		Uri uri = Uri.parse(WidgetConfigProvider.EXAM_CONFIG_CONTENT_URI);
 		Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
 		WidgetConfigs configs = new WidgetConfigs();
 		if (cursor == null)
@@ -50,7 +48,7 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 				continue;
 			addNotify(context, id);
 
-			Intent adapter = new Intent(context, WidgetService.class);
+			Intent adapter = new Intent(context, ExamWidgetService.class);
 			adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
 			adapter.putExtra("selection", selection);
 			adapter.setData(Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME)));
@@ -72,7 +70,7 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
-		Uri uri = Uri.parse(WidgetConfigProvider.CONFIG_CONTENT_URI);
+		Uri uri = Uri.parse(WidgetConfigProvider.EXAM_CONFIG_CONTENT_URI);
 		context.getContentResolver().delete(uri, "widget_id = ?", new String[]{appWidgetIds[0] + ""});
 	}
 
@@ -88,7 +86,7 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 
 	private void addNotify(Context context, int appWidgetId) {
 		Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-		intent.setClass(context.getApplicationContext(), MyAppWidgetProvider.class);
+		intent.setClass(context.getApplicationContext(), ExamWidgetProvider.class);
 		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 		Bundle bundle = new Bundle();
 		bundle.putIntArray(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{appWidgetId});

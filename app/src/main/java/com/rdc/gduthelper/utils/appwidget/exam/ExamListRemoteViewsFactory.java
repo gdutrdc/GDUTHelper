@@ -1,4 +1,4 @@
-package com.rdc.gduthelper.utils.appwidget;
+package com.rdc.gduthelper.utils.appwidget.exam;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,11 +16,11 @@ import java.util.ArrayList;
 /**
  * Created by seasonyuu on 15/12/1.
  */
-public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+public class ExamListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 	private Context mContext;
 	private ArrayList<Exam> mExams;
 
-	public ListRemoteViewsFactory(Context context, Intent intent) {
+	public ExamListRemoteViewsFactory(Context context, Intent intent) {
 		mContext = context;
 		String selection = intent.getStringExtra("selection");
 		String[] data = GDUTHelperApp.getSettings().getRememberUser().split(";", 2);
