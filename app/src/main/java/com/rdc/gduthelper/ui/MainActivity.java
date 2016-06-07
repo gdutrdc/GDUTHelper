@@ -2,9 +2,7 @@ package com.rdc.gduthelper.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,9 +15,8 @@ import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.net.BaseRunnable;
-import com.rdc.gduthelper.net.api.GetLevelExamGrade;
 import com.rdc.gduthelper.net.api.IntoMain;
-import com.rdc.gduthelper.utils.Settings;
+import com.rdc.gduthelper.utils.settings.Settings;
 import com.rdc.gduthelper.utils.UIUtils;
 
 import java.util.ArrayList;

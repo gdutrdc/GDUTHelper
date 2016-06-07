@@ -18,7 +18,7 @@ import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.ui.widget.ChooseColorsDialog;
 import com.rdc.gduthelper.utils.BitmapUtils;
-import com.rdc.gduthelper.utils.Settings;
+import com.rdc.gduthelper.utils.settings.Settings;
 import com.rdc.gduthelper.utils.UIUtils;
 import com.rdc.gduthelper.utils.database.ScheduleDBHelper;
 import com.soundcloud.android.crop.Crop;
@@ -49,19 +49,19 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 		mSettings = GDUTHelperApp.getSettings();
 
 		mPrefChooseTerm = findPreference(getResources().getString(R.string.schedule_choose_term_key));
-		mPrefChooseTerm.setSummary(mSettings.getScheduleChooseTerm());
+		mPrefChooseTerm.setSummary(mSettings.getScheduleChooseTerm(getActivity()));
 		mPrefChooseTerm.setTitle(R.string.schedule_choose_term);
 		mPrefChooseTerm.setOnPreferenceClickListener(this);
 
 		mPrefChooseWeek = findPreference(getResources().getString(R.string.schedule_current_week_key));
 		mPrefChooseWeek.setTitle(R.string.schedule_current_week);
-		String week = mSettings.getScheduleCurrentWeek();
+		String week = mSettings.getScheduleCurrentWeek(getActivity());
 		if (week != null)
 			mPrefChooseWeek.setSummary(week);
 		else {
 			//默认为第一周
 			mPrefChooseWeek.setSummary("1");
-			mSettings.setScheduleCurrentWeek("1");
+			mSettings.setScheduleCurrentWeek(getActivity(), "1");
 		}
 		mPrefChooseWeek.setOnPreferenceClickListener(this);
 
@@ -87,7 +87,7 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 						.setItems(terms, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								mSettings.setScheduleChooseTerm(terms[which]);
+								mSettings.setScheduleChooseTerm(getActivity(), terms[which]);
 								mPrefChooseTerm.setSummary(terms[which]);
 							}
 						})
@@ -105,7 +105,7 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 						.setItems(weeks, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								mSettings.setScheduleCurrentWeek(which + "");
+								mSettings.setScheduleCurrentWeek(getActivity(), which + "");
 								mPrefChooseWeek.setSummary(weeks[which]);
 							}
 						})
@@ -123,9 +123,9 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 												calendar.set(Calendar.YEAR, year);
 												calendar.set(Calendar.MONTH, monthOfYear);
 												calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-												mSettings.setScheduleFirstWeek(calendar);
+												mSettings.setScheduleFirstWeek(getActivity(), calendar);
 
-												mPrefChooseWeek.setSummary(mSettings.getScheduleCurrentWeek());
+												mPrefChooseWeek.setSummary(mSettings.getScheduleCurrentWeek(getActivity()));
 											}
 										}, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)
 								);
@@ -136,7 +136,7 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 				break;
 			case "schedule_card_colors":
 				final ChooseColorsDialog chooseColorsDialog = new ChooseColorsDialog(getActivity());
-				String colors = mSettings.getScheduleCardColors();
+				String colors = mSettings.getScheduleCardColors(getActivity());
 				boolean[] choosed = new boolean[chooseColorsDialog.getChoosedColors().length];
 				if (colors == null) {
 					break;
@@ -158,7 +158,7 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 								if (choosedColors[i])
 									colors += i + ",";
 							}
-							mSettings.setScheduleCardColors(colors.substring(0, colors.length() - 1));
+							mSettings.setScheduleCardColors(getActivity(), colors.substring(0, colors.length() - 1));
 						}
 					}
 				});

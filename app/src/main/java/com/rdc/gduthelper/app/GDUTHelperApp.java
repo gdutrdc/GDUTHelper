@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.utils.Key;
-import com.rdc.gduthelper.utils.Settings;
+import com.rdc.gduthelper.utils.settings.Settings;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.ArrayList;

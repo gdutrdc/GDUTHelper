@@ -35,12 +35,15 @@ import com.rdc.gduthelper.ui.adapter.LessonDetailAdapter;
 import com.rdc.gduthelper.ui.widget.WeekScheduleView;
 import com.rdc.gduthelper.utils.BitmapUtils;
 import com.rdc.gduthelper.utils.LessonUtils;
-import com.rdc.gduthelper.utils.Settings;
+import com.rdc.gduthelper.utils.settings.ScheduleConfig;
+import com.rdc.gduthelper.utils.settings.Settings;
 import com.rdc.gduthelper.utils.UIUtils;
 import com.rdc.gduthelper.utils.database.ScheduleDBHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -148,7 +151,7 @@ public class GetScheduleActivity extends BaseActivity
 
 	private void updateDate() {
 		int currentWeek = mSpinnerWeek.getSelectedItemPosition();
-		Calendar calendar = mSettings.getScheduleFirstWeek();
+		Calendar calendar = mSettings.getScheduleFirstWeek(this);
 		if (calendar == null)
 			return;
 		if (calendar.compareTo(Calendar.getInstance()) < 0) {
@@ -193,10 +196,10 @@ public class GetScheduleActivity extends BaseActivity
 			Bitmap bitmap = BitmapUtils.getBitmap(this);
 			mWeekScheduleView.setScheduleBackground(bitmap);
 
-			String colors = mSettings.getScheduleCardColors();
+			String colors = mSettings.getScheduleCardColors(this);
 			if (colors == null) {
 				colors = getResources().getString(R.string.default_colors);
-				GDUTHelperApp.getSettings().setScheduleCardColors(colors);
+				GDUTHelperApp.getSettings().setScheduleCardColors(this, colors);
 			}
 			int[] allColors = getResources().getIntArray(R.array.colors);
 			int[] temp = new int[allColors.length];
@@ -222,7 +225,7 @@ public class GetScheduleActivity extends BaseActivity
 			weekAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 			weekAdapter.addAll(s);
 			mSpinnerWeek.setAdapter(weekAdapter);
-			String current = mSettings.getScheduleCurrentWeek();
+			String current = mSettings.getScheduleCurrentWeek(this);
 			int week = 0;
 			if (current != null)
 				week = Integer.parseInt(current);
@@ -234,7 +237,7 @@ public class GetScheduleActivity extends BaseActivity
 
 	private void refreshData() {
 		ScheduleDBHelper helper = new ScheduleDBHelper(this);
-		String term = mSettings.getScheduleChooseTerm();
+		String term = mSettings.getScheduleChooseTerm(this);
 		ArrayList<Lesson> lessons = null;
 		if (term != null) {
 			lessons = helper.getLessonList(term);
@@ -307,7 +310,14 @@ public class GetScheduleActivity extends BaseActivity
 				final ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
 				helper.addLessonList(lessons, year + "-" + term);
 				cancelDialog();
-				mSettings.setScheduleChooseTerm(year + "-" + term);
+				ScheduleConfig config = new ScheduleConfig();
+				config.setId(GDUTHelperApp.userXh);
+				config.setTerm(year + "-" + term);
+				config.setFirstWeek(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+						.format(Calendar.getInstance().getTime()));
+				config.setCardColors(mSettings.getScheduleCardColors(GetScheduleActivity.this));
+
+				mSettings.saveScheduleConfig(GetScheduleActivity.this, config);
 
 				mWeekScheduleView.post(new Runnable() {
 					@Override

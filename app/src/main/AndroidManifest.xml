@@ -47,7 +47,7 @@
 		<activity
 			android:name=".ui.GetExamTimeActivity"
 			android:label="@string/get_exam_time"/>
-		<activity android:name=".ui.AppWidgetConfig">
+		<activity android:name=".utils.appwidget.exam.ExamWidgetConfigActivity">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
 			</intent-filter>
@@ -70,7 +70,7 @@
 		          android:label="@string/get_level_exam_grade"/>
 
 		<receiver
-			android:name=".utils.appwidget.MyAppWidgetProvider"
+			android:name=".utils.appwidget.exam.ExamWidgetProvider"
 			android:enabled="true">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -82,7 +82,7 @@
 		</receiver>
 
 		<service
-			android:name=".utils.appwidget.WidgetService"
+			android:name=".utils.appwidget.exam.ExamWidgetService"
 			android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
 		<provider

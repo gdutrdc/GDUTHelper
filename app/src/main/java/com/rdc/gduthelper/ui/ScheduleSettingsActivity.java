@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
-import com.rdc.gduthelper.utils.Settings;
+import com.rdc.gduthelper.utils.settings.Settings;
 
 /**
  * Created by seasonyuu on 16/1/21.
@@ -31,8 +31,8 @@ public class ScheduleSettingsActivity extends BaseActivity {
 		}
 
 		mSettings = GDUTHelperApp.getSettings();
-		term = mSettings.getScheduleChooseTerm();
-		week = mSettings.getScheduleCurrentWeek();
+		term = mSettings.getScheduleChooseTerm(this);
+		week = mSettings.getScheduleCurrentWeek(this);
 		if (week == null)
 			week = "1";
 	}
@@ -49,7 +49,8 @@ public class ScheduleSettingsActivity extends BaseActivity {
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent();
-		if (term.equals(mSettings.getScheduleChooseTerm()) && week.equals(mSettings.getScheduleCurrentWeek())) {
+		if (term.equals(mSettings.getScheduleChooseTerm(this))
+				&& week.equals(mSettings.getScheduleCurrentWeek(this))) {
 
 		} else
 			intent.putExtra("need_refresh", true);

@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -28,7 +27,7 @@ import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetCheckCode;
 import com.rdc.gduthelper.net.api.GetPage;
 import com.rdc.gduthelper.net.api.Login;
-import com.rdc.gduthelper.utils.Settings;
+import com.rdc.gduthelper.utils.settings.Settings;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
@@ -236,28 +235,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 			initConnection();
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (resultCode) {
-			case 0:
-				boolean needRefresh = data.getBooleanExtra("need_refresh", false);
-				boolean needChangeTheme = data.getBooleanExtra("need_change_theme", false);
-				if (!GDUTHelperApp.getSettings().needRememberUser()) {
-					GDUTHelperApp.getSettings().rememberUser("", "");
-				}
-				if (needChangeTheme) {
-					recreate();
-					return;
-				}
-				if (needRefresh) {
-					showProgressDialog("正在刷新");
-					initConnection();
-				}
-				break;
-		}
-		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
