@@ -1,5 +1,6 @@
 package com.rdc.gduthelper.ui;
 
+import android.animation.Animator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,9 +14,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -46,10 +49,6 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-
-import io.codetail.animation.SupportAnimator;
-import io.codetail.animation.ViewAnimationUtils;
-
 
 /**
  * Created by seasonyuu on 16/1/4.
@@ -452,7 +451,7 @@ public class GetScheduleActivity extends BaseActivity
 			mBtnCloseDetail.setVisibility(View.VISIBLE);
 			mLessonDetailsView.setVisibility(View.VISIBLE);
 			findViewById(R.id.get_schedule_lessons_container).setVisibility(View.VISIBLE);
-			SupportAnimator animator = ViewAnimationUtils
+			Animator animator = ViewAnimationUtils
 					.createCircularReveal(
 							findViewById(R.id.get_schedule_lessons_container), (int) dx,
 							(int) dy,
@@ -463,7 +462,7 @@ public class GetScheduleActivity extends BaseActivity
 			animator.setDuration(300);
 			animator.start();
 		} else {
-			SupportAnimator animator = ViewAnimationUtils
+			Animator animator = ViewAnimationUtils
 					.createCircularReveal(
 							findViewById(R.id.get_schedule_lessons_container), (int) dx,
 							(int) dy,
@@ -471,26 +470,26 @@ public class GetScheduleActivity extends BaseActivity
 
 			animator.setInterpolator(new AccelerateDecelerateInterpolator());
 			animator.setDuration(300);
-			animator.addListener(new SupportAnimator.AnimatorListener() {
+			animator.addListener(new Animator.AnimatorListener() {
 				@Override
-				public void onAnimationStart() {
+				public void onAnimationStart(Animator animation) {
 
 				}
 
 				@Override
-				public void onAnimationEnd() {
+				public void onAnimationEnd(Animator animation) {
 					mBtnCloseDetail.setVisibility(View.GONE);
 					mLessonDetailsView.setVisibility(View.GONE);
 					findViewById(R.id.get_schedule_lessons_container).setVisibility(View.GONE);
 				}
 
 				@Override
-				public void onAnimationCancel() {
+				public void onAnimationCancel(Animator animation) {
 
 				}
 
 				@Override
-				public void onAnimationRepeat() {
+				public void onAnimationRepeat(Animator animation) {
 
 				}
 			});
