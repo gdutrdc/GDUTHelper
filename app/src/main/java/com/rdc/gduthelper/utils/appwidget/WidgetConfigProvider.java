@@ -21,6 +21,7 @@ public class WidgetConfigProvider extends ContentProvider {
 
 	public static final String EXAM_CONFIG_CONTENT_URI = "content://" + AUTHORITY + "/exam_config";
 	public static final String SCHEDULE_CONFIG_CONTENT_URI = "content://" + AUTHORITY + "/schedule_config";
+	public static final String WIDGET_CONFIG_CONTENT_URI = "content://" + AUTHORITY + "/widget_config";
 
 	private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -29,6 +30,7 @@ public class WidgetConfigProvider extends ContentProvider {
 	static {
 		sUriMatcher.addURI(AUTHORITY, "exam_config", 0);
 		sUriMatcher.addURI(AUTHORITY, "schedule_config", 1);
+		sUriMatcher.addURI(AUTHORITY, "widget_config", 2);
 	}
 
 	@Override
@@ -47,6 +49,9 @@ public class WidgetConfigProvider extends ContentProvider {
 						projection, selection, selectionArgs, null, null, sortOrder, null);
 			case 1:
 				return mConfigDatabase.query(ConfigHelper.DATABASE_TABLE_SCHEDULE,
+						projection, selection, selectionArgs, null, null, sortOrder, null);
+			case 2:
+				return mConfigDatabase.query(ConfigHelper.DATABASE_TABLE_WIDGET,
 						projection, selection, selectionArgs, null, null, sortOrder, null);
 		}
 		return null;
@@ -71,9 +76,20 @@ public class WidgetConfigProvider extends ContentProvider {
 					e.printStackTrace();
 				}
 			}
+			break;
 			case 1: {
 				try {
 					mConfigDatabase.insert(ConfigHelper.DATABASE_TABLE_SCHEDULE, null, values);
+					getContext().getContentResolver().notifyChange(uri, null);
+				} catch (SQLiteConstraintException e) {
+					// 若id已存在 会抛出该异常，但不影响使用
+					e.printStackTrace();
+				}
+			}
+			break;
+			case 2: {
+				try {
+					mConfigDatabase.insert(ConfigHelper.DATABASE_TABLE_WIDGET, null, values);
 					getContext().getContentResolver().notifyChange(uri, null);
 				} catch (SQLiteConstraintException e) {
 					// 若id已存在 会抛出该异常，但不影响使用
@@ -99,6 +115,12 @@ public class WidgetConfigProvider extends ContentProvider {
 					getContext().getContentResolver().notifyChange(uri, null);
 				return count;
 			}
+			case 2: {
+				int count = mConfigDatabase.delete(ConfigHelper.DATABASE_TABLE_WIDGET, selection, selectionArgs);
+				if (count > 0)
+					getContext().getContentResolver().notifyChange(uri, null);
+				return count;
+			}
 		}
 		return 0;
 	}
@@ -119,6 +141,12 @@ public class WidgetConfigProvider extends ContentProvider {
 					getContext().getContentResolver().notifyChange(uri, null);
 				return row;
 			}
+			case 2: {
+				int row = mConfigDatabase.update(ConfigHelper.DATABASE_TABLE_WIDGET, values, selection, selectionArgs);
+				if (row > 0)
+					getContext().getContentResolver().notifyChange(uri, null);
+				return row;
+			}
 		}
 		return 0;
 	}
@@ -127,11 +155,16 @@ public class WidgetConfigProvider extends ContentProvider {
 		private static final String DATABASE_NAME = "app_widget_configs";
 		private static final String DATABASE_TABLE_EXAM = "exam_configs";
 		private static final String DATABASE_TABLE_SCHEDULE = "schedule_configs";
+		private static final String DATABASE_TABLE_WIDGET = "widget_configs";
 		private static final int VERSION = 1;
 		static final String DATABASE_CREATE_EXAM =
 				"create table " + DATABASE_TABLE_EXAM
 						+ " (widget_id integer primary key, "
 						+ "selection text not null);";
+		static final String DATABASE_CREATE_WIDGET =
+				"create table " + DATABASE_TABLE_WIDGET
+						+ " (widget_id integer primary key, "
+						+ "calendar text not null);";
 		static final String DATABASE_CREATE_SCHEDULE =
 				"create table " + DATABASE_TABLE_SCHEDULE
 						+ " (id text not null primary key, " // 学号
@@ -147,6 +180,7 @@ public class WidgetConfigProvider extends ContentProvider {
 		public void onCreate(SQLiteDatabase db) {
 			db.execSQL(DATABASE_CREATE_EXAM);
 			db.execSQL(DATABASE_CREATE_SCHEDULE);
+			db.execSQL(DATABASE_CREATE_WIDGET);
 		}
 
 		@Override

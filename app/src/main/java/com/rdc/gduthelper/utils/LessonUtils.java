@@ -19,6 +19,7 @@ import java.util.TreeMap;
  * Created by seasonyuu on 16/1/8.
  */
 public class LessonUtils {
+	private static final String TAG = LessonUtils.class.getSimpleName();
 
 	public static ArrayList<LessonTACR> readTimeAndClassroom(Lesson lesson) {
 		ArrayList<LessonTACR> lessonTACRs = new ArrayList<>();
@@ -145,8 +146,9 @@ public class LessonUtils {
 		return false;
 	}
 
-	public static String calculateCurrentWeek(String firstWeekDate) {
+	public static String calculateCurrentWeek(String firstWeekDate, Calendar today) {
 		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(today.getTime());
 		Date date = null;
 		try {
 			date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(firstWeekDate);
@@ -155,9 +157,8 @@ public class LessonUtils {
 		}
 		calendar.setTime(date);
 		int firstWeek = calendar.get(Calendar.WEEK_OF_YEAR);
-		int currentWeek = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) - firstWeek + 1;
+		int currentWeek = today.get(Calendar.WEEK_OF_YEAR) - firstWeek + 1;
 		if (currentWeek < 0) {
-			//小于0说明第一周在去年
 			calendar.add(Calendar.YEAR, -1);
 			currentWeek = currentWeek + calendar.getMaximum(Calendar.WEEK_OF_YEAR) - 1;
 		}
@@ -172,12 +173,16 @@ public class LessonUtils {
 	 * @param lessons
 	 * @return
 	 */
-	public static TreeMap<LessonTACR, Lesson> calculateTodaysLesson(
+	public static TreeMap<LessonTACR, Lesson> calculateTodaysLessons(
 			Calendar firstWeek, Calendar today, ArrayList<Lesson> lessons) {
 		TreeMap<LessonTACR, Lesson> result = new TreeMap<>(new Comparator<LessonTACR>() {
 			@Override
 			public int compare(LessonTACR lhs, LessonTACR rhs) {
-				return 0;
+				if (lhs.getNum()[0] > rhs.getNum()[0])
+					return 1;
+				else if (lhs.getNum()[0] == rhs.getNum()[0])
+					return 0;
+				else return -1;
 			}
 		});
 

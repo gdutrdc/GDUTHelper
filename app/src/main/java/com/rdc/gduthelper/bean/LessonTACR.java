@@ -70,6 +70,8 @@ public class LessonTACR implements Serializable, Parcelable {
 				return false;
 			if (tacr.getWeekday() != getWeekday())
 				return false;
+			if (!tacr.getClassroom().equals(getClassroom()))
+				return false;
 			if (tacr.getWeek().length == getWeek().length)
 				for (int i = 0; i < getWeek().length; i++) {
 					if (getWeek()[i] != tacr.getWeek()[i])

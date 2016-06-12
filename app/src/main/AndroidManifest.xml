@@ -66,13 +66,14 @@
 			android:name=".ui.HelpActivity"
 			android:label="@string/help"/>
 		<activity android:name=".ui.WebViewActivity"/>
-		<activity android:name=".ui.LevelExamActivity"
-		          android:label="@string/get_level_exam_grade"/>
+		<activity
+			android:name=".ui.LevelExamActivity"
+			android:label="@string/get_level_exam_grade"/>
 
 		<receiver
 			android:name=".utils.appwidget.exam.ExamWidgetProvider"
-			android:label="@string/exam_time"
-			android:enabled="true">
+			android:enabled="true"
+			android:label="@string/exam_time">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
 			</intent-filter>
@@ -83,16 +84,20 @@
 		</receiver>
 		<receiver
 			android:name=".utils.appwidget.schedule.DailyScheduleWidgetProvider"
-			android:label="@string/schedule_daily"
-			android:enabled="true">
+			android:enabled="true"
+			android:label="@string/schedule_daily">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+				<action android:name="com.rdc.gduthelper.CLICK_ACTION_PRE"/>
+				<action android:name="com.rdc.gduthelper.CLICK_ACTION_RESTORE"/>
+				<action android:name="com.rdc.gduthelper.CLICK_ACTION_NEXT"/>
 			</intent-filter>
 
 			<meta-data
 				android:name="android.appwidget.provider"
 				android:resource="@xml/widget_schedule_daily"/>
 		</receiver>
+
 		<service
 			android:name=".utils.appwidget.exam.ExamWidgetService"
 			android:permission="android.permission.BIND_REMOTEVIEWS"/>
@@ -102,7 +107,8 @@
 
 		<provider
 			android:name=".utils.appwidget.WidgetConfigProvider"
-			android:authorities="com.rdc.gduthelper.appwidget.provider"/>
+			android:authorities="com.rdc.gduthelper.appwidget.provider"
+			android:exported="true"/>
 
 	</application>
 
