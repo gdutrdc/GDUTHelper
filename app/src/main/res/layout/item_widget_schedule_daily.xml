@@ -12,7 +12,6 @@
 		android:layout_margin="16dp"
 		android:gravity="center"
 		android:maxLines="1"
-		android:text="1-2"
 		android:typeface="monospace"/>
 
 	<TextView
@@ -21,10 +20,8 @@
 		android:layout_height="wrap_content"
 		android:layout_marginTop="16dp"
 		android:layout_toRightOf="@id/item_schedule_daily_num"
-		android:drawableLeft="@drawable/ic_book_black_24dp"
 		android:gravity="center"
 		android:maxLines="1"
-		android:text="计算机网络"
 		android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
 	<TextView
@@ -39,6 +36,5 @@
 		android:drawableTint="@color/blue_500"
 		android:gravity="center"
 		android:maxLines="1"
-		android:text="教3-303"
 		android:textColor="@color/blue_500"/>
 </RelativeLayout>
