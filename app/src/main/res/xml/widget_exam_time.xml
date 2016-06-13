@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="250dp"
     android:minHeight="110dp"
-    android:previewImage="@mipmap/ic_launcher"
+    android:previewImage="@drawable/widget_exam_pre"
     android:initialLayout="@layout/widget_exam_time"
     android:resizeMode="horizontal|vertical"
     android:configure="com.rdc.gduthelper.utils.appwidget.exam.ExamWidgetConfigActivity"
