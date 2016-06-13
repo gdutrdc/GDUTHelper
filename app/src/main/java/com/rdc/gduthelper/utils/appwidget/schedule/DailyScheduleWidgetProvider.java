@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -83,11 +84,9 @@ public class DailyScheduleWidgetProvider extends AppWidgetProvider {
 	}
 
 	private void initWidget(Context context, AppWidgetManager appWidgetManager,
-	                        int appwidgetId, ScheduleConfig config) {
+	                        int appWidgetId, ScheduleConfig config) {
 		final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-		ScheduleDBHelper helper = new ScheduleDBHelper(context);
-		ArrayList<Lesson> lessons = helper.getLessonList(config.getTerm(), config.getId());
 		String[] weekdays = context.getResources().getStringArray(R.array.weekdays);
 
 		Calendar firstWeek = Calendar.getInstance();
@@ -99,36 +98,20 @@ public class DailyScheduleWidgetProvider extends AppWidgetProvider {
 
 		Calendar today = Calendar.getInstance();
 		Uri uri = Uri.parse(WidgetConfigProvider.WIDGET_CONFIG_CONTENT_URI);
-		Cursor cursor = context.getContentResolver()
-				.query(uri, null, "widget_id = ?", new String[]{appwidgetId + ""}, null);
-		if (cursor == null) {
-			Log.e(TAG, "Cursor is null while querying Uri(" + uri.toString() + ")");
-			return;
-		}
-		if (cursor.getCount() == 0) {
+		Cursor cursor = context.getContentResolver().query(uri, null,
+				"widget_id = ?", new String[]{appWidgetId + ""}, null);
+		if (cursor != null) {
 			ContentValues contentValues = new ContentValues();
-			contentValues.put("widget_id", appwidgetId);
+			contentValues.put("widget_id", appWidgetId);
 			contentValues.put("calendar", format.format(today.getTime()));
-			context.getContentResolver().insert(uri, contentValues);
-		} else {
-			cursor.moveToFirst();
-			String calendar = cursor.getString(1);
-			Date configDate = null;
-			try {
-				configDate = format.parse(calendar);
-			} catch (ParseException e) {
-				e.printStackTrace();
+			if (cursor.getCount() > 0) {
+				context.getContentResolver().update(uri, contentValues,
+						"widget_id = ?", new String[]{appWidgetId + ""});
+			} else {
+				context.getContentResolver().insert(uri, contentValues);
 			}
-			if (configDate != null)
-				today.setTime(configDate);
+			cursor.close();
 		}
-		cursor.close();
-
-		TreeMap<LessonTACR, Lesson> todaysLessons = LessonUtils
-				.calculateTodaysLessons(firstWeek, today, lessons);
-
-		Bundle data = new Bundle();
-		data.putSerializable("todaysLessons", todaysLessons);
 
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
 				R.layout.widget_schedule_daily);
@@ -138,35 +121,33 @@ public class DailyScheduleWidgetProvider extends AppWidgetProvider {
 		remoteViews.setTextViewText(R.id.widget_schedule_weekday,
 				weekdays[today.get(Calendar.DAY_OF_WEEK) - 1]);
 
-		Log.e(TAG, format.format(today.getTime()) + " " + todaysLessons.size());
-
 		remoteViews.setOnClickPendingIntent(R.id.widget_schedule_pre,
-				createClickIntent(context, appwidgetId, 1));
+				createClickIntent(context, appWidgetId, 1));
 		remoteViews.setOnClickPendingIntent(R.id.widget_schedule_restore,
-				createClickIntent(context, appwidgetId, 0));
+				createClickIntent(context, appWidgetId, 0));
 		remoteViews.setOnClickPendingIntent(R.id.widget_schedule_next,
-				createClickIntent(context, appwidgetId, 2));
-
-		remoteViews.setEmptyView(R.id.widget_schedule_daily_list, R.id.widget_schedule_daily_empty_view);
+				createClickIntent(context, appWidgetId, 2));
 
 		Intent adapter = new Intent(context, DailyScheduleWidgetService.class);
-		adapter.putExtra("data", data);
-		adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appwidgetId);
+		adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 		adapter.setData(Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME)));
 
 		remoteViews.setRemoteAdapter(R.id.widget_schedule_daily_list, adapter);
 
-		appWidgetManager.updateAppWidget(appwidgetId, remoteViews);
+		remoteViews.setEmptyView(R.id.widget_schedule_daily_list, R.id.widget_schedule_daily_empty_view);
+
+		appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 	}
 
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
-		super.onDeleted(context, appWidgetIds);
+		Uri uri = Uri.parse(WidgetConfigProvider.WIDGET_CONFIG_CONTENT_URI);
+		context.getContentResolver().delete(uri, "widget_id = ?", new String[]{appWidgetIds[0] + ""});
 	}
 
 	private PendingIntent createClickIntent(Context context, int appWidgetId, int selection) {
 		Intent click = new Intent();
-		click.putExtra("widget_id", appWidgetId);
+		click.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 		switch (selection) {
 			case 0:
 				click.setAction(ACTION_RESTORE);
@@ -178,7 +159,7 @@ public class DailyScheduleWidgetProvider extends AppWidgetProvider {
 				click.setAction(ACTION_NEXT);
 				break;
 		}
-		return PendingIntent.getBroadcast(context, 0, click, 0);
+		return PendingIntent.getBroadcast(context, 0, click, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
 	@Override
@@ -204,7 +185,7 @@ public class DailyScheduleWidgetProvider extends AppWidgetProvider {
 		if (flag) {
 			Uri uri = Uri.parse(WidgetConfigProvider.WIDGET_CONFIG_CONTENT_URI);
 			final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-			int appWidgetId = intent.getIntExtra("widget_id", -1);
+			int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 			if (appWidgetId == -1)
 				return;
 
@@ -244,9 +225,6 @@ public class DailyScheduleWidgetProvider extends AppWidgetProvider {
 				cursor.close();
 			}
 
-			AppWidgetManager.getInstance(context)
-					.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_schedule_daily_list);
-
 			updateTopTitle(context, appWidgetId);
 		}
 	}
@@ -271,7 +249,7 @@ public class DailyScheduleWidgetProvider extends AppWidgetProvider {
 		alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 	}
 
-	private void updateTopTitle(Context context, int appwidgetId) {
+	private void updateTopTitle(Context context, int appWidgetId) {
 		Uri uri = Uri.parse(WidgetConfigProvider.SCHEDULE_CONFIG_CONTENT_URI);
 		String user = context.getSharedPreferences(
 				context.getPackageName() + "_preferences", Context.MODE_MULTI_PROCESS)
@@ -284,6 +262,7 @@ public class DailyScheduleWidgetProvider extends AppWidgetProvider {
 				.query(uri, null, "id = ?", new String[]{user.split(";")[0]}, null);
 		ScheduleConfig config = null;
 
+		if (cursor == null) return;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			config = new ScheduleConfig();
@@ -297,10 +276,9 @@ public class DailyScheduleWidgetProvider extends AppWidgetProvider {
 			Log.e(TAG, "config is null while querying Uri(" + uri.toString() + ")");
 			return;
 		}
-
 		final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-		final String[] weekdays = context.getResources().getStringArray(R.array.weekdays);
+		String[] weekdays = context.getResources().getStringArray(R.array.weekdays);
 
 		Calendar firstWeek = Calendar.getInstance();
 		try {
@@ -312,16 +290,16 @@ public class DailyScheduleWidgetProvider extends AppWidgetProvider {
 		Calendar today = Calendar.getInstance();
 		Uri configUri = Uri.parse(WidgetConfigProvider.WIDGET_CONFIG_CONTENT_URI);
 		Cursor configCursor = context.getContentResolver()
-				.query(configUri, null, "widget_id = ?", new String[]{appwidgetId + ""}, null);
+				.query(configUri, null, "widget_id = ?", new String[]{appWidgetId + ""}, null);
 		if (configCursor == null) {
-			Log.e(TAG, "Cursor is null while querying Uri(" + uri.toString() + ")");
+			Log.e(TAG, "Cursor is null while querying Uri(" + configUri.toString() + ")");
 			return;
 		}
 		if (configCursor.getCount() == 0) {
 			ContentValues contentValues = new ContentValues();
-			contentValues.put("widget_id", appwidgetId);
+			contentValues.put("widget_id", appWidgetId);
 			contentValues.put("calendar", format.format(today.getTime()));
-			context.getContentResolver().insert(uri, contentValues);
+			context.getContentResolver().insert(configUri, contentValues);
 		} else {
 			configCursor.moveToFirst();
 			String calendar = configCursor.getString(1);
@@ -344,14 +322,23 @@ public class DailyScheduleWidgetProvider extends AppWidgetProvider {
 		remoteViews.setTextViewText(R.id.widget_schedule_weekday,
 				weekdays[today.get(Calendar.DAY_OF_WEEK) - 1]);
 
-
 		remoteViews.setOnClickPendingIntent(R.id.widget_schedule_pre,
-				createClickIntent(context, appwidgetId, 1));
+				createClickIntent(context, appWidgetId, 1));
 		remoteViews.setOnClickPendingIntent(R.id.widget_schedule_restore,
-				createClickIntent(context, appwidgetId, 0));
+				createClickIntent(context, appWidgetId, 0));
 		remoteViews.setOnClickPendingIntent(R.id.widget_schedule_next,
-				createClickIntent(context, appwidgetId, 2));
+				createClickIntent(context, appWidgetId, 2));
 
-		AppWidgetManager.getInstance(context).updateAppWidget(appwidgetId, remoteViews);
+		Intent adapter = new Intent(context, DailyScheduleWidgetService.class);
+		adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+		adapter.setData(Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME)));
+
+		remoteViews.setRemoteAdapter(R.id.widget_schedule_daily_list, adapter);
+
+		remoteViews.setEmptyView(R.id.widget_schedule_daily_list, R.id.widget_schedule_daily_empty_view);
+
+		AppWidgetManager manager = AppWidgetManager.getInstance(context);
+		manager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_schedule_daily_list);
+		manager.updateAppWidget(new ComponentName(context, DailyScheduleWidgetProvider.class), remoteViews);
 	}
 }

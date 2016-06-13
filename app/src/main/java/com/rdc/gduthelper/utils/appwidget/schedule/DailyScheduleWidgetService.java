@@ -43,9 +43,6 @@ public class DailyScheduleWidgetService extends RemoteViewsService {
 	@Override
 	public RemoteViewsFactory onGetViewFactory(Intent intent) {
 		ListRemoteViewsFactory factory = new ListRemoteViewsFactory();
-		Bundle data = intent.getBundleExtra("data");
-		Serializable serializable = data.getSerializable("todaysLessons");
-		todaysLessons = (Map<LessonTACR, Lesson>) data.getSerializable("todaysLessons");
 		appwidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 				AppWidgetManager.INVALID_APPWIDGET_ID);
 		return factory;
@@ -60,6 +57,8 @@ public class DailyScheduleWidgetService extends RemoteViewsService {
 
 		@Override
 		public void onDataSetChanged() {
+			Log.e(TAG,"onDataSetChanged");
+
 			final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 			Uri uri = Uri.parse(WidgetConfigProvider.SCHEDULE_CONFIG_CONTENT_URI);
 			String user = getSharedPreferences(
@@ -89,7 +88,6 @@ public class DailyScheduleWidgetService extends RemoteViewsService {
 
 			ScheduleDBHelper helper = new ScheduleDBHelper(DailyScheduleWidgetService.this);
 			ArrayList<Lesson> lessons = helper.getLessonList(config.getTerm(), config.getId());
-			String[] weekdays = getResources().getStringArray(R.array.weekdays);
 
 			Calendar firstWeek = Calendar.getInstance();
 			try {
@@ -135,7 +133,7 @@ public class DailyScheduleWidgetService extends RemoteViewsService {
 
 		@Override
 		public int getCount() {
-			Log.e(TAG, todaysLessons.size() + "");
+			Log.e(TAG, "lessonSize:" + todaysLessons.size());
 			return todaysLessons.size();
 		}
 
