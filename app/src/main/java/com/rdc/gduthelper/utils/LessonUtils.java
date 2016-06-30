@@ -334,6 +334,15 @@ public class LessonUtils {
 		return null;
 	}
 
+	public static boolean isLessonCode(String lessonCode) {
+		if (lessonCode.length() != 33)
+			return false;
+		String[] data = lessonCode.split("-");
+		if (data.length != 6)
+			return false;
+		return true;
+	}
+
 	public static ArrayList<Lesson> getLessonList(String s) {
 		ArrayList<Lesson> lessonList = new ArrayList<>();
 		String[] split = s.split("<li>");
@@ -342,9 +351,10 @@ public class LessonUtils {
 				continue;
 			Lesson lesson = new Lesson();
 			int indexXk = string.indexOf("xkkh=") + 5;
-			lesson.setLessonCode(string.substring(indexXk, indexXk + 33));
+			lesson.setLessonCode(string.substring(indexXk, string.indexOf("&xh=")));
 			lesson.setLessonName(string.substring(string.indexOf("GetMc('") + 7, string.indexOf("');\"")));
-			lessonList.add(lesson);
+			if (isLessonCode(lesson.getLessonCode()))
+				lessonList.add(lesson);
 		}
 		return lessonList;
 	}

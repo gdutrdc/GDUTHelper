@@ -1,7 +1,5 @@
 package com.rdc.gduthelper.net.api;
 
-import android.util.Log;
-
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Evaluation;
 import com.rdc.gduthelper.net.ApiHelper;
@@ -59,14 +57,16 @@ public class SaveEvaluation extends BaseRunnable {
 					+ URLEncoder.encode(GDUTHelperApp.viewState, "iso-8859-1")
 					+ "&pjkc=" + lessonCode;
 			for (int i = 2; i <= evaluation.getChoices(); i++) {
-				if (i == 2)
-					data += "&DataGrid1%3A_ctl" + i + "%3AJS1="
-							+ URLEncoder.encode(defaultEval, "gbk")
-							+ "&DataGrid1%3A_ctl" + i + "%3Atxtjs1=";
-				else
-					data += "&DataGrid1%3A_ctl" + i + "%3AJS1="
-							+ URLEncoder.encode(score, "gbk")
-							+ "&DataGrid1%3A_ctl" + i + "%3Atxtjs1=";
+				for (int j = 1; j <= evaluation.getTeacherNums(); j++)
+					if (i == 2) {
+						data += "&DataGrid1%3A_ctl" + i + "%3AJS" + j + "="
+								+ URLEncoder.encode(defaultEval, "gbk")
+								+ "&DataGrid1%3A_ctl" + i + "%3Atxtjs" + j + "=";
+					} else {
+						data += "&DataGrid1%3A_ctl" + i + "%3AJS" + j + "="
+								+ URLEncoder.encode(score, "gbk")
+								+ "&DataGrid1%3A_ctl" + i + "%3Atxtjs" + j + "=";
+					}
 				//&DataGrid1%3A_ctl9%3AJS1=5%28%D3%C5%D0%E3%29
 				//&DataGrid1%3A_ctl9%3Atxtjs1=
 			}

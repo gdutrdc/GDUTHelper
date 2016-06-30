@@ -12,7 +12,16 @@ public class Evaluation {
 	private int choices;
 	private boolean showScore = false;
 	private boolean isSelected = false;
+	private int teacherNums = 0;
 	private int scoreColor;
+
+	public int getTeacherNums() {
+		return teacherNums;
+	}
+
+	public void setTeacherNums(int teacherNums) {
+		this.teacherNums = teacherNums;
+	}
 
 	public int getChoices() {
 		return choices;
