@@ -26,10 +26,6 @@ public class Settings {
 	public static final String REMEMBER_USER_KEY = GDUTHelperApp.getInstance().getString(R.string.remember_user_key);
 	public static final String ZB_TEXT_KEY = GDUTHelperApp.getInstance().getString(R.string.zb_text_key);
 	public static final String REMEMBER_USER_DATA_KEY = GDUTHelperApp.getInstance().getString(R.string.remember_user_data_key);
-	//	public static final String SCHEDULE_CHOOSE_TERM_KEY = GDUTHelperApp.getInstance().getString(R.string.schedule_choose_term_key);
-//	public static final String SCHEDULE_FIRST_WEEK_KEY = GDUTHelperApp.getInstance().getString(R.string.schedule_first_week_key);
-//	public static final String SCHEDULE_CURRENT_WEEK_KEY = GDUTHelperApp.getInstance().getString(R.string.schedule_current_week_key);
-//	public static final String SCHEDULE_CARD_COLORS_KEY = GDUTHelperApp.getInstance().getString(R.string.schedule_card_colors_key);
 	public static final String SCHEDULE_BACKGROUND_KEY = GDUTHelperApp.getInstance().getString(R.string.schedule_background_key);
 	public static final String COOKIE = "cookie";
 	public static final String USE_DX_KEY = GDUTHelperApp.getInstance().getString(R.string.use_dx_key);

@@ -140,6 +140,8 @@ public class MainActivity extends BaseActivity {
 				startActivity(new Intent(this, LoginActivity.class));
 				GDUTHelperApp.userXh = null;
 				GDUTHelperApp.userXm = null;
+				GDUTHelperApp.cookie = null;
+				GDUTHelperApp.getSettings().setCookie(null);
 				GDUTHelperApp.setEvaluationList(new ArrayList<Lesson>());
 				break;
 		}
