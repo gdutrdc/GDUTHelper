@@ -41,6 +41,8 @@ public class IntoGetExamTime extends BaseRunnable {
 			boolean gotYear = false, gotTerm = false, isExam = false;
 			ArrayList<String> years = null, terms = null;
 			ArrayList<Exam> exams = null;
+			int whichYear = 0;
+			int whichTerm = 0;
 			while ((s = in.readLine()) != null) {
 				sb.append(s);
 				sb.append("\n");
@@ -56,6 +58,8 @@ public class IntoGetExamTime extends BaseRunnable {
 						gotYear = false;
 					} else {
 						String[] temp = s.split(">");
+						if (s.contains("selected=\"selected\""))
+							whichYear = years.size();
 						if (temp.length > 1 && temp[1].length() >= 9)
 							years.add(temp[1].substring(0, 9));
 					}
@@ -67,6 +71,8 @@ public class IntoGetExamTime extends BaseRunnable {
 						gotTerm = false;
 					} else {
 						String[] temp = s.split(">");
+						if (s.contains("selected=\"selected\""))
+							whichTerm = terms.size();
 						if (temp.length > 1 && temp[1].length() >= 1) {
 							terms.add(temp[1].substring(0, 1));
 						}
@@ -77,7 +83,7 @@ public class IntoGetExamTime extends BaseRunnable {
 						isExam = false;
 						break;
 					}
-					if(exams == null)
+					if (exams == null)
 						exams = new ArrayList<>();
 					String[] datas = s.split("</td>");
 					Exam exam = new Exam();
@@ -87,7 +93,7 @@ public class IntoGetExamTime extends BaseRunnable {
 					exam.setExamTime(datas[3].substring(4, datas[3].length()));
 					exam.setExamPosition(datas[4].substring(4, datas[4].length()));
 					exam.setExamType(datas[5].substring(4, datas[5].length()));
-					exam.setExamSeat(datas[6].substring(4,datas[6].length()));
+					exam.setExamSeat(datas[6].substring(4, datas[6].length()));
 					exam.setCampus(datas[7].substring(4, datas[7].length()));
 					exams.add(exam);
 					in.readLine();
@@ -108,7 +114,9 @@ public class IntoGetExamTime extends BaseRunnable {
 			try {
 				jsonObject = new JSONObject();
 				jsonObject.put("years", SerializeUtil.serialize(years));
+				jsonObject.put("which_year", whichYear);
 				jsonObject.put("terms", SerializeUtil.serialize(terms));
+				jsonObject.put("which_term", whichTerm);
 				jsonObject.put("exams", SerializeUtil.serialize(exams));
 			} catch (JSONException e) {
 				jsonObject = null;

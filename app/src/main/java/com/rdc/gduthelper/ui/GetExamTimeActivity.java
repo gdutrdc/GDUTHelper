@@ -86,7 +86,10 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 						final ArrayList<Exam> exams =
 								(ArrayList<Exam>) SerializeUtil.deSerialization(jsonObject.getString("exams"));
 
-						if(exams == null)
+						final int whichYear = jsonObject.getInt("which_year");
+						final int whichTerm = jsonObject.getInt("which_term");
+
+						if (exams == null)
 							return;
 						Collections.sort(exams, new Comparator<Exam>() {
 							@Override
@@ -106,12 +109,16 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 												android.R.id.text1, terms.toArray());
 								termsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 								mTermsSpinner.setAdapter(termsAdapter);
+								mPreTerm = whichTerm;
+								mTermsSpinner.setSelection(whichTerm);
 
 								ArrayAdapter<Object> yearsAdapter = new ArrayAdapter<Object>
 										(GetExamTimeActivity.this, R.layout.spinner_item,
 												android.R.id.text1, years.toArray());
 								yearsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 								mYearsSpinner.setAdapter(yearsAdapter);
+								mPreYear = whichYear;
+								mYearsSpinner.setSelection(whichYear);
 
 								if (mExamTimeAdapter == null) {
 									mExamTimeAdapter = new ExamTimeAdapter(GetExamTimeActivity.this);
@@ -126,11 +133,7 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 								mExamTimeAdapter.notifyDataSetChanged();
 							}
 						});
-					} catch (JSONException e) {
-						e.printStackTrace();
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
+					} catch (JSONException | ClassNotFoundException | IOException e) {
 						e.printStackTrace();
 					}
 				}
@@ -242,9 +245,7 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 					ArrayList<Exam> list = null;
 					try {
 						list = (ArrayList<Exam>) SerializeUtil.deSerialization(obj.toString());
-					} catch (IOException e) {
-						e.printStackTrace();
-					} catch (ClassNotFoundException e) {
+					} catch (IOException | ClassNotFoundException e) {
 						e.printStackTrace();
 					}
 					mExamTimeAdapter.setExams(list);
