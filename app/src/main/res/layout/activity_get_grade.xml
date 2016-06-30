@@ -1,111 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/grey_50">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey_50">
 
-    <include layout="@layout/toolbar" />
+	<include layout="@layout/toolbar"/>
 
-    <LinearLayout
-        android:id="@+id/grade_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="?attr/colorPrimary"
-        android:orientation="vertical"
-        android:padding="8dp">
+	<LinearLayout
+		android:id="@+id/grade_bottom"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:background="?attr/colorPrimary"
+		android:orientation="vertical"
+		android:padding="8dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="56dp"
-            android:orientation="horizontal">
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="56dp"
+			android:orientation="horizontal">
 
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/grade_year_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:popupTheme="@style/Theme.AppCompat.Light"
-                app:theme="@style/Theme.AppCompat" />
+			<android.support.v7.widget.AppCompatSpinner
+				android:id="@+id/grade_year_spinner"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:popupTheme="@style/Theme.AppCompat.Light"
+				app:theme="@style/Theme.AppCompat"/>
 
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/grade_term_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:popupTheme="@style/Theme.AppCompat.Light"
-                app:theme="@style/Theme.AppCompat" />
+			<android.support.v7.widget.AppCompatSpinner
+				android:id="@+id/grade_term_spinner"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:popupTheme="@style/Theme.AppCompat.Light"
+				app:theme="@style/Theme.AppCompat"/>
 
-        </LinearLayout>
-
-
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.AppCompatRadioButton
-                android:id="@+id/grade_get_term"
-                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="按学期查询"
-                android:textColor="@android:color/white"
-                app:buttonTint="@android:color/white"
-                app:theme="@style/Theme.AppCompat" />
-
-            <android.support.v7.widget.AppCompatRadioButton
-                android:id="@+id/grade_get_year"
-                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="按学年查询"
-                android:textColor="@android:color/white"
-                app:buttonTint="@android:color/white"
-                app:theme="@style/Theme.AppCompat" />
-
-            <android.support.v7.widget.AppCompatRadioButton
-                android:id="@+id/grade_get_all"
-                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="在校成绩查询"
-                android:textColor="@android:color/white"
-                app:buttonTint="@android:color/white"
-                app:theme="@style/Theme.AppCompat" />
-        </RadioGroup>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/grade_point"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:background="#12121212"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="平均绩点:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+		</LinearLayout>
 
 
-    <ListView
-        android:id="@+id/grade_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/grade_bottom"
-        android:layout_below="@id/grade_point"
-        android:choiceMode="none" />
+		<RadioGroup
+			android:id="@+id/grade_bottom_rg"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/grade_fab"
-        style="@style/GetGradeFABStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/grade_bottom"
-        android:layout_alignParentRight="true"
-        android:onClick="onClick"
-        app:srcCompat="@drawable/ic_search_white_24dp" />
+			<android.support.v7.widget.AppCompatRadioButton
+				android:id="@+id/grade_get_term"
+				style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:singleLine="true"
+				android:text="按学期查询"
+				android:textColor="@android:color/white"
+				app:buttonTint="@android:color/white"
+				app:theme="@style/Theme.AppCompat"/>
+
+			<android.support.v7.widget.AppCompatRadioButton
+				android:id="@+id/grade_get_year"
+				style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:singleLine="true"
+				android:text="按学年查询"
+				android:textColor="@android:color/white"
+				app:buttonTint="@android:color/white"
+				app:theme="@style/Theme.AppCompat"/>
+
+			<android.support.v7.widget.AppCompatRadioButton
+				android:id="@+id/grade_get_all"
+				style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:singleLine="true"
+				android:text="在校成绩查询"
+				android:textColor="@android:color/white"
+				app:buttonTint="@android:color/white"
+				app:theme="@style/Theme.AppCompat"/>
+		</RadioGroup>
+	</LinearLayout>
+
+	<TextView
+		android:id="@+id/grade_point"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/toolbar"
+		android:background="#12121212"
+		android:gravity="center"
+		android:padding="8dp"
+		android:text="平均绩点:"
+		android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+
+	<ListView
+		android:id="@+id/grade_list"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_above="@id/grade_bottom"
+		android:layout_below="@id/grade_point"
+		android:choiceMode="none"/>
+
 </RelativeLayout>

@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +39,8 @@ import java.util.Calendar;
 /**
  * Created by seasonyuu on 15/8/28.
  */
-public class GetGradeActivity extends BaseActivity {
+public class GetGradeActivity extends BaseActivity
+		implements RadioGroup.OnCheckedChangeListener, AdapterView.OnItemSelectedListener {
 	private final String TAG = GetGradeActivity.class.getSimpleName();
 	private boolean firstLoad = true;
 
@@ -49,6 +51,35 @@ public class GetGradeActivity extends BaseActivity {
 	private ProgressDialog progressDialog;
 	private AlertDialog zbDialog;
 	private View zbDialogView;
+
+	private GradeConfig mConfig;
+	private GradeConfig lastConfig;
+
+	private class GradeConfig {
+		String year = "";
+		String term = "";
+		int type = 3; // 1表示学期，2表示学年，3表示在校
+
+		GradeConfig(GradeConfig config) {
+			if (config != null) {
+				this.year = config.year;
+				this.term = config.term;
+				this.type = config.type;
+			}
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (!(o instanceof GradeConfig))
+				return false;
+			GradeConfig compare = (GradeConfig) o;
+			if (!compare.year.equals(year))
+				return false;
+			if (!compare.term.equals(term))
+				return false;
+			return compare.type == type;
+		}
+	}
 
 	private Spinner mYearSpinner;
 	private Spinner mTermSpinner;
@@ -109,6 +140,14 @@ public class GetGradeActivity extends BaseActivity {
 		mYearSpinner = (Spinner) findViewById(R.id.grade_year_spinner);
 		mTermSpinner = (Spinner) findViewById(R.id.grade_term_spinner);
 
+		mYearSpinner.setOnItemSelectedListener(this);
+		mTermSpinner.setOnItemSelectedListener(this);
+
+		mConfig = new GradeConfig(null);
+		lastConfig = new GradeConfig(mConfig);
+
+		((RadioGroup) findViewById(R.id.grade_bottom_rg)).setOnCheckedChangeListener(this);
+
 		((AppCompatRadioButton) findViewById(R.id.grade_get_all)).setChecked(true);
 
 		initHandler();
@@ -150,6 +189,7 @@ public class GetGradeActivity extends BaseActivity {
 						mYearSpinner.setAdapter(yearAdapter);
 						if (section != -1) {
 							mYearSpinner.setSelection(section);
+							mConfig.year = mYearSpinner.getItemAtPosition(section).toString();
 						}
 
 						ArrayAdapter<String> termAdapter = new ArrayAdapter<String>(GetGradeActivity.this, R.layout.spinner_item);
@@ -157,6 +197,10 @@ public class GetGradeActivity extends BaseActivity {
 						for (String s : spinnerData[1].split(","))
 							termAdapter.add(s);
 						mTermSpinner.setAdapter(termAdapter);
+						mConfig.term = "1";
+						mConfig.type = 3;
+
+						lastConfig = new GradeConfig(mConfig);
 
 						if (firstLoad) {
 							firstLoad = false;
@@ -201,7 +245,6 @@ public class GetGradeActivity extends BaseActivity {
 
 	}
 
-
 	private void IntoGrade() {
 		new Thread(new IntoGrade(new BaseRunnable.GGCallback() {
 			@Override
@@ -212,33 +255,6 @@ public class GetGradeActivity extends BaseActivity {
 				handler.sendMessage(msg);
 			}
 		})).start();
-	}
-
-	public void onClick(View v) {
-		((ListView) findViewById(R.id.grade_list)).smoothScrollToPosition(0);
-
-		Runnable runnable = null;
-		String year = null;
-		String term = null;
-		if (((AppCompatRadioButton) findViewById(R.id.grade_get_term)).isChecked()) {
-			year = mYearSpinner.getSelectedItem().toString();
-			term = mTermSpinner.getSelectedItem().toString();
-		} else if (((AppCompatRadioButton) findViewById(R.id.grade_get_year)).isChecked()) {
-			year = mYearSpinner.getSelectedItem().toString();
-		} else if (((AppCompatRadioButton) findViewById(R.id.grade_get_all)).isChecked()) {
-
-		}
-		runnable = new GetGrade(year, term, new BaseRunnable.GGCallback() {
-			@Override
-			public void onCall(Object obj) {
-				Message msg = Message.obtain();
-				msg.what = 1;
-				msg.obj = obj;
-				handler.sendMessage(msg);
-			}
-		});
-		progressDialog.show();
-		new Thread(runnable).start();
 	}
 
 	@Override
@@ -319,5 +335,71 @@ public class GetGradeActivity extends BaseActivity {
 		for (MenuItem item : menuItemList) {
 			item.setIcon(null);
 		}
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		switch (parent.getId()) {
+			case R.id.grade_year_spinner:
+				mConfig.year = mYearSpinner.getItemAtPosition(position).toString();
+				break;
+			case R.id.grade_term_spinner:
+				mConfig.term = mTermSpinner.getItemAtPosition(position).toString();
+				break;
+		}
+		checkNeedUpdate();
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+
+	}
+
+	private void checkNeedUpdate() {
+		if (mConfig.equals(lastConfig))
+			return;
+
+		((ListView) findViewById(R.id.grade_list)).smoothScrollToPosition(0);
+
+		Runnable runnable = null;
+		String year = null;
+		String term = null;
+		if (((AppCompatRadioButton) findViewById(R.id.grade_get_term)).isChecked()) {
+			year = mYearSpinner.getSelectedItem().toString();
+			term = mTermSpinner.getSelectedItem().toString();
+		} else if (((AppCompatRadioButton) findViewById(R.id.grade_get_year)).isChecked()) {
+			year = mYearSpinner.getSelectedItem().toString();
+		} else if (((AppCompatRadioButton) findViewById(R.id.grade_get_all)).isChecked()) {
+
+		}
+		runnable = new GetGrade(year, term, new BaseRunnable.GGCallback() {
+			@Override
+			public void onCall(Object obj) {
+				Message msg = Message.obtain();
+				msg.what = 1;
+				msg.obj = obj;
+				handler.sendMessage(msg);
+				lastConfig = new GradeConfig(mConfig);
+			}
+		});
+		progressDialog.show();
+		new Thread(runnable).start();
+
+	}
+
+	@Override
+	public void onCheckedChanged(RadioGroup group, int checkedId) {
+		switch (checkedId) {
+			case R.id.grade_get_all:
+				mConfig.type = 3;
+				break;
+			case R.id.grade_get_term:
+				mConfig.type = 1;
+				break;
+			case R.id.grade_get_year:
+				mConfig.type = 2;
+				break;
+		}
+		checkNeedUpdate();
 	}
 }
