@@ -43,7 +43,6 @@
 					android:layout_margin="@dimen/main_box_margin"
 					android:clickable="true"
 					android:foreground="?android:attr/selectableItemBackground"
-					android:onClick="onClick"
 					android:theme="@style/AppTheme.Dark"
 					app:cardBackgroundColor="@color/purple_500"
 					app:cardCornerRadius="4dp">
@@ -108,7 +107,6 @@
 					android:layout_margin="@dimen/main_box_margin"
 					android:clickable="true"
 					android:foreground="?android:attr/selectableItemBackground"
-					android:onClick="onClick"
 					android:theme="@style/AppTheme.Dark"
 					app:cardBackgroundColor="@color/blue_500"
 					app:cardCornerRadius="4dp">
@@ -131,7 +129,6 @@
 					android:layout_margin="@dimen/main_box_margin"
 					android:clickable="true"
 					android:foreground="?android:attr/selectableItemBackground"
-					android:onClick="onClick"
 					android:theme="@style/AppTheme.Dark"
 					app:cardBackgroundColor="@color/teal_500"
 					app:cardCornerRadius="4dp">
@@ -154,7 +151,6 @@
 					android:layout_margin="@dimen/main_box_margin"
 					android:clickable="true"
 					android:foreground="?android:attr/selectableItemBackground"
-					android:onClick="onClick"
 					android:theme="@style/AppTheme.Dark"
 					app:cardBackgroundColor="@color/green_500"
 					app:cardCornerRadius="4dp">
@@ -189,7 +185,6 @@
 					android:layout_margin="@dimen/main_box_margin"
 					android:clickable="true"
 					android:foreground="?android:attr/selectableItemBackground"
-					android:onClick="onClick"
 					android:theme="@style/AppTheme.Dark"
 					app:cardBackgroundColor="@color/amber_500"
 					app:cardCornerRadius="4dp">
@@ -212,7 +207,6 @@
 					android:layout_margin="@dimen/main_box_margin"
 					android:clickable="true"
 					android:foreground="?android:attr/selectableItemBackground"
-					android:onClick="onClick"
 					android:theme="@style/AppTheme.Dark"
 					app:cardBackgroundColor="@color/red_500"
 					app:cardCornerRadius="4dp">

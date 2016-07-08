@@ -24,7 +24,7 @@ import java.util.ArrayList;
 /**
  * Created by seasonyuu on 15/9/8.
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,18 @@ public class MainActivity extends BaseActivity {
 		}
 
 		startSplashAnimation();
+
+		initClickListener();
+	}
+
+	private void initClickListener() {
+		findViewById(R.id.main_get_exam_time).setOnClickListener(this);
+		findViewById(R.id.main_get_grade).setOnClickListener(this);
+		findViewById(R.id.main_get_information).setOnClickListener(this);
+		findViewById(R.id.main_get_level_exam_grade).setOnClickListener(this);
+		findViewById(R.id.main_get_schedule).setOnClickListener(this);
+		findViewById(R.id.main_evaluation).setOnClickListener(this);
+		findViewById(R.id.main_change_password).setOnClickListener(this);
 	}
 
 	private void startSplashAnimation() {
