@@ -132,6 +132,7 @@ public class ManageTermActivity extends BaseActivity
 
 	private void initRecyclerView(List<YearSchedule> yearSchedules) {
 		mAdapter = new ManageTermAdapter(this, yearSchedules, findViewById(R.id.manage_term_empty_view));
+		mAdapter.setWithCard(mSettings.isManageTermCardMode());
 
 		String term = mSettings.getScheduleChooseTerm(ManageTermActivity.this);
 		if (term != null) {
@@ -455,5 +456,22 @@ public class ManageTermActivity extends BaseActivity
 			return super.onKeyDown(keyCode, event);
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_manage_term, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.manage_term_switch_card_mode:
+				mSettings.setManageTermCardMode(!mSettings.isManageTermCardMode());
+				initRecyclerView(mYearSchedules);
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

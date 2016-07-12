@@ -180,6 +180,8 @@
 	<string name="use_dx_key">use_dx</string>
 	<string name="use_dx_tips">修改访问ip将注销当前账号(若已登陆)，并点击点击右上角按钮刷新</string>
 	<string name="licenses">开源协议</string>
+	<string name="manage_term_card_mode_key">manage_term_card_mode</string>
+	<string name="manage_term_switch_card_mode">切换学期显示形式</string>
 	<string name="about">关于</string>
 
 	<!-- 教学质量评价 -->

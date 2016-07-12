@@ -29,6 +29,8 @@ public class Settings {
 	public static final String SCHEDULE_BACKGROUND_KEY = GDUTHelperApp.getInstance().getString(R.string.schedule_background_key);
 	public static final String COOKIE = "cookie";
 	public static final String USE_DX_KEY = GDUTHelperApp.getInstance().getString(R.string.use_dx_key);
+	public static final String MANAGE_TERM_CARD_MODE = GDUTHelperApp.getInstance().getString(R.string.manage_term_card_mode_key);
+
 
 	private SharedPreferences mSharedPreferences;
 
@@ -64,6 +66,16 @@ public class Settings {
 		if (result != null)
 			return result;
 		return GDUTHelperApp.getInstance().getString(R.string.default_zb_text);
+	}
+
+	public boolean isManageTermCardMode() {
+		return mSharedPreferences.getBoolean(MANAGE_TERM_CARD_MODE, true);
+	}
+
+	public void setManageTermCardMode(boolean enable) {
+		SharedPreferences.Editor editor = mSharedPreferences.edit();
+		editor.putBoolean(MANAGE_TERM_CARD_MODE, enable);
+		editor.apply();
 	}
 
 	public boolean needRememberUser() {

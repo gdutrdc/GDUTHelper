@@ -33,6 +33,8 @@ public class ManageTermAdapter extends ExpandableRecyclerAdapter
 
 	private List<YearSchedule> termData;
 
+	private boolean isWithCard = false;
+
 	public ManageTermAdapter(Context context, @NonNull List<YearSchedule> termData, View emptyView) {
 		super(termData);
 		for (YearSchedule yearSchedule : termData) {
@@ -43,7 +45,7 @@ public class ManageTermAdapter extends ExpandableRecyclerAdapter
 
 		if (termData.size() == 0) {
 			selectedPositions = null;
-			selectedPositions = null;
+			selectedPositionsAM = null;
 		} else {
 			selectedPositions = new boolean[termData.size()][10];
 			selectedPositionsAM = new boolean[termData.size()][10];
@@ -65,8 +67,13 @@ public class ManageTermAdapter extends ExpandableRecyclerAdapter
 
 	@Override
 	public ContentViewHolder onCreateChildViewHolder(ViewGroup childViewGroup) {
-		ContentViewHolder holder = new ContentViewHolder(LayoutInflater.from(context)
-				.inflate(R.layout.item_manage_term_content, childViewGroup, false));
+		ContentViewHolder holder = null;
+		if (isWithCard)
+			holder = new ContentViewHolder(LayoutInflater.from(context)
+					.inflate(R.layout.item_manage_term_content, childViewGroup, false));
+		else
+			holder = new ContentViewHolder(LayoutInflater.from(context)
+					.inflate(R.layout.item_manage_term_content_without_card, childViewGroup, false));
 		return holder;
 	}
 
@@ -83,25 +90,30 @@ public class ManageTermAdapter extends ExpandableRecyclerAdapter
 		childViewHolder.childPosition = termLessons.getChildPosition();
 		childViewHolder.groupPosition = termLessons.getParentPosition();
 
+		boolean selected = getSelectedPosition(childViewHolder.groupPosition, childViewHolder.childPosition);
+
+		int color = 0;
 		if (inActionMode)
 			if (selectedPositionsAM != null
 					&& selectedPositionsAM[childViewHolder.groupPosition][childViewHolder.childPosition]) {
-				childViewHolder.title.setBackgroundResource(R.color.purple_500);
+				color = R.color.purple_500;
 			} else
-				childViewHolder.title.setBackgroundResource(R.color.blue_grey_500);
+				color = R.color.blue_grey_500;
 		else {
 			if (selectedPositions != null
 					&& selectedPositions[childViewHolder.groupPosition][childViewHolder.childPosition]) {
-				childViewHolder.title.setBackgroundResource(R.color.pink_a200);
+				color = R.color.pink_a200;
 			} else
-				childViewHolder.title.setBackgroundResource(R.color.blue_grey_500);
+				color = R.color.blue_grey_500;
 		}
 
-
 		childViewHolder.setTitle(termLessons.getTerm(),
-				selectedPositions[childViewHolder.groupPosition][childViewHolder.childPosition]);
+				selectedPositions[childViewHolder.groupPosition][childViewHolder.childPosition], color);
 		childViewHolder.setLessonCount(termLessons.getLessons().size());
 
+		if (!isWithCard)
+			childViewHolder.itemView.setBackgroundResource(selected ? R.color.grey_300 :
+					R.color.transparent);
 	}
 
 	public interface OnChildClickListener {
@@ -123,6 +135,13 @@ public class ManageTermAdapter extends ExpandableRecyclerAdapter
 		this.onChildLongClickListener = onChildLongClickListener;
 	}
 
+	public boolean isWithCard() {
+		return isWithCard;
+	}
+
+	public void setWithCard(boolean withCard) {
+		isWithCard = withCard;
+	}
 
 	public boolean isInActionMode() {
 		return inActionMode;
@@ -226,9 +245,14 @@ public class ManageTermAdapter extends ExpandableRecyclerAdapter
 			itemView.findViewById(R.id.cv_container_manage_term).setOnLongClickListener(this);
 		}
 
-		public void setTitle(String term, boolean current) {
+		public void setTitle(String term, boolean current, int colorRes) {
 			this.title.setText("第" + term.substring(term.length() - 1)
 					+ "学期" + (current ? "(当前)" : ""));
+			if (isWithCard) {
+				this.title.setBackgroundResource(colorRes);
+			} else {
+				this.title.setTextColor(context.getResources().getColor(colorRes));
+			}
 		}
 
 		public void setLessonCount(int lessonCount) {
