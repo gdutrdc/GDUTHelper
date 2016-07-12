@@ -37,25 +37,4 @@ public class ScheduleSettingsActivity extends BaseActivity {
 			week = "1";
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
-			onBackPressed();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void onBackPressed() {
-		Intent intent = new Intent();
-		if (term.equals(mSettings.getScheduleChooseTerm(this))
-				&& week.equals(mSettings.getScheduleCurrentWeek(this))) {
-
-		} else
-			intent.putExtra("need_refresh", true);
-		setResult(0, intent);
-		super.onBackPressed();
-	}
-
 }

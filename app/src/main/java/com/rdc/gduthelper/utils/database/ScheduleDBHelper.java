@@ -73,6 +73,30 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 
 	}
 
+	public int deleteTermLesson(String term) {
+		String xh = GDUTHelperApp.userXh;
+		if (xh == null) {
+			String up = GDUTHelperApp.getSettings().getRememberUser();
+			if (up == null) {
+				return 0;
+			}
+			String[] data = up.split(";", 2);
+			xh = data[0];
+		}
+		return deleteTermLesson(term, xh);
+	}
+
+	public int deleteTermLesson(String term, String xh) {
+		int count = 0;
+		SQLiteDatabase db = getWritableDatabase();
+		count += db.delete(TABLE_LESSONS, Column.SELECTION + " = ? and " + Column.XH + " = ?",
+				new String[]{term, xh});
+		count += db.delete(TABLE_LESSON_TIMES, Column.SELECTION + " = ? and " + Column.XH + " = ?",
+				new String[]{term, xh});
+		db.close();
+		return count;
+	}
+
 	public ArrayList<Lesson> getLessonList(String selection, String xh) {
 		ArrayList<Lesson> result = new ArrayList<>();
 		SQLiteDatabase db = getReadableDatabase();

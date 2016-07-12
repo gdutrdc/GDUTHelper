@@ -110,6 +110,10 @@
 			android:authorities="com.rdc.gduthelper.appwidget.provider"
 			android:exported="true"/>
 
+		<activity
+			android:name=".ui.ManageTermActivity"
+			android:label="@string/manage_term">
+		</activity>
 	</application>
 
 </manifest>

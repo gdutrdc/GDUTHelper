@@ -1,33 +1,33 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
+	<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
 
-    <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar" />
+	<style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar"/>
 
-    <style name="AppTheme.Blue" parent="AppTheme">
-        <item name="colorPrimary">@color/blue_500</item>
-        <item name="colorPrimaryDark">@color/blue_700</item>
-        <item name="colorAccent">@color/pink_a200</item>
-    </style>
+	<style name="AppTheme.Blue" parent="AppTheme">
+		<item name="colorPrimary">@color/blue_500</item>
+		<item name="colorPrimaryDark">@color/blue_700</item>
+		<item name="colorAccent">@color/pink_a200</item>
+	</style>
 
-    <style name="AppTheme.Main" parent="AppTheme.Blue">
-        <item name="android:windowBackground">@color/blue_500</item>
-    </style>
+	<style name="AppTheme.Main" parent="AppTheme.Blue">
+		<item name="android:windowBackground">@color/blue_500</item>
+	</style>
 
-    <style name="GetGradeFABStyle">
-        <item name="android:layout_marginBottom">-44dp</item>
-        <item name="android:layout_marginRight">0dp</item>
-        <item name="borderWidth">0dp</item>
-    </style>
+	<style name="GetGradeFABStyle">
+		<item name="android:layout_marginBottom">-44dp</item>
+		<item name="android:layout_marginRight">0dp</item>
+		<item name="borderWidth">0dp</item>
+	</style>
 
-    <style name="GetInfoFABStyle">
-        <item name="android:layout_margin">0dp</item>
-        <item name="borderWidth">0dp</item>
-    </style>
+	<style name="GetInfoFABStyle">
+		<item name="android:layout_margin">0dp</item>
+		<item name="borderWidth">0dp</item>
+	</style>
 
-    <style name="EvaluationFABToolbarStyle">
-        <item name="bottomMargin">0dp</item>
-        <item name="rightMargin">0dp</item>
-    </style>
+	<style name="EvaluationFABToolbarStyle">
+		<item name="bottomMargin">0dp</item>
+		<item name="rightMargin">0dp</item>
+	</style>
 
 </resources>

@@ -4,7 +4,6 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
-    android:orientation="vertical"
     android:elevation="4dp"
     app:popupTheme="@style/Theme.AppCompat.Light"
     app:theme="@style/Theme.AppCompat" />

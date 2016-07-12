@@ -194,8 +194,10 @@ public class Settings {
 			contentValues.put("first_week", config.getFirstWeek());
 		if (config.getCardColors() != null)
 			contentValues.put("card_colors", config.getCardColors());
-
-		context.getContentResolver().update(uri, contentValues, "id = ?", new String[]{config.getId()});
+		if (contentValues.size() > 0)
+			context.getContentResolver().update(uri, contentValues, "id = ?", new String[]{config.getId()});
+		else
+			context.getContentResolver().delete(uri, "id = ?", new String[]{config.getId()});
 	}
 
 	public void deleteScheduleConfig(Context context, ScheduleConfig config) {

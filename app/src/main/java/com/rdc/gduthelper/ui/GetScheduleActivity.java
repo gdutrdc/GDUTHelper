@@ -54,7 +54,8 @@ import java.util.Set;
  * Created by seasonyuu on 16/1/4.
  */
 public class GetScheduleActivity extends BaseActivity
-		implements AdapterView.OnItemSelectedListener, WeekScheduleView.OnLessonsClickListener, LessonDetailAdapter.OnButtonClickListener {
+		implements AdapterView.OnItemSelectedListener, WeekScheduleView.OnLessonsClickListener,
+		LessonDetailAdapter.OnButtonClickListener {
 	private AppCompatSpinner mSpinnerYear;
 	private AppCompatSpinner mSpinnerTerm;
 	private AppCompatSpinner mSpinnerWeek;
@@ -73,7 +74,6 @@ public class GetScheduleActivity extends BaseActivity
 
 	private FloatingActionButton mFAB;
 
-	private int themeId;
 	private int fabLocation = 0;
 
 	private Settings mSettings;
@@ -209,9 +209,7 @@ public class GetScheduleActivity extends BaseActivity
 				temp[i] = allColors[j];
 			}
 			target = new int[choosedColors.length];
-			for (int i = 0; i < target.length; i++) {
-				target[i] = temp[i];
-			}
+			System.arraycopy(temp, 0, target, 0, target.length);
 			mWeekScheduleView.setColors(target);
 			refreshData();
 		}
@@ -246,6 +244,13 @@ public class GetScheduleActivity extends BaseActivity
 			new AlertDialog.Builder(this)
 					.setTitle(R.string.tips)
 					.setMessage(R.string.no_local_schedule)
+					.setCancelable(false)
+					.setNegativeButton(R.string.next_time, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialogInterface, int i) {
+							finish();
+						}
+					})
 					.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
@@ -258,6 +263,7 @@ public class GetScheduleActivity extends BaseActivity
 							}
 						}
 					}).show();
+			mWeekScheduleView.setLessons(new ArrayList<Lesson>());
 		} else {
 			mWeekScheduleView.setLessons(lessons);
 		}
@@ -289,16 +295,6 @@ public class GetScheduleActivity extends BaseActivity
 				}
 			}
 		})).start();
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == 0) {
-			boolean needRefresh = data.getBooleanExtra("need_refresh", false);
-			if (needRefresh)
-				refreshData();
-		}
-		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private void getSchedule(final String year, final String term) {

@@ -47,6 +47,11 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 		addPreferencesFromResource(R.xml.schedule_settings);
 
 		mSettings = GDUTHelperApp.getSettings();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 
 		mPrefChooseTerm = findPreference(getResources().getString(R.string.schedule_choose_term_key));
 		mPrefChooseTerm.setSummary(mSettings.getScheduleChooseTerm(getActivity()));
@@ -81,19 +86,7 @@ public class ScheduleSettingsFragment extends PreferenceFragment implements Pref
 	public boolean onPreferenceClick(Preference preference) {
 		switch (preference.getKey()) {
 			case "schedule_choose_term":
-				ScheduleDBHelper helper = new ScheduleDBHelper(getActivity());
-				final String[] terms = helper.getOptionalTerms();
-				new AlertDialog.Builder(getActivity())
-						.setItems(terms, new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								mSettings.setScheduleChooseTerm(getActivity(), terms[which]);
-								mPrefChooseTerm.setSummary(terms[which]);
-							}
-						})
-						.setTitle(R.string.choose_terms)
-						.setPositiveButton(R.string.cancel, null)
-						.show();
+				startActivity(new Intent(getActivity(), ManageTermActivity.class));
 				break;
 			case "schedule_current_week":
 				final String[] weeks = new String[22];
