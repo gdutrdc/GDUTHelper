@@ -69,6 +69,9 @@
 		<activity
 			android:name=".ui.LevelExamActivity"
 			android:label="@string/get_level_exam_grade"/>
+		<activity
+			android:name=".ui.ManageTermActivity"
+			android:label="@string/manage_term"/>
 
 		<receiver
 			android:name=".utils.appwidget.exam.ExamWidgetProvider"
@@ -110,10 +113,6 @@
 			android:authorities="com.rdc.gduthelper.appwidget.provider"
 			android:exported="true"/>
 
-		<activity
-			android:name=".ui.ManageTermActivity"
-			android:label="@string/manage_term">
-		</activity>
 	</application>
 
 </manifest>

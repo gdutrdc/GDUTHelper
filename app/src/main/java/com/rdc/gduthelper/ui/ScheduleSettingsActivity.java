@@ -12,11 +12,6 @@ import com.rdc.gduthelper.utils.settings.Settings;
  * Created by seasonyuu on 16/1/21.
  */
 public class ScheduleSettingsActivity extends BaseActivity {
-	private String term;
-	private String week;
-
-	private Settings mSettings;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,12 +24,6 @@ public class ScheduleSettingsActivity extends BaseActivity {
 			getFragmentManager().beginTransaction()
 					.replace(R.id.settings_content, new ScheduleSettingsFragment()).commit();
 		}
-
-		mSettings = GDUTHelperApp.getSettings();
-		term = mSettings.getScheduleChooseTerm(this);
-		week = mSettings.getScheduleCurrentWeek(this);
-		if (week == null)
-			week = "1";
 	}
 
 }

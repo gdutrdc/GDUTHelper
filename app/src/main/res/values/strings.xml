@@ -183,6 +183,12 @@
 	<string name="manage_term_card_mode_key">manage_term_card_mode</string>
 	<string name="manage_term_switch_card_mode">切换学期显示形式</string>
 	<string name="about">关于</string>
+	<string name="faq">FAQ</string>
+	<string name="check_update">检查更新</string>
+	<string name="fallback">反馈</string>
+	<string name="github_source">GitHub源码</string>
+	<string name="github_url">https://github.com/gdutrdc/GDUTHelper</string>
+	<string name="github_issue">https://github.com/gdutrdc/GDUTHelper/issues</string>
 
 	<!-- 教学质量评价 -->
 	<string name="select_all_or_not">全选/反选</string>
@@ -208,10 +214,4 @@
 	<string name="default_zb_text">我特么这次考试$name才得了$grade！</string>
 	<string name="zb_text_key">ZBText</string>
 
-	<string-array name="help_list">
-		<item>FAQ</item>
-		<item>开源协议</item>
-		<item>反馈</item>
-		<item>关于</item>
-	</string-array>
 </resources>
