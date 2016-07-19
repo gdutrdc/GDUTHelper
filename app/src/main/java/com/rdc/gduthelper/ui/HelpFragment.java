@@ -6,13 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 
 import com.rdc.gduthelper.R;
@@ -71,20 +70,25 @@ public class HelpFragment extends PreferenceFragment implements Preference.OnPre
 
 				try {
 					JSONObject jsonObject = (JSONObject) msg.obj;
-					String changeLog = jsonObject.getString("change_log");
 					final String url = jsonObject.getString("newest_version");
-					new AlertDialog.Builder(activity)
-							.setTitle("新版本可下载")
-							.setMessage(changeLog)
-							.setPositiveButton("开始下载", new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialogInterface, int i) {
-									Uri uri = Uri.parse(url);
-									activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
-								}
-							})
-							.setNegativeButton(R.string.next_time, null)
-							.show();
+					if (url.equals("null")) {
+						Snackbar.make(activity.findViewById(R.id.help_content),
+								R.string.already_newest, Snackbar.LENGTH_SHORT).show();
+					} else {
+						String changeLog = jsonObject.getString("change_log");
+						new AlertDialog.Builder(activity)
+								.setTitle("新版本可下载")
+								.setMessage(changeLog)
+								.setPositiveButton("开始下载", new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialogInterface, int i) {
+										Uri uri = Uri.parse(url);
+										activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+									}
+								})
+								.setNegativeButton(R.string.next_time, null)
+								.show();
+					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

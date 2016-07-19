@@ -185,6 +185,7 @@
 	<string name="about">关于</string>
 	<string name="faq">FAQ</string>
 	<string name="check_update">检查更新</string>
+	<string name="already_newest">已经是最新版本了</string>
 	<string name="fallback">反馈</string>
 	<string name="github_source">GitHub源码</string>
 	<string name="github_url">https://github.com/gdutrdc/GDUTHelper</string>
