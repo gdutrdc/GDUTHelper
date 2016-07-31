@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -89,50 +90,55 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 						final int whichYear = jsonObject.getInt("which_year");
 						final int whichTerm = jsonObject.getInt("which_term");
 
-						if (exams == null)
-							return;
-						Collections.sort(exams, new Comparator<Exam>() {
-							@Override
-							public int compare(Exam lhs, Exam rhs) {
-								if (lhs.getExamCount() < rhs.getExamCount() || rhs.getExamCount() < 0)
-									return -1;
-								else if (lhs.getExamCount() > rhs.getExamCount() || lhs.getExamCount() < 0)
-									return 1;
-								return 0;
-							}
-						});
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								ArrayAdapter<Object> termsAdapter = new ArrayAdapter<Object>
-										(GetExamTimeActivity.this, R.layout.spinner_item,
-												android.R.id.text1, terms.toArray());
-								termsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-								mTermsSpinner.setAdapter(termsAdapter);
-								mPreTerm = whichTerm;
-								mTermsSpinner.setSelection(whichTerm);
+						if (exams == null) {
+							// 此时可能有两种情况，第一种是当前学期还没有任何考试时间可以查询，
+							// 另一种可能是在寒暑假期间，新学期信息还未插入教务系统数据库
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									initSpinner(years, whichYear, terms, whichTerm);
+									mPreTerm = whichTerm;
+									mPreYear = whichYear;
 
-								ArrayAdapter<Object> yearsAdapter = new ArrayAdapter<Object>
-										(GetExamTimeActivity.this, R.layout.spinner_item,
-												android.R.id.text1, years.toArray());
-								yearsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-								mYearsSpinner.setAdapter(yearsAdapter);
-								mPreYear = whichYear;
-								mYearsSpinner.setSelection(whichYear);
+									if (mExamTimeAdapter == null) {
+										mExamTimeAdapter = new ExamTimeAdapter(GetExamTimeActivity.this);
+										mRvExamTimes.setAdapter(mExamTimeAdapter);
+									}
+									getExamTime();
+								}
+							});
+						} else {
+							Collections.sort(exams, new Comparator<Exam>() {
+								@Override
+								public int compare(Exam lhs, Exam rhs) {
+									if (lhs.getExamCount() < rhs.getExamCount() || rhs.getExamCount() < 0)
+										return -1;
+									else if (lhs.getExamCount() > rhs.getExamCount() || lhs.getExamCount() < 0)
+										return 1;
+									return 0;
+								}
+							});
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									initSpinner(years, whichYear, terms, whichTerm);
+									mPreTerm = whichTerm;
+									mPreYear = whichYear;
 
-								if (mExamTimeAdapter == null) {
-									mExamTimeAdapter = new ExamTimeAdapter(GetExamTimeActivity.this);
-									mRvExamTimes.setAdapter(mExamTimeAdapter);
+									if (mExamTimeAdapter == null) {
+										mExamTimeAdapter = new ExamTimeAdapter(GetExamTimeActivity.this);
+										mRvExamTimes.setAdapter(mExamTimeAdapter);
+									}
+									cancelDialog();
+									mExamTimeAdapter.setExams(exams);
+									ExamTimeDBHelper helper = new ExamTimeDBHelper(GetExamTimeActivity.this);
+									for (Exam exam : exams) {
+										helper.insertExamTime(exam);
+									}
+									mExamTimeAdapter.notifyDataSetChanged();
 								}
-								cancelDialog();
-								mExamTimeAdapter.setExams(exams);
-								ExamTimeDBHelper helper = new ExamTimeDBHelper(GetExamTimeActivity.this);
-								for (Exam exam : exams) {
-									helper.insertExamTime(exam);
-								}
-								mExamTimeAdapter.notifyDataSetChanged();
-							}
-						});
+							});
+						}
 					} catch (JSONException | ClassNotFoundException | IOException e) {
 						e.printStackTrace();
 					}
@@ -201,17 +207,7 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 							runOnUiThread(new Runnable() {
 								@Override
 								public void run() {
-									ArrayAdapter<String> termsAdapter = new ArrayAdapter<String>
-											(GetExamTimeActivity.this, R.layout.spinner_item,
-													android.R.id.text1, terms);
-									termsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-									mTermsSpinner.setAdapter(termsAdapter);
-
-									ArrayAdapter<String> yearsAdapter = new ArrayAdapter<String>
-											(GetExamTimeActivity.this, R.layout.spinner_item,
-													android.R.id.text1, years);
-									yearsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-									mYearsSpinner.setAdapter(yearsAdapter);
+									initSpinner(years, -1, terms, -1);
 
 									getExamTime();
 								}
@@ -222,6 +218,37 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 				}
 			}).start();
 		}
+	}
+
+	/**
+	 * 为Spinner设置数据以及选中项
+	 *
+	 * @param years      年份数据
+	 * @param whichYear  选中年份位置，-1表示不更改
+	 * @param terms      学期数据
+	 * @param whichTerms 选中学期位置，-1表示不更改
+	 */
+	private void initSpinner(final List<String> years, final int whichYear, final List<String> terms, final int whichTerms) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				ArrayAdapter<String> termsAdapter = new ArrayAdapter<String>
+						(GetExamTimeActivity.this, R.layout.spinner_item,
+								android.R.id.text1, terms);
+				termsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+				mTermsSpinner.setAdapter(termsAdapter);
+				if (whichTerms != -1)
+					mTermsSpinner.setSelection(whichTerms);
+
+				ArrayAdapter<String> yearsAdapter = new ArrayAdapter<String>
+						(GetExamTimeActivity.this, R.layout.spinner_item,
+								android.R.id.text1, years);
+				yearsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+				mYearsSpinner.setAdapter(yearsAdapter);
+				if (whichYear != -1)
+					mYearsSpinner.setSelection(whichYear);
+			}
+		});
 	}
 
 	private void noLocalToast() {

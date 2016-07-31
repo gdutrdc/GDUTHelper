@@ -51,7 +51,7 @@ public class ExamTimeAdapter extends RecyclerView.Adapter<ExamTimeAdapter.ExamTi
 
 	@Override
 	public int getItemCount() {
-		return exams.size();
+		return exams == null ? 0 : exams.size();
 	}
 
 	public class ExamTimeHolder extends RecyclerView.ViewHolder {

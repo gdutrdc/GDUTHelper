@@ -109,6 +109,7 @@ public class IntoGetExamTime extends BaseRunnable {
 					gotTerm = true;
 				}
 			}
+			System.out.print(sb.toString());
 			in.close();
 			JSONObject jsonObject = null;
 			try {
