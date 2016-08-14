@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+	<include layout="@layout/toolbar"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="48dp"
+		android:gravity="center_vertical"
+		android:orientation="horizontal"
+		android:paddingLeft="16dp"
+		android:paddingRight="16dp">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="课程编号"/>
+
+		<TextView
+			android:id="@+id/add_other_lesson_tv_lesson_code"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="16dp"
+			android:layout_marginRight="16dp"
+			android:text="(2015-2016-1)354354-1351654165-0"/>
+	</LinearLayout>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="0.5dp"
+		android:background="@color/grey_700"/>
+
+	<android.support.design.widget.TextInputLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="16dp"
+		android:layout_marginRight="16dp"
+		android:layout_marginTop="8dp">
+
+		<EditText
+			android:id="@+id/add_other_lesson_et_lesson_name"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/lesson_name"/>
+	</android.support.design.widget.TextInputLayout>
+
+	<android.support.design.widget.TextInputLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="16dp"
+		android:layout_marginRight="16dp"
+		android:layout_marginTop="8dp">
+
+		<EditText
+			android:id="@+id/add_other_lesson_et_lesson_teacher"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/lesson_teacher"/>
+	</android.support.design.widget.TextInputLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="36dp"
+		android:gravity="center_vertical"
+		android:orientation="horizontal">
+
+		<TextView
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_marginLeft="16dp"
+			android:layout_marginRight="16dp"
+			android:layout_weight="1"
+			android:gravity="center_vertical"
+			android:text="@string/lesson_time"
+			android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+			android:textColor="?colorAccent"/>
+
+		<ImageView
+			android:id="@+id/add_other_lesson_btn_add_lesson_time"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="16dp"
+			android:background="?selectableItemBackground"
+			android:clickable="true"
+			android:padding="8dp"
+			android:src="@drawable/ic_add_white_24dp"
+			android:tint="@color/grey_500"/>
+	</LinearLayout>
+
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<android.support.v7.widget.RecyclerView
+			android:id="@+id/add_other_lesson_rv_lesson_times"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:paddingTop="2dp"/>
+
+		<View
+			android:id="@+id/add_other_lesson_shadow"
+			android:layout_width="match_parent"
+			android:layout_height="4dp"
+			android:background="@drawable/shadow_down"
+			android:visibility="gone"/>
+	</FrameLayout>
+
+
+</LinearLayout>

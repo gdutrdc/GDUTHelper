@@ -8,10 +8,12 @@ import com.rdc.gduthelper.bean.LessonTACR;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.TreeMap;
 
@@ -20,6 +22,123 @@ import java.util.TreeMap;
  */
 public class LessonUtils {
 	private static final String TAG = LessonUtils.class.getSimpleName();
+
+	public static String getCompleteWeekTime(int[] weeksArray) {
+		String CTime = "第";
+		boolean flag = false;
+		if (weeksArray == null || weeksArray.length == 0) {
+			return null;
+		}
+		for (int i = 0, j = 0; i < weeksArray.length; i++) {
+			if (i + 1 < weeksArray.length)
+				if (weeksArray[i + 1] - weeksArray[i] == 1)
+					flag = true;
+				else
+					flag = false;
+			else
+				flag = false;
+			if (!flag) {
+				if (i != j)
+					CTime += weeksArray[j] + "-" + weeksArray[i] + ",";
+				else
+					CTime += weeksArray[j] + ",";
+				j = i + 1;
+			}
+		}
+		if (CTime.length() == 1)
+			CTime += "1-" + weeksArray[weeksArray.length - 1] + ",";
+		CTime = CTime.substring(0, CTime.length() - 1) + "周";
+		return CTime;
+	}
+
+	/**
+	 * 把形如 第1-2,4-5,7-9周 拆分开成为不同的项
+	 *
+	 * @param lessonTACR 要拆分的时间教室对象
+	 * @return 拆分后的集合
+	 */
+	private static ArrayList<LessonTACR> splitLessonTACR(LessonTACR lessonTACR) {
+		ArrayList<LessonTACR> lessonTACRs = new ArrayList<>();
+		for (int i = 0, j = 0; i < lessonTACR.getWeek().length; i++) {
+			if (i < lessonTACR.getWeek().length - 1
+					&& lessonTACR.getWeek()[i + 1] - lessonTACR.getWeek()[i] != 1) {
+				int newWeek[] = new int[i - j + 1];
+				System.arraycopy(lessonTACR.getWeek(), j, newWeek, 0, i - j + 1);
+				LessonTACR newLessonTACR = new LessonTACR();
+				newLessonTACR.setLessonCode(lessonTACR.getLessonCode());
+				newLessonTACR.setClassroom(lessonTACR.getClassroom());
+				newLessonTACR.setNum(lessonTACR.getNum());
+				newLessonTACR.setWeekday(lessonTACR.getWeekday());
+				newLessonTACR.setWeek(newWeek);
+				lessonTACRs.add(newLessonTACR);
+				j = i + 1;
+			} else if (i == lessonTACR.getWeek().length - 1) {
+				int newWeek[] = new int[i - j + 1];
+				System.arraycopy(lessonTACR.getWeek(), j, newWeek, 0, i - j + 1);
+				LessonTACR newLessonTACR = new LessonTACR();
+				newLessonTACR.setLessonCode(lessonTACR.getLessonCode());
+				newLessonTACR.setClassroom(lessonTACR.getClassroom());
+				newLessonTACR.setNum(lessonTACR.getNum());
+				newLessonTACR.setWeekday(lessonTACR.getWeekday());
+				newLessonTACR.setWeek(newWeek);
+				lessonTACRs.add(newLessonTACR);
+				j = i + 1;
+			}
+		}
+		return lessonTACRs;
+	}
+
+	public static void fillLessonTACRs(Lesson lesson, ArrayList<LessonTACR> lessonTACRs) {
+		ArrayList<LessonTACR> newLessonTACRs = new ArrayList<>();
+		for (LessonTACR lessonTACR : lessonTACRs) {
+			newLessonTACRs.addAll(splitLessonTACR(lessonTACR));
+		}
+		lessonTACRs = newLessonTACRs;
+		lesson.setLessonTACRs(lessonTACRs);
+		String lessonTime = "";
+		String classrooms = "";
+		String[] weekdays = new String[]{"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
+		for (LessonTACR lessonTACR : lessonTACRs) {
+			ArrayList<String> lessonNum = new ArrayList<>();
+			// 分別拆成1,2;3,4;5;6,7;8,9;10,11,12
+			String temp = "";
+			int[] num = lessonTACR.getNum();
+			for (int i = 0; i <= num.length; i++) {
+				if (i < num.length) {
+					if (num[i] == 3 || num[i] == 5 || num[i] == 6 || num[i] == 8 || num[i] == 10) {
+						if (temp.length() != 0)
+							lessonNum.add(temp.substring(0, temp.length() - 1));
+						temp = "";
+					}
+				} else if (i == num.length) {
+					lessonNum.add(temp.substring(0, temp.length() - 1));
+					break;
+				}
+				temp += num[i] + ",";
+
+			}
+			for (String numText : lessonNum) {
+				lessonTime += weekdays[lessonTACR.getWeekday()];
+				lessonTime += "第" + numText;
+				lessonTime += "节";
+				if (lessonTACR.getWeek().length != 1)
+					lessonTime += "{" + getCompleteWeekTime(lessonTACR.getWeek()) + "}";
+				else
+					lessonTime += "{第" + lessonTACR.getWeek()[0] + "-" + lessonTACR.getWeek()[0] + "周}";
+
+				lessonTime += ";";
+
+				classrooms += lessonTACR.getClassroom() + ";";
+			}
+
+
+		}
+		lessonTime = lessonTime.substring(0, lessonTime.length() - 1);
+		classrooms = classrooms.substring(0, classrooms.length() - 1);
+
+		lesson.setLessonTime(lessonTime);
+		lesson.setLessonClassroom(classrooms);
+	}
 
 	public static ArrayList<LessonTACR> readTimeAndClassroom(Lesson lesson) {
 		ArrayList<LessonTACR> lessonTACRs = new ArrayList<>();
@@ -54,7 +173,7 @@ public class LessonUtils {
 					wday = 6;
 					break;
 				case "周日":
-					wday = 7;
+					wday = 0;
 					break;
 			}
 			tacr.setWeekday(wday);
@@ -357,5 +476,21 @@ public class LessonUtils {
 				lessonList.add(lesson);
 		}
 		return lessonList;
+	}
+
+	public static String checkNull(Lesson lesson) {
+		if (lesson.getLessonName() == null || lesson.getLessonName().length() == 0)
+			return "课程名称为空";
+		if (lesson.getLessonTeacher() == null || lesson.getLessonTeacher().length() == 0)
+			return "课程教师为空";
+		for (LessonTACR lessonTACR : lesson.getLessonTACRs()) {
+			if (lessonTACR.getNum() == null || lessonTACR.getNum().length == 0)
+				return "存在某项上课时间中上课节数为空";
+			if (lessonTACR.getWeek() == null || lessonTACR.getWeek().length == 0)
+				return "存在某项上课时间中上课周数为空";
+			if (lessonTACR.getClassroom() == null || lessonTACR.getClassroom().length() == 0)
+				return "存在某项上课时间中教室为空";
+		}
+		return null;
 	}
 }

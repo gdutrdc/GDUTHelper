@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+
+	<android.support.v7.widget.CardView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="2dp"
+		android:layout_marginTop="2dp"
+		app:cardCornerRadius="0dp"
+		app:cardElevation="1dp"
+		app:cardMaxElevation="2dp">
+
+		<RelativeLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:minHeight="96dp"
+			android:paddingBottom="4dp"
+			android:paddingTop="4dp">
+
+			<android.support.design.widget.TextInputLayout
+				android:id="@+id/item_add_other_lesson_til_classroom"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:layout_marginRight="16dp">
+
+				<EditText
+					android:id="@+id/item_add_other_lesson_et_classroom"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:hint="@string/lesson_classroom"/>
+			</android.support.design.widget.TextInputLayout>
+
+
+			<Spinner
+				android:id="@+id/item_add_other_lesson_time_spinner_weekday"
+				android:layout_width="wrap_content"
+				android:layout_height="48dp"
+				android:layout_alignParentRight="true"
+				android:layout_below="@id/item_add_other_lesson_til_classroom"
+				android:layout_marginLeft="16dp"
+				android:layout_marginRight="16dp"/>
+
+			<Button
+				android:id="@+id/item_add_other_lesson_btn_weeks"
+				style="@style/RaiseButton"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/item_add_other_lesson_til_classroom"
+				android:layout_marginLeft="16dp"
+				android:layout_toLeftOf="@id/item_add_other_lesson_time_spinner_weekday"
+				android:text="@string/please_choose_weeks"/>
+
+			<Button
+				android:id="@+id/item_add_other_lesson_btn_lesson_num"
+				style="@style/RaiseButton"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/item_add_other_lesson_btn_weeks"
+				android:layout_marginLeft="16dp"
+				android:layout_marginRight="16dp"
+				android:text="@string/please_choose_lesson_num"/>
+
+			<Button
+				android:id="@+id/item_add_other_lesson_time_delete"
+				style="@style/Widget.AppCompat.ActionButton"
+				android:layout_width="72dp"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="true"
+				android:layout_below="@id/item_add_other_lesson_btn_lesson_num"
+				android:gravity="center"
+				android:text="@string/delete"/>
+		</RelativeLayout>
+	</android.support.v7.widget.CardView>
+</FrameLayout>

@@ -72,6 +72,10 @@
 		<activity
 			android:name=".ui.ManageTermActivity"
 			android:label="@string/manage_term"/>
+		<activity
+			android:name=".ui.AddOtherLessonActivity"
+			android:label="@string/add_other_lesson"
+			android:windowSoftInputMode="adjustPan"/>
 
 		<receiver
 			android:name=".utils.appwidget.exam.ExamWidgetProvider"

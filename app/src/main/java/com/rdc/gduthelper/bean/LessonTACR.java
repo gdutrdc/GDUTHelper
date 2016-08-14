@@ -64,6 +64,8 @@ public class LessonTACR implements Serializable, Parcelable {
 
 	@Override
 	public boolean equals(Object o) {
+		if (o == null)
+			return false;
 		if (o instanceof LessonTACR) {
 			LessonTACR tacr = (LessonTACR) o;
 			if (!tacr.getLessonCode().equals(getLessonCode()))

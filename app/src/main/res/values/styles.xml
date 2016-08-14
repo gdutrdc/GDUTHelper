@@ -2,7 +2,11 @@
 
 	<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
 
-	<style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar"/>
+	<style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+		<item name="colorPrimary">@color/blue_500</item>
+		<item name="colorPrimaryDark">@color/blue_700</item>
+		<item name="colorAccent">@color/pink_a200</item>
+	</style>
 
 	<style name="AppTheme.Blue" parent="AppTheme">
 		<item name="colorPrimary">@color/blue_500</item>
@@ -28,6 +32,15 @@
 	<style name="EvaluationFABToolbarStyle">
 		<item name="bottomMargin">0dp</item>
 		<item name="rightMargin">0dp</item>
+	</style>
+
+	<style name="FlatButton" parent="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog">
+
+	</style>
+
+	<style name="RaiseButton" parent="@style/Widget.AppCompat.Button">
+		<item name="android:background">@drawable/bg_raise_button</item>
+		<item name="background">@drawable/bg_raise_button</item>
 	</style>
 
 </resources>

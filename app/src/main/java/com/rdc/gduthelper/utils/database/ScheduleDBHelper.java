@@ -68,6 +68,53 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 				+ ")");
 	}
 
+	public void addLesson(Lesson lesson, String selection) {
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(Column.XH, GDUTHelperApp.userXh);
+		contentValues.put(Column.LESSON_CODE, lesson.getLessonCode());
+		contentValues.put(Column.SELECTION, selection);
+		db.delete(TABLE_LESSONS, Column.XH + " = ? and " + Column.LESSON_CODE +
+						" = ? and " + Column.SELECTION + " = ?",
+				new String[]{GDUTHelperApp.userXh, lesson.getLessonCode(), selection});
+		contentValues.put(Column.LESSON_NAME, lesson.getLessonName());
+		contentValues.put(Column.LESSON_TYPE, lesson.getLessonType());
+		contentValues.put(Column.LESSON_TEACHER, lesson.getLessonTeacher());
+		contentValues.put(Column.LESSON_TIME, lesson.getLessonTime());
+		contentValues.put(Column.LESSON_CLASSROOM, lesson.getLessonClassroom());
+		contentValues.put(Column.LESSON_CREDIT, lesson.getLessonCredit());
+		db.insert(TABLE_LESSONS, null, contentValues);
+
+		db.delete(TABLE_LESSON_TIMES, Column.XH + " = ? and " + Column.LESSON_CODE +
+						" = ? and " + Column.SELECTION + " = ?",
+				new String[]{GDUTHelperApp.userXh, lesson.getLessonCode(), selection});
+		for (LessonTACR tacr : LessonUtils.readTimeAndClassroom(lesson)) {
+			ContentValues foreignValue = new ContentValues();
+			foreignValue.put(Column.XH, GDUTHelperApp.userXh);
+			foreignValue.put(Column.LESSON_CODE, lesson.getLessonCode());
+			foreignValue.put(Column.SELECTION, selection);
+			foreignValue.put(Column.WEEKDAY, tacr.getWeekday());
+			String weekdata = "";
+			for (int week : tacr.getWeek()) {
+				weekdata += week + ",";
+			}
+			weekdata = weekdata.substring(0, weekdata.length() - 1);
+			foreignValue.put(Column.WEEK, weekdata);
+			String numdata = "";
+			for (int num : tacr.getNum())
+				numdata += num + ",";
+			foreignValue.put(Column.NUM, numdata.substring(0, numdata.length() - 1));
+
+			foreignValue.put(Column.LESSON_CLASSROOM, tacr.getClassroom());
+
+			db.insert(TABLE_LESSON_TIMES, null, foreignValue);
+		}
+	}
+
+	public void updateLesson(Lesson lesson) {
+
+	}
+
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
