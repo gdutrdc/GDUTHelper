@@ -4,8 +4,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PaintDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
+import android.graphics.drawable.shapes.Shape;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -218,6 +225,8 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener,
 
 				view.findViewById(R.id.item_schedule_dog_ear).setVisibility(GONE);
 				cardView.setCardBackgroundColor(color);
+				cardView.findViewById(R.id.item_schedule_text_cover)
+						.setBackground(makeCoverDrawable(color, 8, Gravity.BOTTOM));
 			}
 		}
 		if (!isShown) {
@@ -227,11 +236,78 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener,
 					.setText(lesson.getLessonName() + "@" + tacr.getClassroom());
 			int color = colorOut;
 			((CardView) view).setCardBackgroundColor(color);
+			view.findViewById(R.id.item_schedule_text_cover)
+					.setBackground(makeCoverDrawable(color, 8, Gravity.BOTTOM));
 		}
 		view.findViewById(R.id.item_schedule_dog_ear)
 				.setVisibility(lessonTACRs.size() > 1 ? VISIBLE : GONE);
 		view.setOnClickListener(this);
 		view.setOnLongClickListener(this);
+	}
+
+	private Drawable makeCoverDrawable(int baseColor, int numStops, int gravity) {
+		numStops = Math.max(numStops, 2);
+
+		PaintDrawable paintDrawable = new PaintDrawable();
+		paintDrawable.setShape(new RectShape());
+
+		final int[] stopColors = new int[numStops];
+		int red = Color.red(baseColor);
+		int green = Color.green(baseColor);
+		int blue = Color.blue(baseColor);
+		int alpha = Color.alpha(baseColor);
+
+		for (int i = 0; i < numStops; i++) {
+			float x = i * 1f / (numStops - 1);
+//			float opacity = MathUtil.constrain(0, 1, Math.pow(x,3));
+			stopColors[i] = Color.argb((int) (alpha * x), red, green, blue);
+		}
+
+		final float x0, x1, y0, y1;
+		switch (gravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+			case Gravity.LEFT:
+				x0 = 1;
+				x1 = 0;
+				break;
+			case Gravity.RIGHT:
+				x0 = 0;
+				x1 = 1;
+				break;
+			default:
+				x0 = 0;
+				x1 = 0;
+				break;
+		}
+		switch (gravity & Gravity.VERTICAL_GRAVITY_MASK) {
+			case Gravity.TOP:
+				y0 = 1;
+				y1 = 0;
+				break;
+			case Gravity.BOTTOM:
+				y0 = 0;
+				y1 = 1;
+				break;
+			default:
+				y0 = 0;
+				y1 = 0;
+				break;
+		}
+
+		paintDrawable.setShaderFactory(new ShapeDrawable.ShaderFactory() {
+			@Override
+			public Shader resize(int width, int height) {
+				return new LinearGradient(
+						width * x0,
+						height * y0,
+						width * x1,
+						height * y1,
+						stopColors, null,
+						Shader.TileMode.CLAMP
+				);
+			}
+		});
+
+		return paintDrawable;
 	}
 
 	private View findViewWithTag(ArrayList<View> views, LessonTACR tacr) {
