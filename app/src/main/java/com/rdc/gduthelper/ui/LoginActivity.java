@@ -1,8 +1,10 @@
 package com.rdc.gduthelper.ui;
 
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -28,14 +31,14 @@ import com.rdc.gduthelper.net.api.GetCheckCode;
 import com.rdc.gduthelper.net.api.GetPage;
 import com.rdc.gduthelper.net.api.Login;
 import com.rdc.gduthelper.utils.settings.Settings;
-import com.rengwuxian.materialedittext.MaterialEditText;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener,
+		CompoundButton.OnCheckedChangeListener, View.OnFocusChangeListener {
 	private final String TAG = LoginActivity.class.getSimpleName();
 
-	private MaterialEditText mEtUserXh;
-	private MaterialEditText mEtPassword;
-	private MaterialEditText mEtSecretCode;
+	private EditText mEtUserXh;
+	private EditText mEtPassword;
+	private EditText mEtCheckCode;
 
 	private Switch mSwUseDx;
 	private AppCompatCheckBox mCbRememberUser;
@@ -91,7 +94,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 				handler.sendEmptyMessage(ApiHelper.GET_PAGE_RESULT);
 				break;
 			case R.id.login:
-				if (mEtSecretCode.getText().toString().equals("")) {
+				if (mEtCheckCode.getText().toString().equals("")) {
 					Toast.makeText(this, "验证码不能为空", Toast.LENGTH_SHORT).show();
 					return;
 				}
@@ -132,17 +135,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 	}
 
 	private void initEditText() {
-		mEtUserXh = ((MaterialEditText) findViewById(R.id.login_user_xh));
-		mEtPassword = ((MaterialEditText) findViewById(R.id.login_password));
-		mEtSecretCode = (MaterialEditText) findViewById(R.id.login_check_code);
+		mEtUserXh = ((EditText) findViewById(R.id.login_user_xh));
+		mEtPassword = ((EditText) findViewById(R.id.login_password));
+		mEtCheckCode = (EditText) findViewById(R.id.login_check_code);
 
-		mEtSecretCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		mEtCheckCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				boolean handled = false;
 				if (actionId == EditorInfo.IME_ACTION_DONE) {
 					handled = true;
-					if (mEtSecretCode.getText().toString().equals("")) {
+					if (mEtCheckCode.getText().toString().equals("")) {
 						Toast.makeText(LoginActivity.this, "验证码不能为空", Toast.LENGTH_SHORT).show();
 						return true;
 					}
@@ -152,6 +155,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 				return handled;
 			}
 		});
+
+		mEtUserXh.setOnFocusChangeListener(this);
+		mEtPassword.setOnFocusChangeListener(this);
+		mEtCheckCode.setOnFocusChangeListener(this);
 
 		if (GDUTHelperApp.getSettings().needRememberUser()) {
 			String rememberData = GDUTHelperApp.getSettings().getRememberUser();
@@ -169,7 +176,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 			new Thread(new Login(
 					mEtUserXh.getText().toString(),
 					mEtPassword.getText().toString(),
-					mEtSecretCode.getText().toString(),
+					mEtCheckCode.getText().toString(),
 					GDUTHelperApp.viewState, new BaseRunnable.GGCallback() {
 				@Override
 				public void onCall(Object obj) {
@@ -198,7 +205,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 	}
 
 	private void getCheckCode() {
-		mEtSecretCode.setText("");
+		mEtCheckCode.setText("");
 		new Thread(new GetCheckCode(new BaseRunnable.GGCallback() {
 			@Override
 			public void onCall(Object obj) {
@@ -257,6 +264,66 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 						}).show();
 				mSettings.setUseDx(mSwUseDx.isChecked());
 				break;
+		}
+	}
+
+	@Override
+	public void onFocusChange(View view, boolean isFocus) {
+		switch (view.getId()) {
+			case R.id.login_user_xh:
+				final ImageView ivUser = (ImageView) findViewById(R.id.login_iv_user_xh);
+				if (isFocus) {
+					animateColorFilter(ivUser, getResources().getColor(R.color.grey_500),
+							getResources().getColor(R.color.pink_a200));
+				} else {
+					animateColorFilter(ivUser, getResources().getColor(R.color.pink_a200),
+							getResources().getColor(R.color.grey_500));
+				}
+				break;
+			case R.id.login_password:
+				final ImageView ivPassword = (ImageView) findViewById(R.id.login_iv_password);
+				if (isFocus) {
+					animateColorFilter(ivPassword, getResources().getColor(R.color.grey_500),
+							getResources().getColor(R.color.pink_a200));
+				} else {
+					animateColorFilter(ivPassword, getResources().getColor(R.color.pink_a200),
+							getResources().getColor(R.color.grey_500));
+				}
+				break;
+			case R.id.login_check_code:
+				final ImageView ivCheckCode = (ImageView) findViewById(R.id.login_iv_check_code);
+				if (isFocus) {
+					animateColorFilter(ivCheckCode, getResources().getColor(R.color.grey_500),
+							getResources().getColor(R.color.pink_a200));
+				} else {
+					animateColorFilter(ivCheckCode, getResources().getColor(R.color.pink_a200),
+							getResources().getColor(R.color.grey_500));
+				}
+				break;
+		}
+	}
+
+	private void animateColorFilter(final ImageView iv, int startColor, int endColor) {
+		ValueAnimator animator = ValueAnimator.ofObject(new ColorTypeEvaluator(), startColor, endColor);
+		animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+			@Override
+			public void onAnimationUpdate(ValueAnimator valueAnimator) {
+				iv.setColorFilter((Integer) valueAnimator.getAnimatedValue());
+			}
+		});
+		animator.setTarget(iv);
+		animator.start();
+	}
+
+	class ColorTypeEvaluator implements TypeEvaluator<Integer> {
+
+		@Override
+		public Integer evaluate(float v, Integer t0, Integer t1) {
+			int red = (int) (Color.red(t0) + (Color.red(t1) - Color.red(t0)) * v);
+			int green = (int) (Color.green(t0) + (Color.green(t1) - Color.green(t0)) * v);
+			int blue = (int) (Color.blue(t0) + (Color.blue(t1) - Color.blue(t0)) * v);
+
+			return Color.rgb(red, green, blue);
 		}
 	}
 }
