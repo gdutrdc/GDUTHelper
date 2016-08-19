@@ -14,11 +14,11 @@ public class CheckPswUtils {
 	public static String getPswSafeRate(String password) {
 		switch (getPswSafeLevel(password)) {
 			case LEVEL_SIMPLE:
-				return "当前密码等级为 " + "简单";
+				return "新密码等级为 " + "简单";
 			case LEVEL_MIDDLE:
-				return "当前密码等级为 " + "中";
+				return "新密码等级为 " + "中";
 			case LEVEL_SAFE:
-				return "当前密码等级为 " + "困难";
+				return "新密码等级为 " + "困难";
 		}
 		return null;
 	}

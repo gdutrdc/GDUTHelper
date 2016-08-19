@@ -3,6 +3,7 @@ package com.rdc.gduthelper.ui;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
@@ -25,9 +25,10 @@ import com.rdc.gduthelper.utils.CheckPswUtils;
  */
 public class ChangePswActivity extends BaseActivity implements View.OnClickListener {
 	private TextView pswTips;
-	private MaterialEditText mEtOld;
-	private MaterialEditText mEtNew;
-	private MaterialEditText mEtEnsure;
+	private TextView pswSafeRate;
+	private EditText mEtOld;
+	private EditText mEtNew;
+	private EditText mEtEnsure;
 
 	private Handler handler = new Handler() {
 
@@ -63,9 +64,10 @@ public class ChangePswActivity extends BaseActivity implements View.OnClickListe
 		showProgressDialog("正在进入");
 
 		pswTips = (TextView) findViewById(R.id.change_psw_tips);
-		mEtEnsure = (MaterialEditText) findViewById(R.id.change_psw_ensure);
-		mEtNew = (MaterialEditText) findViewById(R.id.change_psw_new);
-		mEtOld = (MaterialEditText) findViewById(R.id.change_psw_old);
+		pswSafeRate = (TextView) findViewById(R.id.change_psw_safe_rate);
+		mEtEnsure = (EditText) findViewById(R.id.change_psw_ensure);
+		mEtNew = (EditText) findViewById(R.id.change_psw_new);
+		mEtOld = (EditText) findViewById(R.id.change_psw_old);
 
 		mEtNew.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -82,10 +84,11 @@ public class ChangePswActivity extends BaseActivity implements View.OnClickListe
 
 				String error = CheckPswUtils.getPswError(s.toString());
 				if (error != null) {
-					mEtNew.setError(error);
+					((TextInputLayout) mEtNew.getParent().getParent()).setError(error);
+					setPswSafeRate("");
 				} else {
-					mEtNew.setHelperText(CheckPswUtils.getPswSafeRate(s.toString()));
-					mEtNew.setError(null);
+					setPswSafeRate(CheckPswUtils.getPswSafeRate(s.toString()));
+					((TextInputLayout) mEtNew.getParent().getParent()).setError(null);
 				}
 			}
 		});
@@ -93,6 +96,10 @@ public class ChangePswActivity extends BaseActivity implements View.OnClickListe
 		init();
 
 		findViewById(R.id.change_psw_commit).setOnClickListener(this);
+	}
+
+	private void setPswSafeRate(String text) {
+		pswSafeRate.setText(text);
 	}
 
 	private void init() {
