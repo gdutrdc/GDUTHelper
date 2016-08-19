@@ -46,7 +46,6 @@ dependencies {
 	compile 'com.balysv.materialmenu:material-menu-toolbar:1.5.4'
 	compile 'com.soundcloud.android:android-crop:1.0.1@aar'
 	compile 'com.wdullaer:materialdatetimepicker:2.1.1'
-	compile 'com.rengwuxian.materialedittext:library:2.1.4'
 	compile 'com.tencent.bugly:crashreport:2.1.5'
 	compile 'com.bignerdranch.android:expandablerecyclerview:2.1.1'
 }
