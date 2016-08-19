@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
 	compileSdkVersion 24
-	buildToolsVersion '24.0.0'
+	buildToolsVersion '24.0.1'
 
 	defaultConfig {
 		applicationId "com.rdc.gduthelper"
@@ -28,9 +28,10 @@ android {
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		}
 	}
+
 }
 ext {
-	supportLibVersion = '24.0.0'
+	supportLibVersion = '24.2.0'
 }
 
 dependencies {
