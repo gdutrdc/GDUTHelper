@@ -267,6 +267,7 @@ public class GetScheduleActivity extends BaseActivity
 		} else {
 			mWeekScheduleView.setLessons(lessons);
 		}
+		helper.close();
 	}
 
 	private void intoSchedule() {
@@ -328,10 +329,9 @@ public class GetScheduleActivity extends BaseActivity
 					@Override
 					public void run() {
 						initData();
-//						ArrayList<Lesson> lessons = helper.getLessonList(year + "-" + term);
-//						mWeekScheduleView.setLessons(lessons);
 					}
 				});
+				helper.close();
 			}
 		})).start();
 	}
@@ -531,6 +531,7 @@ public class GetScheduleActivity extends BaseActivity
 							ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
 							for (Lesson lesson : lessons)
 								helper.deleteLesson(lesson);
+							helper.close();
 						}
 						initData();
 					}
@@ -566,6 +567,7 @@ public class GetScheduleActivity extends BaseActivity
 						Lesson lesson = lessons.get(position);
 						ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
 						helper.deleteLesson(lesson);
+						helper.close();
 						initData();
 						lessons.remove(lesson);
 

@@ -178,7 +178,7 @@
 	<string name="remember_user_off">关闭(不再记住账号密码)</string>
 	<string name="remember_user">记住账号密码</string>
 	<string name="remember_user_key">remember_user</string>
-	<string name="remember_user_data_key">remember_user_data</string>
+	<string name="last_user_key">last_user</string>
 	<string name="use_dx">使用外网URL访问教务系统</string>
 	<string name="use_dx_key">use_dx</string>
 	<string name="use_dx_tips">修改访问ip将注销当前账号(若已登陆)，并点击点击右上角按钮刷新</string>

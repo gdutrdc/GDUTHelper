@@ -24,6 +24,7 @@ import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Exam;
 import com.rdc.gduthelper.bean.MaterialColors;
+import com.rdc.gduthelper.bean.User;
 import com.rdc.gduthelper.bean.WidgetConfigs;
 import com.rdc.gduthelper.ui.BaseActivity;
 import com.rdc.gduthelper.utils.database.ExamTimeDBHelper;
@@ -78,13 +79,12 @@ public class ExamWidgetConfigActivity extends BaseActivity implements AdapterVie
 
 	private void preDealData() {
 		try {
-			String s = GDUTHelperApp.getSettings().getRememberUser();
-			if (s == null) {
+			User user = GDUTHelperApp.getSettings().getLastUser(this);
+			if (user == null) {
 				Toast.makeText(this, R.string.get_exam_time_no_local, Toast.LENGTH_SHORT).show();
 				finish();
 			} else {
-				String[] data = s.split(";", 2);
-				xh = data[0];
+				xh = user.getXh();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

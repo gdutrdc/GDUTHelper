@@ -61,15 +61,15 @@ public class DailyScheduleWidgetService extends RemoteViewsService {
 
 			final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 			Uri uri = Uri.parse(WidgetConfigProvider.SCHEDULE_CONFIG_CONTENT_URI);
-			String user = getSharedPreferences(
+			String userXh = getSharedPreferences(
 					getPackageName() + "_preferences", MODE_MULTI_PROCESS)
-					.getString(Settings.REMEMBER_USER_DATA_KEY, null);
-			if (user == null) {
+					.getString(Settings.LAST_USER_KEY, null);
+			if (userXh == null) {
 				Log.e(TAG, "user = null");
 				return;
 			}
 			Cursor cursor = getContentResolver()
-					.query(uri, null, "id = ?", new String[]{user.split(";")[0]}, null);
+					.query(uri, null, "id = ?", new String[]{userXh}, null);
 			ScheduleConfig config = null;
 
 			if (cursor.getCount() > 0) {

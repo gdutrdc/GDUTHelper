@@ -8,8 +8,10 @@ import android.net.Uri;
 
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
+import com.rdc.gduthelper.bean.User;
 import com.rdc.gduthelper.bean.WidgetConfigs;
 import com.rdc.gduthelper.utils.appwidget.WidgetConfigProvider;
+import com.rdc.gduthelper.utils.database.UserDBHelper;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -17,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -25,7 +28,7 @@ import java.util.Locale;
 public class Settings {
 	public static final String REMEMBER_USER_KEY = GDUTHelperApp.getInstance().getString(R.string.remember_user_key);
 	public static final String ZB_TEXT_KEY = GDUTHelperApp.getInstance().getString(R.string.zb_text_key);
-	public static final String REMEMBER_USER_DATA_KEY = GDUTHelperApp.getInstance().getString(R.string.remember_user_data_key);
+	public static final String LAST_USER_KEY = GDUTHelperApp.getInstance().getString(R.string.last_user_key);
 	public static final String SCHEDULE_BACKGROUND_KEY = GDUTHelperApp.getInstance().getString(R.string.schedule_background_key);
 	public static final String COOKIE = "cookie";
 	public static final String USE_DX_KEY = GDUTHelperApp.getInstance().getString(R.string.use_dx_key);
@@ -85,22 +88,29 @@ public class Settings {
 	public void setNeedRememberUser(boolean isNeed) {
 		SharedPreferences.Editor editor = mSharedPreferences.edit();
 		editor.putBoolean(REMEMBER_USER_KEY, isNeed);
-		if (!isNeed) {
-			String user = getRememberUser();
-			if (user != null)
-				rememberUser(user.split(":")[0], "");
-		}
 		editor.apply();
 	}
 
-	public void rememberUser(String userName, String password) {
+	public void putUser(Context context, User user) {
+		UserDBHelper helper = new UserDBHelper(context);
+		helper.putUser(user);
+	}
+
+	public User getLastUser(Context context) {
+		String userXh = mSharedPreferences.getString(LAST_USER_KEY, null);
+		UserDBHelper helper = new UserDBHelper(context);
+		return helper.getUser(userXh);
+	}
+
+	public void setLastUser(String userXh) {
 		SharedPreferences.Editor editor = mSharedPreferences.edit();
-		editor.putString(REMEMBER_USER_DATA_KEY, userName + ";" + password);
+		editor.putString(LAST_USER_KEY, userXh);
 		editor.apply();
 	}
 
-	public String getRememberUser() {
-		return mSharedPreferences.getString(REMEMBER_USER_DATA_KEY, null);
+	public List<User> getUsers(Context context) {
+		UserDBHelper helper = new UserDBHelper(context);
+		return helper.getUsers();
 	}
 
 	public WidgetConfigs getExamWidgetConfigs(Context context) {
@@ -130,9 +140,9 @@ public class Settings {
 	}
 
 	public String getScheduleChooseTerm(Context context) {
-		String user = getRememberUser();
+		User user = getLastUser(context);
 		if (user != null) {
-			ScheduleConfig config = getScheduleConfig(context, user.split(";")[0]);
+			ScheduleConfig config = getScheduleConfig(context, user.getXh());
 			if (config != null)
 				return config.getTerm();
 		}
@@ -141,22 +151,22 @@ public class Settings {
 
 	public void setScheduleChooseTerm(Context context, String term) {
 		ScheduleConfig config = new ScheduleConfig();
-		String user = getRememberUser();
+		User user = getLastUser(context);
 		if (user == null)
 			return;
-		config.setId(user.split(";")[0]);
+		config.setId(user.getXh());
 		config.setTerm(term);
 		updateScheduleConfig(context, config);
 	}
 
 	public void setScheduleFirstWeek(Context context, Calendar calendar) {
-		if (calendar.get(Calendar.DAY_OF_WEEK) != 1)
-			calendar.set(Calendar.DAY_OF_WEEK, 1);
+		if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
+			calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 		ScheduleConfig config = new ScheduleConfig();
-		String user = getRememberUser();
+		User user = getLastUser(context);
 		if (user == null)
 			return;
-		config.setId(user.split(";")[0]);
+		config.setId(user.getXh());
 		config.setFirstWeek(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 				.format(calendar.getTime()));
 		updateScheduleConfig(context, config);
@@ -164,9 +174,9 @@ public class Settings {
 
 	public Calendar getScheduleFirstWeek(Context context) {
 		Calendar calendar = Calendar.getInstance();
-		String user = getRememberUser();
+		User user = getLastUser(context);
 		if (user != null) {
-			ScheduleConfig config = getScheduleConfig(context, user.split(";")[0]);
+			ScheduleConfig config = getScheduleConfig(context, user.getXh());
 			if (config != null) {
 				String firstWeekDate = config.getFirstWeek();
 				if (firstWeekDate == null)
@@ -275,18 +285,18 @@ public class Settings {
 
 	public void setScheduleCardColors(Context context, String colors) {
 		ScheduleConfig config = new ScheduleConfig();
-		String user = getRememberUser();
+		User user = getLastUser(context);
 		if (user == null)
 			return;
-		config.setId(user.split(";")[0]);
+		config.setId(user.getXh());
 		config.setCardColors(colors);
 		updateScheduleConfig(context, config);
 	}
 
 	public String getScheduleCardColors(Context context) {
-		String user = getRememberUser();
+		User user = getLastUser(context);
 		if (user != null) {
-			ScheduleConfig config = getScheduleConfig(context, user.split(";")[0]);
+			ScheduleConfig config = getScheduleConfig(context, user.getXh());
 			if (config != null)
 				return config.getCardColors();
 		}

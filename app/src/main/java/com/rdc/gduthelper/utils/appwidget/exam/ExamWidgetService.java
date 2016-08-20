@@ -9,6 +9,7 @@ import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Exam;
 import com.rdc.gduthelper.bean.MaterialColors;
+import com.rdc.gduthelper.bean.User;
 import com.rdc.gduthelper.utils.database.ExamTimeDBHelper;
 
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ public class ExamWidgetService extends RemoteViewsService {
 
 		ExamListRemoteViewsFactory(Intent intent) {
 			String selection = intent.getStringExtra("selection");
-			String[] data = GDUTHelperApp.getSettings().getRememberUser().split(";", 2);
-			String xh = data[0];
+			User user = GDUTHelperApp.getSettings().getLastUser(getApplicationContext());
+			String xh = user.getXh();
 			ExamTimeDBHelper helper = new ExamTimeDBHelper(ExamWidgetService.this);
 			mExams = helper.getExamTimes(xh, selection);
 		}

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Lesson;
 import com.rdc.gduthelper.bean.LessonTACR;
+import com.rdc.gduthelper.bean.User;
 import com.rdc.gduthelper.utils.LessonUtils;
 
 import java.util.ArrayList;
@@ -22,8 +23,17 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 	private static final String TABLE_LESSONS = "lessons";
 	private static final String TABLE_LESSON_TIMES = "lesson_times";
 
+	private Context mContext;
+
 	public ScheduleDBHelper(Context context) {
 		super(context, DATABASE_NAME, null, VERSION);
+		mContext = context;
+	}
+
+	@Override
+	public synchronized void close() {
+		super.close();
+		mContext = null;
 	}
 
 	@Override
@@ -123,12 +133,11 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 	public int deleteTermLesson(String term) {
 		String xh = GDUTHelperApp.userXh;
 		if (xh == null) {
-			String up = GDUTHelperApp.getSettings().getRememberUser();
-			if (up == null) {
+			User user = GDUTHelperApp.getSettings().getLastUser(mContext);
+			if (user == null) {
 				return 0;
 			}
-			String[] data = up.split(";", 2);
-			xh = data[0];
+			xh = user.getXh();
 		}
 		return deleteTermLesson(term, xh);
 	}
@@ -204,12 +213,11 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 	public ArrayList<Lesson> getLessonList(String selection) {
 		String xh = GDUTHelperApp.userXh;
 		if (xh == null) {
-			String up = GDUTHelperApp.getSettings().getRememberUser();
-			if (up == null) {
+			User user = GDUTHelperApp.getSettings().getLastUser(mContext);
+			if (user == null) {
 				return new ArrayList<>();
 			}
-			String[] data = up.split(";", 2);
-			xh = data[0];
+			xh = user.getXh();
 		}
 		return getLessonList(selection, xh);
 
@@ -273,12 +281,11 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 		String[] result = null;
 		String xh = GDUTHelperApp.userXh;
 		if (xh == null) {
-			String up = GDUTHelperApp.getSettings().getRememberUser();
-			if (up == null) {
+			User user = GDUTHelperApp.getSettings().getLastUser(mContext);
+			if (user == null) {
 				return result;
 			}
-			String[] data = up.split(";", 2);
-			xh = data[0];
+			xh = user.getXh();
 		}
 		Cursor cursor = db.query(true, TABLE_LESSONS, new String[]{Column.SELECTION},
 				Column.XH + " = ?", new String[]{xh}, null, null, null, null);

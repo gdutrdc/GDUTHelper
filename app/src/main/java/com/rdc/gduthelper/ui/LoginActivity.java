@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,18 +27,24 @@ import android.widget.Toast;
 
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
+import com.rdc.gduthelper.bean.User;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetCheckCode;
 import com.rdc.gduthelper.net.api.GetPage;
 import com.rdc.gduthelper.net.api.Login;
+import com.rdc.gduthelper.ui.adapter.UserCompleteAdapter;
 import com.rdc.gduthelper.utils.settings.Settings;
+
+import java.lang.ref.SoftReference;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener,
 		CompoundButton.OnCheckedChangeListener, View.OnFocusChangeListener {
 	private final String TAG = LoginActivity.class.getSimpleName();
 
-	private EditText mEtUserXh;
+	private AutoCompleteTextView mEtUserXh;
 	private EditText mEtPassword;
 	private EditText mEtCheckCode;
 
@@ -47,44 +55,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
 	private Settings mSettings;
 
-	private Handler handler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.obj != null && msg.obj instanceof Exception) {
-				cancelDialog();
-				showWarning(((Exception) msg.obj).getMessage(), null);
-				return;
-			}
-			if (msg.what == ApiHelper.GET_PAGE_RESULT) {
-				cancelDialog();
-				GDUTHelperApp.viewState = (String) msg.obj;
-				getCheckCode();
-			} else if (msg.what == ApiHelper.GET_CHECK_CODE_SUCCESS)
-				if (msg.obj != null) {
-					checkCodeBitmap = (Bitmap) msg.obj;
-					((ImageView) findViewById(R.id.check_code)).setImageBitmap(checkCodeBitmap);
-				} else {
-					Log.d(TAG, "bitmap is null");
-				}
-			else if (msg.what == ApiHelper.LOGIN_SUCCESS) {
-				cancelDialog();
-				GDUTHelperApp.getSettings().rememberUser(
-						mEtUserXh.getText().toString(),
-						mEtPassword.getText().toString()
-				);
-				finish();
-			} else if (msg.what == ApiHelper.LOGIN_FAILED) {
-				cancelDialog();
-				showWarning((String) msg.obj, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						getCheckCode();
-					}
-				});
-			}
-		}
-
-	};
+	private Handler handler = new LoginHandler(this);
 
 	public void onClick(View view) {
 		switch (view.getId()) {
@@ -135,9 +106,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 	}
 
 	private void initEditText() {
-		mEtUserXh = ((EditText) findViewById(R.id.login_user_xh));
+		mEtUserXh = (AutoCompleteTextView) findViewById(R.id.login_user_xh);
 		mEtPassword = ((EditText) findViewById(R.id.login_password));
 		mEtCheckCode = (EditText) findViewById(R.id.login_check_code);
+
+		final UserCompleteAdapter adapter = new UserCompleteAdapter(this);
+		List<User> users = GDUTHelperApp.getSettings().getUsers(this);
+		adapter.setUsers(users);
+		mEtUserXh.setAdapter(adapter);
+		mEtUserXh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+				User user = adapter.getUsers().get(i);
+				mEtPassword.setText(user.getPassword());
+			}
+		});
 
 		mEtCheckCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
@@ -161,11 +144,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 		mEtCheckCode.setOnFocusChangeListener(this);
 
 		if (GDUTHelperApp.getSettings().needRememberUser()) {
-			String rememberData = GDUTHelperApp.getSettings().getRememberUser();
-			if (rememberData != null) {
-				String[] data = rememberData.split(";", 2);
-				mEtUserXh.setText(data[0]);
-				mEtPassword.setText(data[1]);
+			User user = GDUTHelperApp.getSettings().getLastUser(this);
+			if (user != null) {
+				mEtUserXh.setText(user.getXh());
+				mEtPassword.setText(user.getPassword());
 			}
 		}
 	}
@@ -324,6 +306,53 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 			int blue = (int) (Color.blue(t0) + (Color.blue(t1) - Color.blue(t0)) * v);
 
 			return Color.rgb(red, green, blue);
+		}
+	}
+
+	private static class LoginHandler extends Handler {
+		private SoftReference<LoginActivity> reference;
+
+		LoginHandler(LoginActivity loginActivity) {
+			reference = new SoftReference<>(loginActivity);
+		}
+
+		@Override
+		public void handleMessage(Message msg) {
+			LoginActivity activity = reference.get();
+			if (activity == null) {
+				reference = null;
+				return;
+			}
+			if (msg.obj != null && msg.obj instanceof Exception) {
+				activity.cancelDialog();
+				activity.showWarning(((Exception) msg.obj).getMessage(), null);
+				return;
+			}
+			if (msg.what == ApiHelper.GET_PAGE_RESULT) {
+				activity.cancelDialog();
+				GDUTHelperApp.viewState = (String) msg.obj;
+				activity.getCheckCode();
+			} else if (msg.what == ApiHelper.GET_CHECK_CODE_SUCCESS)
+				if (msg.obj != null) {
+					activity.checkCodeBitmap = (Bitmap) msg.obj;
+					((ImageView) activity.findViewById(R.id.check_code))
+							.setImageBitmap(activity.checkCodeBitmap);
+				} else {
+					Log.d(activity.TAG, "bitmap is null");
+				}
+			else if (msg.what == ApiHelper.LOGIN_SUCCESS) {
+				activity.cancelDialog();
+				User user = new User(activity.mEtUserXh.getText().toString(),
+						activity.mEtPassword.getText().toString());
+				GDUTHelperApp.getSettings().putUser(activity, user);
+				GDUTHelperApp.getSettings().setLastUser(user.getXh());
+				activity.finish();
+			} else if (msg.what == ApiHelper.LOGIN_FAILED) {
+				activity.cancelDialog();
+				activity.showWarning((String) msg.obj, null);
+				activity.getCheckCode();
+			}
+			activity = null;
 		}
 	}
 }

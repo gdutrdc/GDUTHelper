@@ -14,6 +14,7 @@ import android.view.animation.Animation;
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Lesson;
+import com.rdc.gduthelper.bean.User;
 import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.IntoMain;
 import com.rdc.gduthelper.utils.settings.Settings;
@@ -117,11 +118,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 		if (GDUTHelperApp.cookie == null) {
 			Settings settings = GDUTHelperApp.getSettings();
 			String cookie = settings.getCookie();
-			String reUP = settings.getRememberUser();
-			if (cookie != null && reUP != null) {
+			User user = settings.getLastUser(this);
+			if (cookie != null && user != null) {
 				GDUTHelperApp.cookie = cookie;
-				String[] data = reUP.split(";", 2);
-				GDUTHelperApp.userXh = data[0];
+				GDUTHelperApp.userXh = user.getXh();
 			}
 		}
 		new Thread(new IntoMain(new BaseRunnable.GGCallback() {
@@ -158,35 +158,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 				break;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == 0) {
-			boolean needRefresh = data.getBooleanExtra("need_refresh", false);
-			boolean needChangeTheme = data.getBooleanExtra("need_change_theme", false);
-			if (!GDUTHelperApp.getSettings().needRememberUser()) {
-				GDUTHelperApp.getSettings().rememberUser("", "");
-			}
-			if (needChangeTheme) {
-				recreate();
-				return;
-			}
-			if (needRefresh) {
-				new AlertDialog.Builder(this)
-						.setTitle(R.string.tips)
-						.setMessage(R.string.url_changed)
-						.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								startActivity(new Intent(MainActivity.this, LoginActivity.class));
-							}
-						})
-						.setCancelable(false)
-						.show();
-			}
-		}
-		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	public void onClick(View view) {

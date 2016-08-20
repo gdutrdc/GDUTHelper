@@ -12,8 +12,10 @@ import android.widget.Toast;
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Exam;
+import com.rdc.gduthelper.bean.User;
 import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetExamTime;
+import com.rdc.gduthelper.net.api.GetSchedule;
 import com.rdc.gduthelper.net.api.IntoGetExamTime;
 import com.rdc.gduthelper.ui.adapter.ExamTimeAdapter;
 import com.rdc.gduthelper.utils.SerializeUtil;
@@ -149,12 +151,11 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 				@Override
 				public void run() {
 					ExamTimeDBHelper helper = new ExamTimeDBHelper(GetExamTimeActivity.this);
-					String s = GDUTHelperApp.getSettings().getRememberUser();
-					if (s == null) {
+					User user = GDUTHelperApp.getSettings().getLastUser(GetExamTimeActivity.this);
+					if (user == null) {
 						noLocalToast();
 					} else {
-						String[] data = s.split(";", 2);
-						String xh = data[0];
+						String xh = user.getXh();
 						mWholeList = helper.getExamTimes(xh, null);
 						if (mWholeList.size() == 0)
 							noLocalToast();

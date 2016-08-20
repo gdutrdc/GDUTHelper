@@ -51,15 +51,15 @@ public class DailyScheduleWidgetProvider extends AppWidgetProvider {
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 		Uri uri = Uri.parse(WidgetConfigProvider.SCHEDULE_CONFIG_CONTENT_URI);
-		String user = context.getSharedPreferences(
+		String userXh = context.getSharedPreferences(
 				context.getPackageName() + "_preferences", Context.MODE_MULTI_PROCESS)
-				.getString(Settings.REMEMBER_USER_DATA_KEY, null);
-		if (user == null) {
+				.getString(Settings.LAST_USER_KEY, null);
+		if (userXh == null) {
 			Log.e(TAG, "user = null");
 			return;
 		}
 		Cursor cursor = context.getContentResolver()
-				.query(uri, null, "id = ?", new String[]{user.split(";")[0]}, null);
+				.query(uri, null, "id = ?", new String[]{userXh}, null);
 		ScheduleConfig config = null;
 
 		if (cursor.getCount() > 0) {
@@ -251,15 +251,15 @@ public class DailyScheduleWidgetProvider extends AppWidgetProvider {
 
 	private void updateTopTitle(Context context, int appWidgetId) {
 		Uri uri = Uri.parse(WidgetConfigProvider.SCHEDULE_CONFIG_CONTENT_URI);
-		String user = context.getSharedPreferences(
+		String userXh = context.getSharedPreferences(
 				context.getPackageName() + "_preferences", Context.MODE_MULTI_PROCESS)
-				.getString(Settings.REMEMBER_USER_DATA_KEY, null);
-		if (user == null) {
+				.getString(Settings.LAST_USER_KEY, null);
+		if (userXh == null) {
 			Log.e(TAG, "user = null");
 			return;
 		}
 		Cursor cursor = context.getContentResolver()
-				.query(uri, null, "id = ?", new String[]{user.split(";")[0]}, null);
+				.query(uri, null, "id = ?", new String[]{userXh}, null);
 		ScheduleConfig config = null;
 
 		if (cursor == null) return;
