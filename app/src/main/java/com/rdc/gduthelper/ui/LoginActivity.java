@@ -28,12 +28,17 @@ import android.widget.Toast;
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.User;
+import com.rdc.gduthelper.bean.WidgetConfigs;
 import com.rdc.gduthelper.net.ApiHelper;
 import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetCheckCode;
 import com.rdc.gduthelper.net.api.GetPage;
 import com.rdc.gduthelper.net.api.Login;
 import com.rdc.gduthelper.ui.adapter.UserCompleteAdapter;
+import com.rdc.gduthelper.utils.database.ExamTimeDBHelper;
+import com.rdc.gduthelper.utils.database.ScheduleDBHelper;
+import com.rdc.gduthelper.utils.database.UserDBHelper;
+import com.rdc.gduthelper.utils.settings.ScheduleConfig;
 import com.rdc.gduthelper.utils.settings.Settings;
 
 import java.lang.ref.SoftReference;
@@ -110,18 +115,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 		mEtPassword = ((EditText) findViewById(R.id.login_password));
 		mEtCheckCode = (EditText) findViewById(R.id.login_check_code);
 
-		final UserCompleteAdapter adapter = new UserCompleteAdapter(this);
-		List<User> users = GDUTHelperApp.getSettings().getUsers(this);
-		adapter.setUsers(users);
-		mEtUserXh.setAdapter(adapter);
-		mEtUserXh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-				User user = adapter.getUsers().get(i);
-				mEtPassword.setText(user.getPassword());
-			}
-		});
-
 		mEtCheckCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -143,15 +136,30 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 		mEtPassword.setOnFocusChangeListener(this);
 		mEtCheckCode.setOnFocusChangeListener(this);
 
-		if (GDUTHelperApp.getSettings().needRememberUser()) {
-			User user = GDUTHelperApp.getSettings().getLastUser(this);
-			if (user != null) {
-				mEtUserXh.setText(user.getXh());
-				mEtPassword.setText(user.getPassword());
-			}
-		}
+		resumeLastTime();
 	}
 
+	private void resumeLastTime() {
+		User user = GDUTHelperApp.getSettings().getLastUser(this);
+		if (user != null) {
+			mEtUserXh.setText(user.getXh());
+			mEtPassword.setText(user.getPassword());
+		} else {
+			mEtUserXh.setText("");
+			mEtPassword.setText("");
+		}
+		final UserCompleteAdapter adapter = new UserCompleteAdapter(this);
+		List<User> users = GDUTHelperApp.getSettings().getUsers(this);
+		adapter.setUsers(users);
+		mEtUserXh.setAdapter(adapter);
+		mEtUserXh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+				User user = adapter.getUsers().get(i);
+				mEtPassword.setText(user.getPassword());
+			}
+		});
+	}
 
 	private void login() {
 		if (GDUTHelperApp.cookie != null && GDUTHelperApp.viewState != null) {
@@ -222,6 +230,65 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 		if (item.getItemId() == R.id.login_refresh) {
 			showProgressDialog("正在刷新");
 			initConnection();
+		} else if (item.getItemId() == R.id.login_clear_history) {
+			if (mEtUserXh.getText().toString().length() == 0)
+				showWarning("当前学号为空", null);
+			else
+				new AlertDialog.Builder(this)
+						.setTitle(R.string.delete)
+						.setMessage(R.string.clear_all_data)
+						.setNeutralButton(R.string.cancel, null)
+						.setNegativeButton(R.string.clear_only_login_history, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialogInterface, int i) {
+								String wantToDelete = mEtUserXh.getText().toString();
+								UserDBHelper helper = new UserDBHelper(LoginActivity.this);
+								for (User user : helper.getUsers()) {
+									if (user.getXh().equals(wantToDelete))
+										helper.deleteUser(user.getXh());
+								}
+
+								GDUTHelperApp.getSettings().setLastUser("");
+								resumeLastTime();
+							}
+						})
+						.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialogInterface, int i) {
+								String wantToDelete = mEtUserXh.getText().toString();
+								UserDBHelper helper = new UserDBHelper(LoginActivity.this);
+								User target = null;
+								for (User user : helper.getUsers()) {
+									if (user.getXh().equals(wantToDelete)) {
+										target = user;
+										break;
+									}
+								}
+								if (target != null) {
+									helper.deleteUser(target.getXh());
+
+									ScheduleDBHelper scheHelper = new ScheduleDBHelper(LoginActivity.this);
+									String[] terms = scheHelper.getOptionalTerms(target.getXh());
+									if (terms != null)
+										for (String term : terms) {
+											scheHelper.deleteTermLesson(term, target.getXh());
+										}
+									scheHelper.close();
+
+									ScheduleConfig config = GDUTHelperApp.getSettings()
+											.getScheduleConfig(LoginActivity.this, target.getXh());
+									GDUTHelperApp.getSettings()
+											.deleteScheduleConfig(LoginActivity.this, config);
+
+									ExamTimeDBHelper examTimeDBHelper = new ExamTimeDBHelper(LoginActivity.this);
+									examTimeDBHelper.deleteExamTimes(target.getXh());
+
+									GDUTHelperApp.getSettings().setLastUser("");
+									resumeLastTime();
+								}
+
+							}
+						}).show();
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -344,6 +411,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 				activity.cancelDialog();
 				User user = new User(activity.mEtUserXh.getText().toString(),
 						activity.mEtPassword.getText().toString());
+				if (!GDUTHelperApp.getSettings().needRememberUser())
+					user.setPassword(null);
 				GDUTHelperApp.getSettings().putUser(activity, user);
 				GDUTHelperApp.getSettings().setLastUser(user.getXh());
 				activity.finish();

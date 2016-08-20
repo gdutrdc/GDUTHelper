@@ -60,6 +60,12 @@ public class ExamTimeDBHelper extends SQLiteOpenHelper {
 		db.close();
 	}
 
+	public void deleteExamTimes(String xh) {
+		SQLiteDatabase db = getWritableDatabase();
+		db.delete(TABLE_EXAM_TIME, Column.XH + " = ?", new String[]{xh});
+		db.close();
+	}
+
 	/**
 	 * @param xh        学号
 	 * @param selection 学年-学期 形如 2013-2014-1

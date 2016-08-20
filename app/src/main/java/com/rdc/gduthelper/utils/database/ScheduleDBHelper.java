@@ -276,10 +276,9 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 		db.close();
 	}
 
-	public String[] getOptionalTerms() {
+	public String[] getOptionalTerms(String xh) {
 		SQLiteDatabase db = getReadableDatabase();
 		String[] result = null;
-		String xh = GDUTHelperApp.userXh;
 		if (xh == null) {
 			User user = GDUTHelperApp.getSettings().getLastUser(mContext);
 			if (user == null) {
@@ -300,6 +299,11 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 		cursor.close();
 		db.close();
 		return result;
+	}
+
+	public String[] getOptionalTerms() {
+		String xh = GDUTHelperApp.userXh;
+		return getOptionalTerms(xh);
 	}
 
 	private static class Column {

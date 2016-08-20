@@ -40,7 +40,10 @@ public class UserDBHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(Column.XH, user.getXh());
-		contentValues.put(Column.PASSWORD, DESUtils.encrypt(user.getPassword()));
+		if (user.getPassword() != null && user.getPassword().length() > 0)
+			contentValues.put(Column.PASSWORD, DESUtils.encrypt(user.getPassword()));
+		else
+			contentValues.put(Column.PASSWORD, "");
 		db.insert(TABLE_NAME, null, contentValues);
 
 		db.close();
@@ -55,7 +58,7 @@ public class UserDBHelper extends SQLiteOpenHelper {
 			cursor.moveToNext();
 			String userXh = cursor.getString(cursor.getColumnIndex(Column.XH));
 			String password = cursor.getString(cursor.getColumnIndex(Column.PASSWORD));
-			user = new User(userXh, DESUtils.decrypt(password));
+			user = new User(userXh, password.length() != 0 ? DESUtils.decrypt(password) : "");
 		}
 		cursor.close();
 		db.close();
@@ -69,7 +72,7 @@ public class UserDBHelper extends SQLiteOpenHelper {
 		while (cursor.moveToNext()) {
 			String xh = cursor.getString(cursor.getColumnIndex(Column.XH));
 			String password = cursor.getString(cursor.getColumnIndex(Column.PASSWORD));
-			User user = new User(xh, DESUtils.decrypt(password));
+			User user = new User(xh, password.length() != 0 ? DESUtils.decrypt(password) : "");
 			users.add(user);
 		}
 		cursor.close();
