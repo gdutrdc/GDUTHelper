@@ -50,6 +50,8 @@ public class UserDBHelper extends SQLiteOpenHelper {
 	}
 
 	public User getUser(String xh) {
+		if (xh == null)
+			return null;
 		SQLiteDatabase db = getReadableDatabase();
 		Cursor cursor = db.query(TABLE_NAME, null, Column.XH + " = ?", new String[]{xh},
 				null, null, null);
