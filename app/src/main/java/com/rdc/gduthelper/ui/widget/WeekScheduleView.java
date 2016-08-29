@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.rdc.gduthelper.R;
@@ -223,10 +224,9 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener,
 								mLessons, tacr1.getLessonCode()).getLessonName()
 								+ "@" + tacr1.getClassroom());
 
-				view.findViewById(R.id.item_schedule_dog_ear).setVisibility(GONE);
 				cardView.setCardBackgroundColor(color);
-				cardView.findViewById(R.id.item_schedule_text_cover)
-						.setBackground(makeCoverDrawable(color, 8, Gravity.BOTTOM));
+				((FrameLayout) view.findViewById(R.id.item_schedule_container))
+						.setForeground(makeCoverDrawable(color, 8, Gravity.BOTTOM));
 			}
 		}
 		if (!isShown) {
@@ -236,8 +236,8 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener,
 					.setText(lesson.getLessonName() + "@" + tacr.getClassroom());
 			int color = colorOut;
 			((CardView) view).setCardBackgroundColor(color);
-			view.findViewById(R.id.item_schedule_text_cover)
-					.setBackground(makeCoverDrawable(color, 8, Gravity.BOTTOM));
+			((FrameLayout) view.findViewById(R.id.item_schedule_container))
+					.setForeground(makeCoverDrawable(color, 8, Gravity.BOTTOM));
 		}
 		view.findViewById(R.id.item_schedule_dog_ear)
 				.setVisibility(lessonTACRs.size() > 1 ? VISIBLE : GONE);
@@ -258,9 +258,9 @@ public class WeekScheduleView extends ViewGroup implements View.OnClickListener,
 		int alpha = Color.alpha(baseColor);
 
 		for (int i = 0; i < numStops; i++) {
-			float x = i * 1f / (numStops - 1);
+			double x = 1f / Math.pow(numStops - i, 2);
 //			float opacity = MathUtil.constrain(0, 1, Math.pow(x,3));
-			stopColors[i] = Color.argb((int) (alpha * x), red, green, blue);
+			stopColors[i] = Color.argb((int) (alpha * x) % 256, red, green, blue);
 		}
 
 		final float x0, x1, y0, y1;

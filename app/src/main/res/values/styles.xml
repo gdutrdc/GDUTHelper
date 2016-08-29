@@ -24,8 +24,9 @@
 		<item name="borderWidth">0dp</item>
 	</style>
 
-	<style name="GetInfoFABStyle">
+	<style name="GetInfoFABStyle" parent="AppTheme.Dark">
 		<item name="android:layout_margin">0dp</item>
+		<item name="fabSize">normal</item>
 		<item name="borderWidth">0dp</item>
 	</style>
 
