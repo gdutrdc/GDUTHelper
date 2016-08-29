@@ -155,8 +155,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 		mEtUserXh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-				User user = adapter.getUsers().get(i);
-				mEtPassword.setText(user.getPassword());
+				String xh = (String) adapter.getItem(i);
+				for (User user : adapter.getUsers()) {
+					if (user.getXh().equals(xh)) {
+						mEtPassword.setText(user.getPassword());
+					}
+				}
 			}
 		});
 	}
