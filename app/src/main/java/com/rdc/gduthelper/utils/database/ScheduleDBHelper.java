@@ -271,8 +271,42 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 
 	public void deleteLesson(Lesson lesson) {
 		SQLiteDatabase db = getWritableDatabase();
-		db.delete(TABLE_LESSON_TIMES, Column.LESSON_CODE + " = ?", new String[]{lesson.getLessonCode()});
-		db.delete(TABLE_LESSONS, Column.LESSON_CODE + " = ?", new String[]{lesson.getLessonCode()});
+		String xh = GDUTHelperApp.getSettings().getLastUser(mContext).getXh();
+		db.delete(TABLE_LESSON_TIMES, Column.LESSON_CODE + " = ? and " + Column.XH + " = ?",
+				new String[]{lesson.getLessonCode(), xh});
+		db.delete(TABLE_LESSONS, Column.LESSON_CODE + " = ? and " + Column.XH + " = ?",
+				new String[]{lesson.getLessonCode(), xh});
+		db.close();
+	}
+
+	public void deleteLessonTime(LessonTACR lessonTACR) {
+		SQLiteDatabase db = getWritableDatabase();
+		String xh = GDUTHelperApp.getSettings().getLastUser(mContext).getXh();
+		String selection = GDUTHelperApp.getSettings().getScheduleChooseTerm(mContext);
+		String weekdata = "";
+		for (int week : lessonTACR.getWeek()) {
+			weekdata += week + ",";
+		}
+		String numdata = "";
+		for (int num : lessonTACR.getNum())
+			numdata += num + ",";
+		db.delete(TABLE_LESSON_TIMES,
+				Column.LESSON_CODE + " = ? and "
+						+ Column.LESSON_CLASSROOM + " = ？ and "
+						+ Column.WEEK + " = ? and "
+						+ Column.WEEKDAY + " = ? and "
+						+ Column.XH + " = ? and "
+						+ Column.NUM + " = ?"
+						+ Column.SELECTION + " = ?",
+				new String[]{
+						lessonTACR.getLessonCode(),
+						lessonTACR.getClassroom(),
+						weekdata,
+						lessonTACR.getWeekday() + "",
+						xh,
+						numdata,
+						selection
+				});
 		db.close();
 	}
 

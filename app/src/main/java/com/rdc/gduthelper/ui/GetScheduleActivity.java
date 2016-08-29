@@ -46,6 +46,7 @@ import com.rdc.gduthelper.utils.database.ScheduleDBHelper;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -421,7 +422,7 @@ public class GetScheduleActivity extends BaseActivity
 						} else {
 							Intent intent = new Intent(
 									GetScheduleActivity.this, AddOtherLessonActivity.class);
-							intent.putExtra("type",0);
+							intent.putExtra("type", 0);
 							startActivity(intent);
 						}
 					}
@@ -517,27 +518,44 @@ public class GetScheduleActivity extends BaseActivity
 
 	@Override
 	public void onLongClick(View lessonView, final Map<Lesson, LessonTACR> lessonMap) {
-		new AlertDialog.Builder(this)
-				.setTitle(R.string.delete_lesson)
-				.setMessage(R.string.delete_lesson_tips)
-				.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Set<Lesson> lessons = lessonMap.keySet();
-						if (lessons.size() > 1) {
-							Toast.makeText(GetScheduleActivity.this,
-									R.string.more_than_one_lesson, Toast.LENGTH_SHORT).show();
-						} else {
+		final Set<Lesson> lessons = lessonMap.keySet();
+		final Collection<LessonTACR> lessonTACRs = lessonMap.values();
+		String lessonName = "";
+		for (Lesson lesson : lessons) {
+			lessonName = lesson.getLessonName();
+		}
+		if (lessons.size() > 1) {
+			Toast.makeText(GetScheduleActivity.this,
+					R.string.more_than_one_lesson, Toast.LENGTH_SHORT).show();
+		} else {
+			new AlertDialog.Builder(this)
+					.setTitle(getString(R.string.delete_lesson) + " - " + lessonName)
+					.setMessage(R.string.delete_lesson_tips)
+					.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
 							ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
 							for (Lesson lesson : lessons)
 								helper.deleteLesson(lesson);
 							helper.close();
+							initData();
 						}
-						initData();
-					}
-				})
-				.setNegativeButton(R.string.cancel, null)
-				.show();
+					})
+					.setNegativeButton(R.string.delete_lesson_tacr_only, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
+							for (LessonTACR lessonTACR : lessonTACRs) {
+								helper.deleteLessonTime(lessonTACR);
+							}
+							helper.close();
+							initData();
+
+						}
+					})
+					.setNeutralButton(R.string.cancel, null)
+					.show();
+		}
 
 	}
 
