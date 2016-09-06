@@ -80,7 +80,7 @@ public class ManageTermActivity extends BaseActivity
 
 	private void init() {
 		mYearSchedules = new ArrayList<>();
-		ScheduleDBHelper helper = new ScheduleDBHelper(this);
+		ScheduleDBHelper helper = ScheduleDBHelper.getInstance(this);
 
 		final String[] terms = helper.getOptionalTerms();
 		if (terms != null) {
@@ -196,7 +196,7 @@ public class ManageTermActivity extends BaseActivity
 	}
 
 	private void executeDelete() {
-		ScheduleDBHelper helper = new ScheduleDBHelper(this);
+		ScheduleDBHelper helper = ScheduleDBHelper.getInstance(this);
 		List<YearSchedule> currentData = (List<YearSchedule>) mAdapter.getParentItemList();
 		final String[] terms = helper.getOptionalTerms();
 		for (String term : terms) {
@@ -323,7 +323,7 @@ public class ManageTermActivity extends BaseActivity
 			@Override
 			public void onCall(Object obj) {
 				ArrayList<Lesson> lessons = (ArrayList<Lesson>) obj;
-				final ScheduleDBHelper helper = new ScheduleDBHelper(ManageTermActivity.this);
+				final ScheduleDBHelper helper = ScheduleDBHelper.getInstance(ManageTermActivity.this);
 				helper.addLessonList(lessons, year + "-" + term);
 				cancelDialog();
 

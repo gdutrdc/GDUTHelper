@@ -30,7 +30,7 @@ public class ExamWidgetService extends RemoteViewsService {
 			String selection = intent.getStringExtra("selection");
 			User user = GDUTHelperApp.getSettings().getLastUser(getApplicationContext());
 			String xh = user.getXh();
-			ExamTimeDBHelper helper = new ExamTimeDBHelper(ExamWidgetService.this);
+			ExamTimeDBHelper helper = ExamTimeDBHelper.getInstance(ExamWidgetService.this);
 			mExams = helper.getExamTimes(xh, selection);
 		}
 

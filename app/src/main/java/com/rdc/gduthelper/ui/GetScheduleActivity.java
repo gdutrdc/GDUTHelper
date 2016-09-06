@@ -234,7 +234,7 @@ public class GetScheduleActivity extends BaseActivity
 	}
 
 	private void refreshData() {
-		ScheduleDBHelper helper = new ScheduleDBHelper(this);
+		ScheduleDBHelper helper = ScheduleDBHelper.getInstance(this);
 		String term = mSettings.getScheduleChooseTerm(this);
 		ArrayList<Lesson> lessons = null;
 		if (term != null) {
@@ -268,7 +268,6 @@ public class GetScheduleActivity extends BaseActivity
 		} else {
 			mWeekScheduleView.setLessons(lessons);
 		}
-		helper.close();
 	}
 
 	private void intoSchedule() {
@@ -304,7 +303,7 @@ public class GetScheduleActivity extends BaseActivity
 			@Override
 			public void onCall(Object obj) {
 				ArrayList<Lesson> lessons = (ArrayList<Lesson>) obj;
-				final ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
+				final ScheduleDBHelper helper = ScheduleDBHelper.getInstance(GetScheduleActivity.this);
 				helper.addLessonList(lessons, year + "-" + term);
 				cancelDialog();
 
@@ -332,7 +331,6 @@ public class GetScheduleActivity extends BaseActivity
 						initData();
 					}
 				});
-				helper.close();
 			}
 		})).start();
 	}
@@ -534,21 +532,19 @@ public class GetScheduleActivity extends BaseActivity
 					.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
+							ScheduleDBHelper helper = ScheduleDBHelper.getInstance(GetScheduleActivity.this);
 							for (Lesson lesson : lessons)
 								helper.deleteLesson(lesson);
-							helper.close();
 							initData();
 						}
 					})
 					.setNegativeButton(R.string.delete_lesson_tacr_only, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
+							ScheduleDBHelper helper = ScheduleDBHelper.getInstance(GetScheduleActivity.this);
 							for (LessonTACR lessonTACR : lessonTACRs) {
 								helper.deleteLessonTime(lessonTACR);
 							}
-							helper.close();
 							initData();
 
 						}
@@ -583,9 +579,8 @@ public class GetScheduleActivity extends BaseActivity
 					public void onClick(DialogInterface dialog, int which) {
 						ArrayList<Lesson> lessons = mLessonDetailAdapter.getLessons();
 						Lesson lesson = lessons.get(position);
-						ScheduleDBHelper helper = new ScheduleDBHelper(GetScheduleActivity.this);
+						ScheduleDBHelper helper = ScheduleDBHelper.getInstance(GetScheduleActivity.this);
 						helper.deleteLesson(lesson);
-						helper.close();
 						initData();
 						lessons.remove(lesson);
 

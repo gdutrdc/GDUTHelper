@@ -21,8 +21,16 @@ public class UserDBHelper extends SQLiteOpenHelper {
 	private static final int VERSION = 1;
 	private static final String TABLE_NAME = "user";
 
-	public UserDBHelper(Context context) {
+	private static UserDBHelper sHelper;
+
+	private UserDBHelper(Context context) {
 		super(context, NAME, null, VERSION);
+	}
+
+	public synchronized static UserDBHelper getInstance(Context context) {
+		if (sHelper == null)
+			sHelper = new UserDBHelper(context.getApplicationContext());
+		return sHelper;
 	}
 
 	@Override

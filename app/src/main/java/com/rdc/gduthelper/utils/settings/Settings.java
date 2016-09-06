@@ -92,13 +92,13 @@ public class Settings {
 	}
 
 	public void putUser(Context context, User user) {
-		UserDBHelper helper = new UserDBHelper(context);
+		UserDBHelper helper = UserDBHelper.getInstance(context);
 		helper.putUser(user);
 	}
 
 	public User getLastUser(Context context) {
 		String userXh = mSharedPreferences.getString(LAST_USER_KEY, null);
-		UserDBHelper helper = new UserDBHelper(context);
+		UserDBHelper helper = UserDBHelper.getInstance(context);
 		return helper.getUser(userXh);
 	}
 
@@ -109,7 +109,7 @@ public class Settings {
 	}
 
 	public List<User> getUsers(Context context) {
-		UserDBHelper helper = new UserDBHelper(context);
+		UserDBHelper helper = UserDBHelper.getInstance(context);
 		return helper.getUsers();
 	}
 

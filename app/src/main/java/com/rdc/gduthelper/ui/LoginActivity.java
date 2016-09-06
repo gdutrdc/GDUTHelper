@@ -246,7 +246,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 							@Override
 							public void onClick(DialogInterface dialogInterface, int i) {
 								String wantToDelete = mEtUserXh.getText().toString();
-								UserDBHelper helper = new UserDBHelper(LoginActivity.this);
+								UserDBHelper helper = UserDBHelper.getInstance(LoginActivity.this);
 								for (User user : helper.getUsers()) {
 									if (user.getXh().equals(wantToDelete))
 										helper.deleteUser(user.getXh());
@@ -260,7 +260,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 							@Override
 							public void onClick(DialogInterface dialogInterface, int i) {
 								String wantToDelete = mEtUserXh.getText().toString();
-								UserDBHelper helper = new UserDBHelper(LoginActivity.this);
+								UserDBHelper helper = UserDBHelper.getInstance(LoginActivity.this);
 								User target = null;
 								for (User user : helper.getUsers()) {
 									if (user.getXh().equals(wantToDelete)) {
@@ -271,7 +271,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 								if (target != null) {
 									helper.deleteUser(target.getXh());
 
-									ScheduleDBHelper scheHelper = new ScheduleDBHelper(LoginActivity.this);
+									ScheduleDBHelper scheHelper = ScheduleDBHelper.getInstance(LoginActivity.this);
 									String[] terms = scheHelper.getOptionalTerms(target.getXh());
 									if (terms != null)
 										for (String term : terms) {
@@ -284,7 +284,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 									GDUTHelperApp.getSettings()
 											.deleteScheduleConfig(LoginActivity.this, config);
 
-									ExamTimeDBHelper examTimeDBHelper = new ExamTimeDBHelper(LoginActivity.this);
+									ExamTimeDBHelper examTimeDBHelper = ExamTimeDBHelper.getInstance(LoginActivity.this);
 									examTimeDBHelper.deleteExamTimes(target.getXh());
 
 									GDUTHelperApp.getSettings().setLastUser("");

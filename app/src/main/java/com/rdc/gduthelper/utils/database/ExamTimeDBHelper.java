@@ -8,10 +8,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Exam;
+import com.rdc.gduthelper.bean.User;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by seasonyuu on 15/12/1.
@@ -21,9 +24,19 @@ public class ExamTimeDBHelper extends SQLiteOpenHelper {
 	private static final int VERSION = 1;
 	private static final String TABLE_EXAM_TIME = "exam_time";
 
+	private static ExamTimeDBHelper sHelper;
+	private SoftReference<Context> contextReference;
 
-	public ExamTimeDBHelper(Context context) {
+	private ExamTimeDBHelper(Context context) {
 		super(context, DATABASE_NAME, null, VERSION);
+		contextReference = new SoftReference<>(context);
+	}
+
+	public static synchronized ExamTimeDBHelper getInstance(Context context) {
+		if (sHelper == null) {
+			sHelper = new ExamTimeDBHelper(context.getApplicationContext());
+		}
+		return sHelper;
 	}
 
 	@Override
@@ -43,11 +56,15 @@ public class ExamTimeDBHelper extends SQLiteOpenHelper {
 	}
 
 	public void insertExamTime(Exam exam) {
+		if (contextReference.get() == null) {
+			return;
+		}
 		SQLiteDatabase db = getWritableDatabase();
 		db.delete(TABLE_EXAM_TIME, Column.EXAM_ID + "=? and " + Column.XH + "=?",
 				new String[]{exam.getId(), GDUTHelperApp.userXh});
+		User user = GDUTHelperApp.getSettings().getLastUser(contextReference.get());
 		ContentValues cv = new ContentValues();
-		cv.put(Column.XH, GDUTHelperApp.userXh);
+		cv.put(Column.XH, user.getXh());
 		cv.put(Column.EXAM_ID, exam.getId());
 		cv.put(Column.CAMPUS, exam.getCampus());
 		cv.put(Column.EXAM_POSITION, exam.getExamPosition());
@@ -66,6 +83,34 @@ public class ExamTimeDBHelper extends SQLiteOpenHelper {
 		db.close();
 	}
 
+	public void deleteExamTimes(String xh, String selection) {
+		SQLiteDatabase db = getWritableDatabase();
+		db.delete(TABLE_EXAM_TIME, Column.XH + " = ? and " + Column.EXAM_ID + " like ?",
+				new String[]{xh, "'%" + selection + "%'"});
+		db.close();
+	}
+
+	public void updateExamTimes(List<Exam> examTimes) {
+		if (contextReference.get() == null) {
+			return;
+		}
+		SQLiteDatabase db = getWritableDatabase();
+		User user = GDUTHelperApp.getSettings().getLastUser(contextReference.get());
+		for (Exam exam : examTimes) {
+			ContentValues cv = new ContentValues();
+			cv.put(Column.CAMPUS, exam.getCampus());
+			cv.put(Column.EXAM_POSITION, exam.getExamPosition());
+			cv.put(Column.EXAM_SEAT, exam.getExamSeat());
+			cv.put(Column.EXAM_TIME, exam.getExamTime());
+			cv.put(Column.EXAM_TYPE, exam.getExamType());
+			cv.put(Column.LESSON_NAME, exam.getLessonName());
+			cv.put(Column.STUDENT_NAME, exam.getStudentName());
+			db.update(TABLE_EXAM_TIME, cv, Column.EXAM_ID + " = ? and " + Column.XH + " = ?",
+					new String[]{exam.getId(), user.getXh()});
+		}
+		db.close();
+	}
+
 	/**
 	 * @param xh        学号
 	 * @param selection 学年-学期 形如 2013-2014-1
@@ -74,12 +119,20 @@ public class ExamTimeDBHelper extends SQLiteOpenHelper {
 	public ArrayList<Exam> getExamTimes(String xh, String selection) {
 		ArrayList<Exam> list = new ArrayList<>();
 		SQLiteDatabase db = getReadableDatabase();
-		Cursor cursor = db.query(TABLE_EXAM_TIME, null
-				, Column.XH + "=?", new String[]{xh}, null, null, null);
+		Cursor cursor = null;
+		if (selection == null) {
+			cursor = db.query(TABLE_EXAM_TIME, null
+					, Column.XH + "=? ", new String[]{xh}, null, null, null);
+		} else {
+			cursor = db.query(TABLE_EXAM_TIME, null
+					, Column.XH + "=? and " + Column.EXAM_ID + " like ?",
+					new String[]{xh, "'%" + selection + "%'"}, null, null, null);
+		}
+
 		while (cursor.moveToNext()) {
 			String examId = cursor.getString(cursor.getColumnIndex(Column.EXAM_ID));
-			if (selection != null && !examId.contains(selection))
-				continue;
+//			if (selection != null && !examId.contains(selection))
+//				continue;
 			Exam exam = new Exam();
 			exam.setId(examId);
 			exam.setExamSeat(cursor.getString(cursor.getColumnIndex(Column.EXAM_SEAT)));

@@ -12,6 +12,7 @@ import com.rdc.gduthelper.bean.LessonTACR;
 import com.rdc.gduthelper.bean.User;
 import com.rdc.gduthelper.utils.LessonUtils;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 
 /**
@@ -23,17 +24,19 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 	private static final String TABLE_LESSONS = "lessons";
 	private static final String TABLE_LESSON_TIMES = "lesson_times";
 
-	private Context mContext;
+	private static ScheduleDBHelper sHelper;
+	private SoftReference<Context> contextReference;
 
-	public ScheduleDBHelper(Context context) {
+	private ScheduleDBHelper(Context context) {
 		super(context, DATABASE_NAME, null, VERSION);
-		mContext = context;
+		contextReference = new SoftReference<>(context);
 	}
 
-	@Override
-	public synchronized void close() {
-		super.close();
-		mContext = null;
+	public static ScheduleDBHelper getInstance(Context context) {
+		if (sHelper == null) {
+			sHelper = new ScheduleDBHelper(context.getApplicationContext());
+		}
+		return sHelper;
 	}
 
 	@Override
@@ -131,9 +134,12 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 	}
 
 	public int deleteTermLesson(String term) {
+		if (contextReference.get() == null) {
+			return 0;
+		}
 		String xh = GDUTHelperApp.userXh;
 		if (xh == null) {
-			User user = GDUTHelperApp.getSettings().getLastUser(mContext);
+			User user = GDUTHelperApp.getSettings().getLastUser(contextReference.get());
 			if (user == null) {
 				return 0;
 			}
@@ -211,9 +217,12 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 	 * @return 指定的课程列表
 	 */
 	public ArrayList<Lesson> getLessonList(String selection) {
+		if (contextReference.get() == null) {
+			return new ArrayList<>();
+		}
 		String xh = GDUTHelperApp.userXh;
 		if (xh == null) {
-			User user = GDUTHelperApp.getSettings().getLastUser(mContext);
+			User user = GDUTHelperApp.getSettings().getLastUser(contextReference.get());
 			if (user == null) {
 				return new ArrayList<>();
 			}
@@ -224,15 +233,19 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 	}
 
 	public void addLessonList(ArrayList<Lesson> lessons, String selection) {
+		if (contextReference.get() == null) {
+			return;
+		}
+		User user = GDUTHelperApp.getSettings().getLastUser(contextReference.get());
 		SQLiteDatabase db = getWritableDatabase();
 		for (Lesson lesson : lessons) {
 			ContentValues contentValues = new ContentValues();
-			contentValues.put(Column.XH, GDUTHelperApp.userXh);
+			contentValues.put(Column.XH, user.getXh());
 			contentValues.put(Column.LESSON_CODE, lesson.getLessonCode());
 			contentValues.put(Column.SELECTION, selection);
 			db.delete(TABLE_LESSONS, Column.XH + " = ? and " + Column.LESSON_CODE +
 							" = ? and " + Column.SELECTION + " = ?",
-					new String[]{GDUTHelperApp.userXh, lesson.getLessonCode(), selection});
+					new String[]{user.getXh(), lesson.getLessonCode(), selection});
 			contentValues.put(Column.LESSON_NAME, lesson.getLessonName());
 			contentValues.put(Column.LESSON_TYPE, lesson.getLessonType());
 			contentValues.put(Column.LESSON_TEACHER, lesson.getLessonTeacher());
@@ -243,10 +256,10 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 
 			db.delete(TABLE_LESSON_TIMES, Column.XH + " = ? and " + Column.LESSON_CODE +
 							" = ? and " + Column.SELECTION + " = ?",
-					new String[]{GDUTHelperApp.userXh, lesson.getLessonCode(), selection});
+					new String[]{user.getXh(), lesson.getLessonCode(), selection});
 			for (LessonTACR tacr : LessonUtils.readTimeAndClassroom(lesson)) {
 				ContentValues foreignValue = new ContentValues();
-				foreignValue.put(Column.XH, GDUTHelperApp.userXh);
+				foreignValue.put(Column.XH, user.getXh());
 				foreignValue.put(Column.LESSON_CODE, lesson.getLessonCode());
 				foreignValue.put(Column.SELECTION, selection);
 				foreignValue.put(Column.WEEKDAY, tacr.getWeekday());
@@ -270,8 +283,11 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 	}
 
 	public void deleteLesson(Lesson lesson) {
+		if (contextReference.get() == null) {
+			return;
+		}
 		SQLiteDatabase db = getWritableDatabase();
-		String xh = GDUTHelperApp.getSettings().getLastUser(mContext).getXh();
+		String xh = GDUTHelperApp.getSettings().getLastUser(contextReference.get()).getXh();
 		db.delete(TABLE_LESSON_TIMES, Column.LESSON_CODE + " = ? and " + Column.XH + " = ?",
 				new String[]{lesson.getLessonCode(), xh});
 		db.delete(TABLE_LESSONS, Column.LESSON_CODE + " = ? and " + Column.XH + " = ?",
@@ -280,9 +296,12 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 	}
 
 	public void deleteLessonTime(LessonTACR lessonTACR) {
+		if (contextReference.get() == null) {
+			return;
+		}
 		SQLiteDatabase db = getWritableDatabase();
-		String xh = GDUTHelperApp.getSettings().getLastUser(mContext).getXh();
-		String selection = GDUTHelperApp.getSettings().getScheduleChooseTerm(mContext);
+		String xh = GDUTHelperApp.getSettings().getLastUser(contextReference.get()).getXh();
+		String selection = GDUTHelperApp.getSettings().getScheduleChooseTerm(contextReference.get());
 		String weekdata = "";
 		for (int week : lessonTACR.getWeek()) {
 			weekdata += week + ",";
@@ -311,10 +330,13 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 	}
 
 	public String[] getOptionalTerms(String xh) {
+		if (contextReference.get() == null) {
+			return new String[0];
+		}
 		SQLiteDatabase db = getReadableDatabase();
 		String[] result = null;
 		if (xh == null) {
-			User user = GDUTHelperApp.getSettings().getLastUser(mContext);
+			User user = GDUTHelperApp.getSettings().getLastUser(contextReference.get());
 			if (user == null) {
 				return result;
 			}
@@ -336,7 +358,14 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 	}
 
 	public String[] getOptionalTerms() {
+		if (contextReference.get() == null) {
+			return new String[0];
+		}
 		String xh = GDUTHelperApp.userXh;
+		if (xh == null) {
+			User user = GDUTHelperApp.getSettings().getLastUser(contextReference.get());
+			xh = user.getXh();
+		}
 		return getOptionalTerms(xh);
 	}
 

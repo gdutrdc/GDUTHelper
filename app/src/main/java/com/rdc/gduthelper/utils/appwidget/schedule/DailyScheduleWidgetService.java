@@ -86,7 +86,7 @@ public class DailyScheduleWidgetService extends RemoteViewsService {
 				return;
 			}
 
-			ScheduleDBHelper helper = new ScheduleDBHelper(DailyScheduleWidgetService.this);
+			ScheduleDBHelper helper = ScheduleDBHelper.getInstance(DailyScheduleWidgetService.this);
 			ArrayList<Lesson> lessons = helper.getLessonList(config.getTerm(), config.getId());
 
 			Calendar firstWeek = Calendar.getInstance();

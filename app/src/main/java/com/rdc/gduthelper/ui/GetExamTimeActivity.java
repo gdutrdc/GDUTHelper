@@ -133,7 +133,7 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 									}
 									cancelDialog();
 									mExamTimeAdapter.setExams(exams);
-									ExamTimeDBHelper helper = new ExamTimeDBHelper(GetExamTimeActivity.this);
+									ExamTimeDBHelper helper = ExamTimeDBHelper.getInstance(GetExamTimeActivity.this);
 									for (Exam exam : exams) {
 										helper.insertExamTime(exam);
 									}
@@ -150,7 +150,7 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					ExamTimeDBHelper helper = new ExamTimeDBHelper(GetExamTimeActivity.this);
+					ExamTimeDBHelper helper = ExamTimeDBHelper.getInstance(GetExamTimeActivity.this);
 					User user = GDUTHelperApp.getSettings().getLastUser(GetExamTimeActivity.this);
 					if (user == null) {
 						noLocalToast();
@@ -277,7 +277,7 @@ public class GetExamTimeActivity extends BaseActivity implements AdapterView.OnI
 						e.printStackTrace();
 					}
 					mExamTimeAdapter.setExams(list);
-					ExamTimeDBHelper helper = new ExamTimeDBHelper(GetExamTimeActivity.this);
+					ExamTimeDBHelper helper = ExamTimeDBHelper.getInstance(GetExamTimeActivity.this);
 					if (list != null)
 						for (Exam exam : list) {
 							helper.insertExamTime(exam);

@@ -90,7 +90,7 @@ public class ExamWidgetConfigActivity extends BaseActivity implements AdapterVie
 			e.printStackTrace();
 		}
 		if (xh != null) {
-			ExamTimeDBHelper helper = new ExamTimeDBHelper(this);
+			ExamTimeDBHelper helper = ExamTimeDBHelper.getInstance(this);
 			mWholeList = helper.getExamTimes(xh, null);
 			if (mWholeList.size() == 0) {
 				Toast.makeText(this, R.string.get_exam_time_no_local, Toast.LENGTH_SHORT).show();

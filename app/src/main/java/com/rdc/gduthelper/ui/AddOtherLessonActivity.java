@@ -167,7 +167,7 @@ public class AddOtherLessonActivity extends BaseActivity {
 
 					String check2 = LessonUtils.checkNull(mLesson);
 					if (check2 == null) {
-						ScheduleDBHelper helper = new ScheduleDBHelper(this);
+						ScheduleDBHelper helper = ScheduleDBHelper.getInstance(this);
 						helper.addLesson(mLesson, GDUTHelperApp.getSettings().getScheduleChooseTerm(this));
 						finish();
 					} else {
