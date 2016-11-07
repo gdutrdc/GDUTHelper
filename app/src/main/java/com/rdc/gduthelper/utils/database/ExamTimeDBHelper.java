@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Exam;
@@ -126,7 +127,7 @@ public class ExamTimeDBHelper extends SQLiteOpenHelper {
 		} else {
 			cursor = db.query(TABLE_EXAM_TIME, null
 					, Column.XH + "=? and " + Column.EXAM_ID + " like ?",
-					new String[]{xh, "'%" + selection + "%'"}, null, null, null);
+					new String[]{xh, "%" + selection + "%"}, null, null, null);
 		}
 
 		while (cursor.moveToNext()) {
