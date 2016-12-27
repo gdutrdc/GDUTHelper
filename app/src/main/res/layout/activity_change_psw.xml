@@ -76,6 +76,8 @@
 			android:id="@+id/change_psw_tips"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:paddingEnd="16dp"
+			android:paddingStart="16dp"
 			android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 	</LinearLayout>
 </ScrollView>

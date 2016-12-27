@@ -41,9 +41,9 @@
 				android:id="@+id/login_iv_user_xh"
 				android:layout_width="48dp"
 				android:layout_height="48dp"
-				android:layout_marginTop="12dp"
 				android:layout_below="@id/login_switch_use_dx"
 				android:layout_marginLeft="16dp"
+				android:layout_marginTop="12dp"
 				android:padding="12dp"
 				android:src="@drawable/ic_account_circle_grey_500_24dp"/>
 
@@ -51,8 +51,8 @@
 				android:id="@+id/login_til_user_xh"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginBottom="8dp"
 				android:layout_below="@id/login_switch_use_dx"
+				android:layout_marginBottom="8dp"
 				android:layout_marginRight="16dp"
 				android:layout_toRightOf="@id/login_iv_user_xh">
 
@@ -61,6 +61,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:hint="@string/user_xh"
+					android:inputType="numberSigned"
 					android:maxLength="10"
 					android:maxLines="1"
 					android:paddingBottom="8dp"/>
@@ -70,9 +71,9 @@
 				android:id="@+id/login_iv_password"
 				android:layout_width="48dp"
 				android:layout_height="48dp"
-				android:layout_marginTop="12dp"
 				android:layout_below="@id/login_til_user_xh"
 				android:layout_marginLeft="16dp"
+				android:layout_marginTop="12dp"
 				android:padding="12dp"
 				android:src="@drawable/ic_lock_grey_500_24dp"/>
 
@@ -80,8 +81,8 @@
 				android:id="@+id/login_til_password"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginBottom="8dp"
 				android:layout_below="@id/login_til_user_xh"
+				android:layout_marginBottom="8dp"
 				android:layout_marginRight="16dp"
 				android:layout_toRightOf="@id/login_iv_password">
 
@@ -109,10 +110,10 @@
 					android:id="@+id/login_iv_check_code"
 					android:layout_width="48dp"
 					android:layout_height="44dp"
-					android:paddingLeft="12dp"
-					android:paddingTop="12dp"
-					android:paddingRight="12dp"
 					android:paddingBottom="8dp"
+					android:paddingLeft="12dp"
+					android:paddingRight="12dp"
+					android:paddingTop="12dp"
 					android:src="@drawable/ic_verified_user_grey_500_24dp"/>
 
 				<android.support.design.widget.TextInputLayout

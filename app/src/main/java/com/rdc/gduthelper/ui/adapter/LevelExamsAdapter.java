@@ -10,6 +10,7 @@ import android.graphics.drawable.Animatable;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,9 +80,7 @@ public class LevelExamsAdapter extends RecyclerView.Adapter<LevelExamsAdapter.Le
 			ivArrow = (ImageView) itemView.findViewById(R.id.level_exam_grade_expand);
 			ivArrow.setOnClickListener(this);
 
-			if (Build.VERSION.SDK_INT >= 21) {
-				ivArrow.setImageResource(R.drawable.animate_expand);
-			}
+			ivArrow.setImageResource(R.drawable.animate_expand);
 		}
 
 		@Override
@@ -90,18 +89,13 @@ public class LevelExamsAdapter extends RecyclerView.Adapter<LevelExamsAdapter.Le
 				unexpandedHeight = itemView.getHeight();
 
 			boolean flag = itemView.getHeight() > unexpandedHeight;
-			if (Build.VERSION.SDK_INT >= 21) {
-				ImageView iv = (ImageView) v;
-				ivArrow.setImageResource(flag ? R.drawable.animate_collapse : R.drawable.animate_expand);
-				Drawable drawable = iv.getDrawable();
-				if (drawable instanceof Animatable) {
-					((Animatable) drawable).start();
-				}
-			} else {
-				ivArrow.setImageResource(flag ? R.drawable.ic_keyboard_arrow_down_black_24dp
-						: R.drawable.ic_keyboard_arrow_up_black_24dp);
+			AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) itemView.getContext().getDrawable(flag ? R.drawable.animate_collapse :
+					R.drawable.animate_expand);
+			ivArrow.setImageDrawable(drawable);
+			if (drawable != null) {
+				drawable.start();
+				Log.d("Animation", "Started");
 			}
-
 			PropertyValuesHolder holder = PropertyValuesHolder.ofInt("minimumHeight",
 					itemView.getHeight(), itemView.getHeight()
 							+ (flag ? -1 : 1) * (int) UIUtils.convertDpToPixel(56, mContext));
