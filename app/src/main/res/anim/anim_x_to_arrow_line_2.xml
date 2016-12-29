@@ -3,7 +3,8 @@
 
 	<objectAnimator
 		android:duration="250"
-		android:propertyName="fillAlpha"
-		android:valueFrom="0"
-		android:valueTo="1"/>
+		android:propertyName="pathData"
+		android:valueFrom="@string/close_line_2"
+		android:valueTo="@string/arrow_line_2"
+		android:valueType="pathType"/>
 </set>

@@ -6,16 +6,15 @@
 	<path
 		android:name="line_1"
 		android:fillColor="#FF000000"
-		android:pathData="M13.41,5.41l-1.41,-1.41 -8,8 1.41,1.41z"/>
+		android:pathData="@string/arrow_line_1"/>
 
 	<path
 		android:name="line_2"
 		android:fillColor="#FF000000"
-		android:fillAlpha="1"
-		android:pathData="M20,11H6v2H20z"/>
+		android:pathData="@string/arrow_line_2"/>
 
 	<path
 		android:name="line_3"
 		android:fillColor="#FF000000"
-		android:pathData="M13.41,18.59l-1.41,1.41 -8,-8 1.41,-1.41z"/>
+		android:pathData="@string/arrow_line_3"/>
 </vector>

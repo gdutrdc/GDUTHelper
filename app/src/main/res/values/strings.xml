@@ -222,4 +222,11 @@
 	<string name="default_zb_text">我特么这次考试$name才得了$grade！</string>
 	<string name="zb_text_key">ZBText</string>
 
+	<string name="arrow_line_1">M13.41,5.41l-1.41,-1.41 -8,8 1.41,1.41z</string>
+	<string name="arrow_line_2">M20,11H6v2H20z</string>
+	<string name="arrow_line_3">M13.41,18.59l-1.41,1.41 -8,-8 1.41,-1.41z</string>
+	<string name="close_line_1">M17.59,5l1.41,1.41 -12.59,12.59 -1.41,-1.41z</string>
+	<string name="close_line_2">M11,11H11v2H11z</string>
+	<string name="close_line_3">M6.41,5l-1.41,1.41 12.59,12.59 1.41,-1.41z</string>
+
 </resources>

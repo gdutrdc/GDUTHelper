@@ -3,8 +3,8 @@
 	<objectAnimator
 		android:duration="250"
 		android:propertyName="pathData"
-		android:valueFrom="M13.41,5.41l-1.41,-1.41 -8,8 1.41,1.41z"
-		android:valueTo="M6.41,5l-1.41,1.41 12.59,12.59 1.41,-1.41z"
+		android:valueFrom="@string/arrow_line_1"
+		android:valueTo="@string/close_line_1"
 		android:valueType="pathType"/>
 
 </set>
