@@ -3,6 +3,7 @@ package com.rdc.gduthelper.ui;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -12,9 +13,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.rdc.gduthelper.R;
-import com.rdc.gduthelper.app.GDUTHelperApp;
+import com.rdc.gduthelper.ui.widget.CustomToolbar;
 
 /**
  * Created by seasonyuu on 15/9/7.
@@ -38,16 +38,15 @@ public class BaseActivity extends AppCompatActivity {
 	public void setContentView(int layoutResID) {
 		super.setContentView(layoutResID);
 
-		View toolbar = findViewById(R.id.toolbar);
+		CustomToolbar toolbar = (CustomToolbar) findViewById(R.id.toolbar);
 		if (toolbar != null) {
 			if (mWillNotPaintToolbar) {
 				toolbar.setBackgroundColor(getResources().getColor(R.color.blue_500));
 			}
-			MaterialMenuDrawable drawable = new MaterialMenuDrawable(this,
-					Color.WHITE, MaterialMenuDrawable.Stroke.THIN);
-			drawable.setIconState(MaterialMenuDrawable.IconState.ARROW);
-			((Toolbar) toolbar).setNavigationIcon(drawable);
-			setSupportActionBar((Toolbar) toolbar);
+			Drawable drawable = getDrawable(R.drawable.ic_arrow_back_black_24dp);
+			drawable.setTint(Color.WHITE);
+			toolbar.setNavigationIcon(drawable);
+			setSupportActionBar(toolbar);
 		}
 
 		ActionBar actionBar = getSupportActionBar();

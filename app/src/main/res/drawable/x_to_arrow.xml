@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:drawable="@drawable/ic_close_black_24dp">
+
+	<target
+		android:name="line_1"
+		android:animation="@anim/anim_x_to_arrow_line_1"/>
+
+	<target
+		android:name="line_2"
+		android:animation="@anim/anim_x_to_arrow_line_2"/>
+
+	<target
+		android:name="line_3"
+		android:animation="@anim/anim_x_to_arrow_line_3"/>
+</animated-vector>

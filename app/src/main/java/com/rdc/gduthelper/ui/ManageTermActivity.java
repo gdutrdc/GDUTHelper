@@ -11,18 +11,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
-import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.rdc.gduthelper.R;
 import com.rdc.gduthelper.app.GDUTHelperApp;
 import com.rdc.gduthelper.bean.Lesson;
@@ -32,6 +28,7 @@ import com.rdc.gduthelper.net.BaseRunnable;
 import com.rdc.gduthelper.net.api.GetSchedule;
 import com.rdc.gduthelper.net.api.IntoSchedule;
 import com.rdc.gduthelper.ui.adapter.ManageTermAdapter;
+import com.rdc.gduthelper.ui.widget.CustomToolbar;
 import com.rdc.gduthelper.utils.UIUtils;
 import com.rdc.gduthelper.utils.database.ScheduleDBHelper;
 import com.rdc.gduthelper.utils.settings.ScheduleConfig;
@@ -63,13 +60,15 @@ public class ManageTermActivity extends BaseActivity
 
 	private Settings mSettings;
 
-	private Toolbar mToolbarCAM;
+	private CustomToolbar mToolbarCAM;
+	private CustomToolbar mToolbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setWillNotPaintToolbar(false);
 		setContentView(R.layout.activity_manage_term);
+		mToolbar = (CustomToolbar) findViewById(R.id.toolbar);
 		mRecyclerView = (RecyclerView) findViewById(R.id.manage_term_list);
 		mFAB = (FloatingActionButton) findViewById(R.id.manage_term_add);
 		mFAB.setOnClickListener(this);
@@ -358,25 +357,19 @@ public class ManageTermActivity extends BaseActivity
 	private void setActionMode(boolean enable) {
 		mAdapter.setInActionMode(enable);
 		if (enable) {
-			((MaterialMenuDrawable) ((Toolbar) findViewById(R.id.toolbar)).getNavigationIcon())
-					.animateIconState(MaterialMenuDrawable.IconState.X);
 			((CollapsingToolbarLayout) findViewById(R.id.toolbar).getParent()).setTitle("");
 
 			if (mToolbarCAM == null)
 				initCAMToolbar();
 			mToolbarCAM.setVisibility(View.VISIBLE);
 			mToolbarCAM.animate().alpha(1).setDuration(200).start();
-			((MaterialMenuDrawable) mToolbarCAM.getNavigationIcon())
-					.animateIconState(MaterialMenuDrawable.IconState.X);
+			mToolbarCAM.startAnimation(CustomToolbar.State.ARROW_TO_X, Color.BLACK);
+			mToolbar.startAnimation(CustomToolbar.State.ARROW_TO_X);
 			getWindow().setStatusBarColor(Color.GRAY);
 		} else {
-			((MaterialMenuDrawable) ((Toolbar) findViewById(R.id.toolbar)).getNavigationIcon())
-					.animateIconState(MaterialMenuDrawable.IconState.ARROW);
 			((CollapsingToolbarLayout) findViewById(R.id.toolbar).getParent()).setTitle(getString(R.string.manage_term));
 
 			if (mToolbarCAM != null) {
-				((MaterialMenuDrawable) mToolbarCAM.getNavigationIcon())
-						.animateIconState(MaterialMenuDrawable.IconState.ARROW);
 				mToolbarCAM.animate().alpha(0).setDuration(200).withEndAction(new Runnable() {
 					@Override
 					public void run() {
@@ -384,19 +377,19 @@ public class ManageTermActivity extends BaseActivity
 						getWindow().setStatusBarColor(getResources().getColor(R.color.blue_700));
 					}
 				}).start();
+				mToolbarCAM.startAnimation(CustomToolbar.State.X_TO_ARROW, Color.BLACK);
 			}
+			mToolbar.startAnimation(CustomToolbar.State.X_TO_ARROW);
 		}
 
 	}
 
 	private void initCAMToolbar() {
-		mToolbarCAM = new Toolbar(this);
+		mToolbarCAM = new CustomToolbar(this);
 		ViewGroup.LayoutParams params = new ViewGroup
 				.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, findViewById(R.id.toolbar).getHeight());
 		addContentView(mToolbarCAM, params);
-		MaterialMenuDrawable menuDrawable = new MaterialMenuDrawable(this, Color.BLACK, MaterialMenuDrawable.Stroke.THIN);
-		menuDrawable.setIconState(MaterialMenuDrawable.IconState.ARROW);
-		mToolbarCAM.setNavigationIcon(menuDrawable);
+		mToolbarCAM.setNavigationIcon(getDrawable(R.drawable.ic_arrow_back_black_24dp));
 		mToolbarCAM.setBackgroundColor(getResources().getColor(R.color.white));
 		mToolbarCAM.setClickable(true);
 		mToolbarCAM.inflateMenu(R.menu.menu_context_manage_term);
