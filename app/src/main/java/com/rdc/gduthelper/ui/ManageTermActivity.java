@@ -229,7 +229,9 @@ public class ManageTermActivity extends BaseActivity
 		if (mAdapter.isInActionMode()) {
 			mAdapter.setSelectedPosition(groupPosition, childPosition,
 					!mAdapter.getSelectedPosition(groupPosition, childPosition));
-			mToolbarCAM.setTitle("已选择" + mAdapter.getSelectedNum() + "项");
+			if (mAdapter.getSelectedNum() > 0)
+				mToolbarCAM.setTitle("已选择" + mAdapter.getSelectedNum() + "项");
+			setActionMode(false);
 		} else {
 			mAdapter.setSelectedPosition(groupPosition, childPosition, true);
 			mSettings.setScheduleChooseTerm(this, mAdapter.getTerm(groupPosition, childPosition));
@@ -242,8 +244,6 @@ public class ManageTermActivity extends BaseActivity
 		if (!mAdapter.isInActionMode()) {
 			setActionMode(true);
 			mAdapter.setSelectedPosition(groupPosition, childPosition, true);
-		} else {
-			setActionMode(false);
 		}
 		return true;
 	}
